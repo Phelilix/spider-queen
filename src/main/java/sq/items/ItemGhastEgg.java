@@ -17,13 +17,13 @@ public class ItemGhastEgg extends Item
 	public ItemGhastEgg()
 	{
 		super();
-		
+
 		final String name = "ghast-egg";
 		setUnlocalizedName(name);
 		setTextureName("sq:" + name);
 		setCreativeTab(SpiderCore.getCreativeTab());
 		setMaxStackSize(1);
-		
+
 		GameRegistry.registerItem(this, name);
 	}
 
@@ -36,7 +36,7 @@ public class ItemGhastEgg extends Item
 			{
 				stack.stackSize--;
 			}
-			
+
 			posX += Facing.offsetsXForSide[meta];
 			posY += Facing.offsetsYForSide[meta];
 			posZ += Facing.offsetsZForSide[meta];
@@ -47,7 +47,7 @@ public class ItemGhastEgg extends Item
 
 			return true;
 		}
-		
+
 		return true;
 	}
 }

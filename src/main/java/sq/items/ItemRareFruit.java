@@ -10,12 +10,12 @@ public class ItemRareFruit extends ItemFood
 	{
 		super(3, 1.5F, false);
 		setAlwaysEdible();
-		
+
 		final String name = "rare-fruit";
 		setUnlocalizedName(name);
 		setTextureName("sq:" + name);
 		setCreativeTab(SpiderCore.getCreativeTab());
-		
+
 		GameRegistry.registerItem(this, name);
 	}
 }

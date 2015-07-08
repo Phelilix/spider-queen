@@ -60,27 +60,29 @@ public class EntityWebslinger extends Entity
 		angler = entityplayer;
 		player = entityplayer;
 
-		PlayerExtension playerExtension = PlayerExtension.get(entityplayer);
+		final PlayerExtension playerExtension = PlayerExtension.get(entityplayer);
 		playerExtension.webEntity = this;
 
 		setSize(0.25F, 0.25F);
-		setLocationAndAngles(entityplayer.posX, (entityplayer.posY + 1.6200000000000001D) - (double)entityplayer.yOffset, entityplayer.posZ, entityplayer.rotationYaw, entityplayer.rotationPitch);
-		posX -= MathHelper.cos((rotationYaw / 180F) * 3.141593F) * 0.16F;
+		setLocationAndAngles(entityplayer.posX, entityplayer.posY + 1.6200000000000001D - entityplayer.yOffset, entityplayer.posZ, entityplayer.rotationYaw, entityplayer.rotationPitch);
+		posX -= MathHelper.cos(rotationYaw / 180F * 3.141593F) * 0.16F;
 		posY -= 0.10000000149011612D;
-		posZ -= MathHelper.sin((rotationYaw / 180F) * 3.141593F) * 0.16F;
+		posZ -= MathHelper.sin(rotationYaw / 180F * 3.141593F) * 0.16F;
 		setPosition(posX, posY, posZ);
 		yOffset = 0.0F;
-		float f = 8F;
-		motionX = -MathHelper.sin((rotationYaw / 180F) * 3.141593F) * MathHelper.cos((rotationPitch / 180F) * 3.141593F) * f;
-		motionZ = MathHelper.cos((rotationYaw / 180F) * 3.141593F) * MathHelper.cos((rotationPitch / 180F) * 3.141593F) * f;
-		motionY = -MathHelper.sin((rotationPitch / 180F) * 3.141593F) * f;
+		final float f = 8F;
+		motionX = -MathHelper.sin(rotationYaw / 180F * 3.141593F) * MathHelper.cos(rotationPitch / 180F * 3.141593F) * f;
+		motionZ = MathHelper.cos(rotationYaw / 180F * 3.141593F) * MathHelper.cos(rotationPitch / 180F * 3.141593F) * f;
+		motionY = -MathHelper.sin(rotationPitch / 180F * 3.141593F) * f;
 		func_4042_a(motionX, motionY, motionZ, 1.5F, 1.0F);
 	}
 
+	@Override
 	protected void entityInit()
 	{
 	}
 
+	@Override
 	public boolean isInRangeToRenderDist(double d)
 	{
 		double d1 = boundingBox.getAverageEdgeLength() * 4D;
@@ -91,25 +93,26 @@ public class EntityWebslinger extends Entity
 	public void func_4042_a(double d, double d1, double d2, float f,
 			float f1)
 	{
-		float f2 = MathHelper.sqrt_double(d * d + d1 * d1 + d2 * d2);
+		final float f2 = MathHelper.sqrt_double(d * d + d1 * d1 + d2 * d2);
 		d /= f2;
 		d1 /= f2;
 		d2 /= f2;
-		d += rand.nextGaussian() * 0.0074999998323619366D * (double)f1;
-		d1 += rand.nextGaussian() * 0.0074999998323619366D * (double)f1;
-		d2 += rand.nextGaussian() * 0.0074999998323619366D * (double)f1;
+		d += rand.nextGaussian() * 0.0074999998323619366D * f1;
+		d1 += rand.nextGaussian() * 0.0074999998323619366D * f1;
+		d2 += rand.nextGaussian() * 0.0074999998323619366D * f1;
 		d *= f;
 		d1 *= f;
 		d2 *= f;
 		motionX = d;
 		motionY = d1;
 		motionZ = d2;
-		float f3 = MathHelper.sqrt_double(d * d + d2 * d2);
-		prevRotationYaw = rotationYaw = (float)((Math.atan2(d, d2) * 180D) / 3.1415927410125732D);
-		prevRotationPitch = rotationPitch = (float)((Math.atan2(d1, f3) * 180D) / 3.1415927410125732D);
+		final float f3 = MathHelper.sqrt_double(d * d + d2 * d2);
+		prevRotationYaw = rotationYaw = (float)(Math.atan2(d, d2) * 180D / 3.1415927410125732D);
+		prevRotationPitch = rotationPitch = (float)(Math.atan2(d1, f3) * 180D / 3.1415927410125732D);
 		field_4090_i = 0;
 	}
 
+	@Override
 	public void setPositionAndRotation2(double d, double d1, double d2, float f,
 			float f1, int i)
 	{
@@ -124,6 +127,7 @@ public class EntityWebslinger extends Entity
 		motionZ = velocityZ;
 	}
 
+	@Override
 	public void setVelocity(double d, double d1, double d2)
 	{
 		velocityX = motionX = d;
@@ -154,6 +158,7 @@ public class EntityWebslinger extends Entity
 		}
 	}
 
+	@Override
 	public void onUpdate()
 	{
 		super.onUpdate();
@@ -174,8 +179,8 @@ public class EntityWebslinger extends Entity
 	{
 		if(player != null & (field_4091_h || entityHit != null))
 		{
-			Vec3 slingerVector = Vec3.createVectorHelper(posX,posY,posZ);
-			Vec3 playerVector = Vec3.createVectorHelper(player.posX,player.posY,player.posZ);
+			final Vec3 slingerVector = Vec3.createVectorHelper(posX,posY,posZ);
+			final Vec3 playerVector = Vec3.createVectorHelper(player.posX,player.posY,player.posZ);
 
 			//Prevent the player from experiencing fall damage.
 			player.fallDistance = 0.0F;
@@ -208,7 +213,7 @@ public class EntityWebslinger extends Entity
 			}
 
 			//Don't allow Y motion to bounce when the player is hanging from the slinger.
-			boolean isHanging = player.posY - this.posY < 0; //This is negative if the player is hanging from the slinger.
+			final boolean isHanging = player.posY - posY < 0; //This is negative if the player is hanging from the slinger.
 			if (isHanging && player.motionY < 0 && !player.isSneaking())
 			{
 				player.motionY = 0.0D;
@@ -220,13 +225,13 @@ public class EntityWebslinger extends Entity
 				targetDistance = Math.abs(slingerVector.squareDistanceTo(playerVector)) - 1;
 			}
 
-			double distance = slingerVector.squareDistanceTo(playerVector);
-			
+			final double distance = slingerVector.squareDistanceTo(playerVector);
+
 			//Limit to only increasing motion if player is more than 2 square blocks away. Prevents flying around the hook point.
 			if (distance > targetDistance / 1.33D && distance > 2.0D) //1.33D starts the slinger off with a 'pull' on the player.
 			{
 				//Accelerate the player towards the midpoint between their position and the slinger's.
-				Vec3 moveVector = Vec3.createVectorHelper(
+				final Vec3 moveVector = Vec3.createVectorHelper(
 						player.motionX * 1.2D + (posX - player.posX) / 2, 
 						player.motionY * 1.2D + (posY - player.posY) / 2, 
 						player.motionZ * 1.2D + (posZ - player.posZ) / 2).normalize();
@@ -237,9 +242,9 @@ public class EntityWebslinger extends Entity
 					acceleration = acceleration / 2; 
 				}
 
-				double tmotionX = player.motionX * 1D + moveVector.xCoord * acceleration / 2D;
-				double tmotionY = player.motionY * 1D + moveVector.yCoord * acceleration / 2D;
-				double tmotionZ = player.motionZ * 1D + moveVector.zCoord * acceleration / 2D;
+				final double tmotionX = player.motionX * 1D + moveVector.xCoord * acceleration / 2D;
+				final double tmotionY = player.motionY * 1D + moveVector.yCoord * acceleration / 2D;
+				final double tmotionZ = player.motionZ * 1D + moveVector.zCoord * acceleration / 2D;
 
 				if(player.posX > posX) { if(tmotionX < player.motionX) { matchMotion(0, tmotionX); } } else { if(tmotionX > player.motionX) { matchMotion(0, tmotionX); } }
 				if(player.posY > posY) { if(tmotionY < player.motionY) { matchMotion(1, tmotionY); } } else { if(tmotionY > player.motionY) { matchMotion(1, tmotionY); } }
@@ -250,12 +255,12 @@ public class EntityWebslinger extends Entity
 			{
 				if(angler != null)
 				{
-					boolean isJumping = Minecraft.getMinecraft().gameSettings.keyBindJump.getIsKeyPressed();
-					
+					final boolean isJumping = Minecraft.getMinecraft().gameSettings.keyBindJump.getIsKeyPressed();
+
 					if (isJumping && slingerVector.squareDistanceTo(playerVector) > 1.5D)
 					{
 						targetDistance = targetDistance - 6;
-						
+
 						if (targetDistance < 1.0D)
 						{
 							targetDistance = 1.0D;
@@ -267,14 +272,14 @@ public class EntityWebslinger extends Entity
 
 		if(field_6388_l > 0)
 		{
-			double d = posX + (field_6387_m - posX) / (double)field_6388_l;
-			double d1 = posY + (field_6386_n - posY) / (double)field_6388_l;
-			double d2 = posZ + (field_6385_o - posZ) / (double)field_6388_l;
+			final double d = posX + (field_6387_m - posX) / field_6388_l;
+			final double d1 = posY + (field_6386_n - posY) / field_6388_l;
+			final double d2 = posZ + (field_6385_o - posZ) / field_6388_l;
 			double d4;
-			for(d4 = field_6384_p - (double)rotationYaw; d4 < -180D; d4 += 360D) { }
+			for(d4 = field_6384_p - rotationYaw; d4 < -180D; d4 += 360D) { }
 			for(; d4 >= 180D; d4 -= 360D) { }
-			rotationYaw += d4 / (double)field_6388_l;
-			rotationPitch += (field_6383_q - (double)rotationPitch) / (double)field_6388_l;
+			rotationYaw += d4 / field_6388_l;
+			rotationPitch += (field_6383_q - rotationPitch) / field_6388_l;
 			field_6388_l--;
 			setPosition(d, d1, d2);
 			setRotation(rotationYaw, rotationPitch);
@@ -287,7 +292,7 @@ public class EntityWebslinger extends Entity
 				setDead();
 				if(angler != null) 
 				{ 
-					PlayerExtension playerExtension = PlayerExtension.get(angler);
+					final PlayerExtension playerExtension = PlayerExtension.get(angler);
 					playerExtension.webEntity = null;
 				}
 
@@ -301,7 +306,7 @@ public class EntityWebslinger extends Entity
 				} else
 				{
 					posX = entityHit.posX;
-					posY = entityHit.boundingBox.minY + (double)entityHit.height * 0.80000000000000004D;
+					posY = entityHit.boundingBox.minY + entityHit.height * 0.80000000000000004D;
 					posZ = entityHit.posZ;
 					return;
 				}
@@ -335,23 +340,23 @@ public class EntityWebslinger extends Entity
 			vec3d1 = Vec3.createVectorHelper(movingobjectposition.hitVec.xCoord, movingobjectposition.hitVec.yCoord, movingobjectposition.hitVec.zCoord);
 		}
 		Entity entity = null;
-		List list = worldObj.getEntitiesWithinAABBExcludingEntity(this, boundingBox.addCoord(motionX, motionY, motionZ).expand(1.0D, 1.0D, 1.0D));
+		final List list = worldObj.getEntitiesWithinAABBExcludingEntity(this, boundingBox.addCoord(motionX, motionY, motionZ).expand(1.0D, 1.0D, 1.0D));
 		double d3 = 0.0D;
 		for(int j = 0; j < list.size(); j++)
 		{
-			Entity entity1 = (Entity)list.get(j);
+			final Entity entity1 = (Entity)list.get(j);
 			if(!entity1.canBeCollidedWith() || entity1 == player && field_4089_j < 5)
 			{
 				continue;
 			}
-			float f2 = 0.3F;
-			AxisAlignedBB axisalignedbb = entity1.boundingBox.expand(f2, f2, f2);
-			MovingObjectPosition movingobjectposition1 = axisalignedbb.calculateIntercept(vec3d, vec3d1);
+			final float f2 = 0.3F;
+			final AxisAlignedBB axisalignedbb = entity1.boundingBox.expand(f2, f2, f2);
+			final MovingObjectPosition movingobjectposition1 = axisalignedbb.calculateIntercept(vec3d, vec3d1);
 			if(movingobjectposition1 == null)
 			{
 				continue;
 			}
-			double d6 = vec3d.distanceTo(movingobjectposition1.hitVec);
+			final double d6 = vec3d.distanceTo(movingobjectposition1.hitVec);
 			if(d6 < d3 || d3 == 0.0D)
 			{
 				entity = entity1;
@@ -386,9 +391,9 @@ public class EntityWebslinger extends Entity
 			return;
 		}
 		moveEntity(motionX, motionY, motionZ);
-		float f = MathHelper.sqrt_double(motionX * motionX + motionZ * motionZ);
-		rotationYaw = (float)((Math.atan2(motionX, motionZ) * 180D) / 3.1415927410125732D);
-		for(rotationPitch = (float)((Math.atan2(motionY, f) * 180D) / 3.1415927410125732D); rotationPitch - prevRotationPitch < -180F; prevRotationPitch -= 360F) { }
+		final float f = MathHelper.sqrt_double(motionX * motionX + motionZ * motionZ);
+		rotationYaw = (float)(Math.atan2(motionX, motionZ) * 180D / 3.1415927410125732D);
+		for(rotationPitch = (float)(Math.atan2(motionY, f) * 180D / 3.1415927410125732D); rotationPitch - prevRotationPitch < -180F; prevRotationPitch -= 360F) { }
 		for(; rotationPitch - prevRotationPitch >= 180F; prevRotationPitch += 360F) { }
 		for(; rotationYaw - prevRotationYaw < -180F; prevRotationYaw -= 360F) { }
 		for(; rotationYaw - prevRotationYaw >= 180F; prevRotationYaw += 360F) { }
@@ -400,16 +405,16 @@ public class EntityWebslinger extends Entity
 			f1 = 0.5F;
 			field_4091_h = true;
 		}
-		int k = 5;
+		final int k = 5;
 		double d5 = 0.0D;
 		for(int l = 0; l < k; l++)
 		{
-			double d8 = ((boundingBox.minY + ((boundingBox.maxY - boundingBox.minY) * (double)(l + 0)) / (double)k) - 0.125D) + 0.125D;
-			double d9 = ((boundingBox.minY + ((boundingBox.maxY - boundingBox.minY) * (double)(l + 1)) / (double)k) - 0.125D) + 0.125D;
-			AxisAlignedBB axisalignedbb1 = AxisAlignedBB.getBoundingBox(boundingBox.minX, d8, boundingBox.minZ, boundingBox.maxX, d9, boundingBox.maxZ);
+			final double d8 = boundingBox.minY + (boundingBox.maxY - boundingBox.minY) * (l + 0) / k - 0.125D + 0.125D;
+			final double d9 = boundingBox.minY + (boundingBox.maxY - boundingBox.minY) * (l + 1) / k - 0.125D + 0.125D;
+			final AxisAlignedBB axisalignedbb1 = AxisAlignedBB.getBoundingBox(boundingBox.minX, d8, boundingBox.minZ, boundingBox.maxX, d9, boundingBox.maxZ);
 			if(worldObj.isAABBInMaterial(axisalignedbb1, Material.water))
 			{
-				d5 += 1.0D / (double)k;
+				d5 += 1.0D / k;
 			}
 		}
 
@@ -430,19 +435,19 @@ public class EntityWebslinger extends Entity
 					field_4088_k = rand.nextInt(30) + 10;
 					motionY -= 0.20000000298023224D;
 					worldObj.playSoundAtEntity(this, "random.splash", 0.25F, 1.0F + (rand.nextFloat() - rand.nextFloat()) * 0.4F);
-					float f3 = MathHelper.floor_double(boundingBox.minY);
-					for(int i1 = 0; (float)i1 < 1.0F + width * 20F; i1++)
+					final float f3 = MathHelper.floor_double(boundingBox.minY);
+					for(int i1 = 0; i1 < 1.0F + width * 20F; i1++)
 					{
-						float f4 = (rand.nextFloat() * 2.0F - 1.0F) * width;
-						float f6 = (rand.nextFloat() * 2.0F - 1.0F) * width;
-						worldObj.spawnParticle("bubble", posX + (double)f4, f3 + 1.0F, posZ + (double)f6, motionX, motionY - (double)(rand.nextFloat() * 0.2F), motionZ);
+						final float f4 = (rand.nextFloat() * 2.0F - 1.0F) * width;
+						final float f6 = (rand.nextFloat() * 2.0F - 1.0F) * width;
+						worldObj.spawnParticle("bubble", posX + f4, f3 + 1.0F, posZ + f6, motionX, motionY - rand.nextFloat() * 0.2F, motionZ);
 					}
 
-					for(int j1 = 0; (float)j1 < 1.0F + width * 20F; j1++)
+					for(int j1 = 0; j1 < 1.0F + width * 20F; j1++)
 					{
-						float f5 = (rand.nextFloat() * 2.0F - 1.0F) * width;
-						float f7 = (rand.nextFloat() * 2.0F - 1.0F) * width;
-						worldObj.spawnParticle("splash", posX + (double)f5, f3 + 1.0F, posZ + (double)f7, motionX, motionY, motionZ);
+						final float f5 = (rand.nextFloat() * 2.0F - 1.0F) * width;
+						final float f7 = (rand.nextFloat() * 2.0F - 1.0F) * width;
+						worldObj.spawnParticle("splash", posX + f5, f3 + 1.0F, posZ + f7, motionX, motionY, motionZ);
 					}
 
 				}
@@ -450,13 +455,13 @@ public class EntityWebslinger extends Entity
 		}
 		if(field_4088_k > 0)
 		{
-			motionY -= (double)(rand.nextFloat() * rand.nextFloat() * rand.nextFloat()) * 0.20000000000000001D;
+			motionY -= rand.nextFloat() * rand.nextFloat() * rand.nextFloat() * 0.20000000000000001D;
 		}
-		double d7 = d5 * 2D - 1.0D;
+		final double d7 = d5 * 2D - 1.0D;
 		motionY += 0.029999999105930328D * d7;
 		if(d5 > 0.0D)
 		{
-			f1 = (float)((double)f1 * 0.90000000000000002D);
+			f1 = (float)(f1 * 0.90000000000000002D);
 			motionY *= 0.80000000000000004D;
 		}
 		/*motionX *= f1;
@@ -465,6 +470,7 @@ public class EntityWebslinger extends Entity
 		setPosition(posX, posY, posZ);
 	}
 
+	@Override
 	public void writeEntityToNBT(NBTTagCompound nbttagcompound)
 	{
 		nbttagcompound.setShort("xTile", (short)tileX);
@@ -475,6 +481,7 @@ public class EntityWebslinger extends Entity
 		nbttagcompound.setByte("inGround", (byte)(field_4091_h ? 1 : 0));
 	}
 
+	@Override
 	public void readEntityFromNBT(NBTTagCompound nbttagcompound)
 	{
 		tileX = nbttagcompound.getShort("xTile");
@@ -485,6 +492,7 @@ public class EntityWebslinger extends Entity
 		field_4091_h = nbttagcompound.getByte("inGround") == 1;
 	}
 
+	@Override
 	public float getShadowSize()
 	{
 		return 0.0F;

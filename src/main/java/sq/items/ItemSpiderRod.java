@@ -16,16 +16,16 @@ public class ItemSpiderRod extends Item
 	public ItemSpiderRod()
 	{
 		super();
-		
+
 		final String name = "spider-rod";
 		setUnlocalizedName(name);
 		setTextureName("sq:" + name);
 		setCreativeTab(SpiderCore.getCreativeTab());
 		setMaxStackSize(1);
-		
+
 		GameRegistry.registerItem(this, name);
 	}
-	
+
 	@Override
 	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int posX, int posY, int posZ, int meta, float xOffset, float yOffset, float zOffset)
 	{
@@ -35,10 +35,10 @@ public class ItemSpiderRod extends Item
 			{
 				stack.stackSize--;
 			}
-			
+
 			world.setBlock(posX, posY + 1, posZ, ModBlocks.spiderRod);
 		}
-		
+
 		return super.onItemUse(stack, player, world, posX, posY, posZ, meta, xOffset, yOffset, zOffset);
 	}
 }

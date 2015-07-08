@@ -55,7 +55,7 @@ public class BlockWebFull extends Block
 
 	private void setWebType(EnumWebType type)
 	{
-		this.webType = type;
+		webType = type;
 	}
 
 	public EnumWebType getWebType()
@@ -90,8 +90,8 @@ public class BlockWebFull extends Block
 	{
 		if (webType == EnumWebType.NORMAL)
 		{
-			Block fillerBlock = ModBlocks.webFull;
-			Block outlineBlock = Blocks.log;
+			final Block fillerBlock = ModBlocks.webFull;
+			final Block outlineBlock = Blocks.log;
 
 			if (world.getBlock(x,y,z) != fillerBlock) { return; }
 
@@ -158,7 +158,7 @@ public class BlockWebFull extends Block
 			}
 		}
 	}
-	
+
 	@Override
 	public void onBlockAdded(World world, int posX, int posY, int posZ)
 	{
@@ -166,7 +166,7 @@ public class BlockWebFull extends Block
 		checkForBed(world, posX, posY, posZ, 0);
 		onNeighborBlockChange(world, posX, posY, posZ, 0);
 	}
-	
+
 	private void onNeighborBlockChange(World world, int posX, int posY, int posZ, int meta)
 	{
 		if (world.getBlock(posX - 1, posY, posZ) != Blocks.air) { return; }
@@ -178,7 +178,7 @@ public class BlockWebFull extends Block
 
 		world.setBlock(posX, posY, posZ, Blocks.air);
 	}
-	
+
 	@Override
 	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int posX, int posY, int posZ)
 	{

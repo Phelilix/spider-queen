@@ -27,16 +27,16 @@ public class EntityFriendlyBee extends EntityBee implements IFriendlyEntity
 	private UUID friendPlayerUUID = new UUID(0, 0);;
 	private boolean isImprisoned;
 	public EntityLivingBase target;
-	
+
 	public EntityFriendlyBee(World world)
 	{
 		super(world);
 	}
-	
+
 	public EntityFriendlyBee(World world, EntityPlayer friendPlayer)
 	{
 		super(world);
-		this.friendPlayerUUID = friendPlayer.getPersistentID();
+		friendPlayerUUID = friendPlayer.getPersistentID();
 	}
 
 	@Override
@@ -44,16 +44,16 @@ public class EntityFriendlyBee extends EntityBee implements IFriendlyEntity
 	{
 		super.onUpdate();
 		FriendlyEntityHelper.onUpdate(this);
-		
+
 		final EntityPlayer nearestPlayer = worldObj.getClosestPlayerToEntity(this, 16.0D);
-		
+
 		if (nearestPlayer != null && nearestPlayer.getUniqueID().equals(friendPlayerUUID))
 		{
 			if (nearestPlayer.getHeldItem() != null && Block.getBlockFromItem(nearestPlayer.getHeldItem().getItem()) instanceof BlockFlower)
 			{
 				entityToAttack = nearestPlayer;
 			}
-			
+
 			else
 			{
 				if (entityToAttack == nearestPlayer)
@@ -63,13 +63,13 @@ public class EntityFriendlyBee extends EntityBee implements IFriendlyEntity
 			}
 		}
 	}
-	
+
 	@Override
 	public double getMoveSpeed() 
 	{
 		return 0.55F;
 	}
-	
+
 	@Override
 	public UUID getFriendPlayerUUID()
 	{
@@ -80,7 +80,7 @@ public class EntityFriendlyBee extends EntityBee implements IFriendlyEntity
 	public void writeEntityToNBT(NBTTagCompound nbt) 
 	{
 		super.writeEntityToNBT(nbt);
-		
+
 		nbt.setLong("friendPlayerUUID-lsb", friendPlayerUUID.getLeastSignificantBits());
 		nbt.setLong("friendPlayerUUID-msb", friendPlayerUUID.getMostSignificantBits());
 		nbt.setBoolean("isImprisoned", isImprisoned);
@@ -90,11 +90,11 @@ public class EntityFriendlyBee extends EntityBee implements IFriendlyEntity
 	public void readEntityFromNBT(NBTTagCompound nbt)
 	{
 		super.readEntityFromNBT(nbt);
-		
+
 		friendPlayerUUID = new UUID(nbt.getLong("friendPlayerUUID-msb"), nbt.getLong("friendPlayerUUID-lsb"));
 		isImprisoned = nbt.getBoolean("isImprisoned");
 	}
-	
+
 	@Override
 	public boolean attackEntityFrom(DamageSource damageSource, float damageAmount)
 	{
@@ -106,25 +106,25 @@ public class EntityFriendlyBee extends EntityBee implements IFriendlyEntity
 	public boolean interact(EntityPlayer entity) 
 	{
 		final ItemStack heldItem = entity.inventory.getCurrentItem();
-		
+
 		if (isImprisoned)
 		{
 			ReputationHandler.handleInteractWithImprisoned(entity, this);
 		}
-		
+
 		else if (heldItem != null && Block.getBlockFromItem(heldItem.getItem()) instanceof BlockFlower)
 		{
 			heldItem.stackSize--;
-			
+
 			if (!entity.worldObj.isRemote)
 			{
 				dropItem(ModItems.nectar, 1);
 			}
 		}
-		
+
 		return false;
 	}
-	
+
 	@Override
 	public EntityCreature getInstance() 
 	{
@@ -136,7 +136,7 @@ public class EntityFriendlyBee extends EntityBee implements IFriendlyEntity
 	{
 		return false;
 	}
-	
+
 	@Override
 	public EntityLivingBase getTarget() 
 	{
@@ -154,7 +154,7 @@ public class EntityFriendlyBee extends EntityBee implements IFriendlyEntity
 	{
 		return false;
 	}
-	
+
 	@Override
 	public void setFriendPlayerUUID(UUID value) 
 	{
@@ -188,7 +188,7 @@ public class EntityFriendlyBee extends EntityBee implements IFriendlyEntity
 	@Override
 	public void setImprisoned(boolean value) 
 	{
-		this.isImprisoned = value;
+		isImprisoned = value;
 	}
 
 	@Override

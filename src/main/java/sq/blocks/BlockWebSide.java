@@ -10,13 +10,11 @@ import sq.enums.EnumWebType;
  */
 public class BlockWebSide extends BlockWebFull
 {
-	private EnumWebType webType;
-	
 	public BlockWebSide(EnumWebType type) 
 	{
 		super(type);
 	}
-	
+
 	@Override
 	public int getRenderType()
 	{
@@ -88,7 +86,7 @@ public class BlockWebSide extends BlockWebFull
 
 		setBlockBounds(minX, minY, minZ, maxX, maxY, maxZ);
 	}
-	
+
 	private boolean canBePlacedOn(Block block)
 	{
 		return true;

@@ -11,13 +11,13 @@ import sq.client.model.ModelJack;
 public class RenderJack extends RenderLiving
 {
 	private final ResourceLocation texture;
-	
-    public RenderJack()
-    {
-        super(new ModelJack(), 1.0F);
-        setRenderPassModel(new ModelJack());
-        texture = new ResourceLocation("sq:textures/entities/jack.png");
-    }
+
+	public RenderJack()
+	{
+		super(new ModelJack(), 1.0F);
+		setRenderPassModel(new ModelJack());
+		texture = new ResourceLocation("sq:textures/entities/jack.png");
+	}
 
 	@Override
 	protected ResourceLocation getEntityTexture(Entity entity)

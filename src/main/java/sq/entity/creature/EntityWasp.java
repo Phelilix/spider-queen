@@ -24,19 +24,19 @@ public class EntityWasp extends AbstractFlyingMob
 
 		if (entityToAttack != null)
 		{
-			double sqDistanceTo = Math.sqrt(Math.pow(entityToAttack.posX - posX, 2) + Math.pow(entityToAttack.posZ - posZ, 2));
+			final double sqDistanceTo = Math.sqrt(Math.pow(entityToAttack.posX - posX, 2) + Math.pow(entityToAttack.posZ - posZ, 2));
 			float moveAmount = 0.0F;
-			
+
 			if(sqDistanceTo < 8F) 
 			{ 
-				moveAmount = ((8F - (float)sqDistanceTo) / 8F)*4F; 
+				moveAmount = (8F - (float)sqDistanceTo) / 8F*4F; 
 			}
-			
+
 			if (entityToAttack.posY + 0.2F < posY)
 			{
 				motionY = motionY - 0.05F * moveAmount;
 			}
-			
+
 			if(entityToAttack.posY - 0.5F > posY)
 			{
 				motionY = motionY + 0.01F * moveAmount;
@@ -49,7 +49,7 @@ public class EntityWasp extends AbstractFlyingMob
 	{
 		return false;
 	}
-	
+
 	@Override
 	public float getMobMaxHealth() 
 	{
@@ -67,19 +67,19 @@ public class EntityWasp extends AbstractFlyingMob
 	{
 		return 0.9F;
 	}
-	
+
 	@Override
 	public boolean isPassive()
 	{
 		return false;
 	}
-	
+
 	@Override
 	public boolean getCanSpawnHere() 
 	{
 		return true;
 	}
-	
+
 	@Override
 	protected final String getHurtSound() 
 	{
@@ -97,7 +97,7 @@ public class EntityWasp extends AbstractFlyingMob
 	{
 		return "sq:bee.idle";
 	}
-	
+
 	@Override
 	protected void dropFewItems(boolean hitByPlayer, int lootingLvl) 
 	{

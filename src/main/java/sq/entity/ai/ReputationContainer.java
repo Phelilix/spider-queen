@@ -14,37 +14,37 @@ import sq.entity.IRep;
 public class ReputationContainer implements IRep
 {
 	private static List<ReputationContainer> reputations = new ArrayList<ReputationContainer>();
-	private Class creatureClass;
-	private int likeValueId;
-	
+	private final Class creatureClass;
+	private final int likeValueId;
+
 	private ReputationContainer(Class creatureClass, int likeValueId)
 	{
 		this.creatureClass = creatureClass;
 		this.likeValueId = likeValueId;
 	}
-	
+
 	@Override
 	public WatchedInt getLikeData(PlayerData data) 
 	{
 		return data.getLikeValueById(likeValueId);
 	}
-	
+
 	public static void createNew(Class creatureClass, int likeValueId)
 	{
-		ReputationContainer container = new ReputationContainer(creatureClass, likeValueId);
+		final ReputationContainer container = new ReputationContainer(creatureClass, likeValueId);
 		reputations.add(container);
 	}
-	
+
 	public static WatchedInt getLikeDataByClass(Class creatureClass, PlayerData data)
 	{
-		for (ReputationContainer container : reputations)
+		for (final ReputationContainer container : reputations)
 		{
 			if (creatureClass.equals(container.creatureClass))
 			{
 				return container.getLikeData(data);
 			}
 		}
-		
+
 		return null;
 	}
 }

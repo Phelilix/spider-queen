@@ -10,7 +10,6 @@ import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityGhast;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.monster.EntitySkeleton;
-import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -76,16 +75,16 @@ public final class EventHooksForge
 
 		if (event.target instanceof EntityLivingBase && !(event.target instanceof EntityCocoon))
 		{
-			EntityLivingBase livingBase = (EntityLivingBase)event.target;
-			List<Entity> entities = RadixLogic.getAllEntitiesWithinDistanceOfCoordinates(player.worldObj, player.posX, player.posY, player.posZ, 20);
-			RepEntityExtension extension = (RepEntityExtension) event.target.getExtendedProperties(RepEntityExtension.ID);
+			final EntityLivingBase livingBase = (EntityLivingBase)event.target;
+			final List<Entity> entities = RadixLogic.getAllEntitiesWithinDistanceOfCoordinates(player.worldObj, player.posX, player.posY, player.posZ, 20);
+			final RepEntityExtension extension = (RepEntityExtension) event.target.getExtendedProperties(RepEntityExtension.ID);
 
 			//Alert a player's nearby spiders when the player attacks something.
-			for (Entity entity : entities)
+			for (final Entity entity : entities)
 			{
 				if (entity instanceof EntitySpiderEx)
 				{
-					EntitySpiderEx spider = (EntitySpiderEx)entity;
+					final EntitySpiderEx spider = (EntitySpiderEx)entity;
 
 					if (spider.getOwner().equals(player.getPersistentID()))
 					{
@@ -95,13 +94,13 @@ public final class EventHooksForge
 			}
 
 			//Also alert the friendly entities.
-			for (Entity entity : entities)
+			for (final Entity entity : entities)
 			{
 				try
 				{
 					if (entity instanceof IFriendlyEntity && !(entity instanceof EntityFriendlyMandragora))
 					{
-						IFriendlyEntity friendly = (IFriendlyEntity)entity;
+						final IFriendlyEntity friendly = (IFriendlyEntity)entity;
 
 						if (!entity.worldObj.isRemote && friendly.getFriendPlayerUUID().equals(player.getPersistentID()) && event.target instanceof EntityLivingBase)
 						{
@@ -110,7 +109,7 @@ public final class EventHooksForge
 					}
 				}
 
-				catch (Exception e)
+				catch (final Exception e)
 				{
 					continue;
 				}
@@ -121,28 +120,28 @@ public final class EventHooksForge
 			{
 				//Guess what the new health will be as this is ran before attack damage takes effect.
 				float calculatedHealth = livingBase.getHealth();
-				ItemStack stack = player.inventory.getCurrentItem();
+				final ItemStack stack = player.inventory.getCurrentItem();
 
 				if (stack != null)
 				{
 					if (stack.getItem() instanceof ItemTool)
 					{
-						ItemTool tool = (ItemTool)stack.getItem();
-						Item.ToolMaterial toolMaterial = Item.ToolMaterial.valueOf(tool.getToolMaterialName());
+						final ItemTool tool = (ItemTool)stack.getItem();
+						final Item.ToolMaterial toolMaterial = Item.ToolMaterial.valueOf(tool.getToolMaterialName());
 						calculatedHealth -= toolMaterial.getDamageVsEntity();
 					}
 
 					else if (stack.getItem() instanceof ItemSword)
 					{
-						ItemSword sword = (ItemSword)stack.getItem();
-						Item.ToolMaterial toolMaterial = Item.ToolMaterial.valueOf(sword.getToolMaterialName());
+						final ItemSword sword = (ItemSword)stack.getItem();
+						final Item.ToolMaterial toolMaterial = Item.ToolMaterial.valueOf(sword.getToolMaterialName());
 						calculatedHealth -= 4.0F + toolMaterial.getDamageVsEntity(); //Swords add 4.0 to the damage.
 					}
 				}
 
 				//Get reputation for anger check.
 				int reputation = -1;
-				WatchedInt watchedLikeInstance = ReputationContainer.getLikeDataByClass(event.target.getClass(), data);
+				final WatchedInt watchedLikeInstance = ReputationContainer.getLikeDataByClass(event.target.getClass(), data);
 
 				if (event.entityLiving instanceof IRep)
 				{
@@ -165,7 +164,7 @@ public final class EventHooksForge
 
 			if (event.target instanceof EntityGhast)
 			{
-				EntityGhast ghast = (EntityGhast) event.target;
+				final EntityGhast ghast = (EntityGhast) event.target;
 
 				//isInWeb
 				if (ObfuscationReflectionHelper.getPrivateValue(Entity.class, ghast, 27))
@@ -191,7 +190,7 @@ public final class EventHooksForge
 	{
 		if (event.entityLiving instanceof EntityPlayer)
 		{
-			EntityPlayer player = (EntityPlayer)event.entityLiving;
+			final EntityPlayer player = (EntityPlayer)event.entityLiving;
 
 			//isInWeb
 			ObfuscationReflectionHelper.setPrivateValue(Entity.class, player, false, 27);
@@ -210,9 +209,9 @@ public final class EventHooksForge
 	{
 		if (event.entityLiving instanceof EntityPlayer && event.source == DamageSource.fall)
 		{
-			PlayerExtension extension = PlayerExtension.get((EntityPlayer)event.entityLiving);
+			final PlayerExtension extension = PlayerExtension.get((EntityPlayer)event.entityLiving);
 
-			boolean cancel = extension.webEntity != null || extension.slingerCooldown > 0;
+			final boolean cancel = extension.webEntity != null || extension.slingerCooldown > 0;
 			event.setCanceled(cancel);
 		}
 	}
@@ -234,8 +233,8 @@ public final class EventHooksForge
 
 			if (repExtension != null) //If they have an extension, they are a vanilla mob with a reputation entry.
 			{
-				WatchedInt likeData = ReputationContainer.getLikeDataByClass(event.entityLiving.getClass(), data);
-				int chanceToAffectRep = 25;
+				final WatchedInt likeData = ReputationContainer.getLikeDataByClass(event.entityLiving.getClass(), data);
+				final int chanceToAffectRep = 25;
 
 				//Check if the player is invisible. If so, no potential for reputation penalty.
 				if (likeData != null && RadixLogic.getBooleanWithProbability(chanceToAffectRep) && !player.isInvisible())
@@ -272,7 +271,7 @@ public final class EventHooksForge
 	@SubscribeEvent
 	public void onEntityConstructing(EntityConstructing event)
 	{
-		boolean injectExtension = EnumWatchedDataIDs.doesEntityHaveLikeStatus(event.entity) || event.entity instanceof EntityPlayer;
+		final boolean injectExtension = EnumWatchedDataIDs.doesEntityHaveLikeStatus(event.entity) || event.entity instanceof EntityPlayer;
 
 		if (injectExtension)
 		{
@@ -289,7 +288,7 @@ public final class EventHooksForge
 
 		if (event.entity instanceof EntityMob && !(event.entity instanceof AbstractNewMob))
 		{
-			EntityMob mob = (EntityMob)event.entity;
+			final EntityMob mob = (EntityMob)event.entity;
 
 			if (mob.targetTasks != null)
 			{
@@ -303,10 +302,10 @@ public final class EventHooksForge
 	{
 		if (event.target instanceof EntityPlayer && event.entityLiving instanceof EntityLiving)
 		{
-			PlayerData data = SpiderCore.getPlayerData((EntityPlayer) event.target);
-			EntityLiving entityLiving = (EntityLiving)event.entityLiving;
-			RepEntityExtension extension = (RepEntityExtension) entityLiving.getExtendedProperties(RepEntityExtension.ID);
-			WatchedInt watchedLikeInstance = ReputationContainer.getLikeDataByClass(event.entityLiving.getClass(), data);
+			final PlayerData data = SpiderCore.getPlayerData((EntityPlayer) event.target);
+			final EntityLiving entityLiving = (EntityLiving)event.entityLiving;
+			final RepEntityExtension extension = (RepEntityExtension) entityLiving.getExtendedProperties(RepEntityExtension.ID);
+			final WatchedInt watchedLikeInstance = ReputationContainer.getLikeDataByClass(event.entityLiving.getClass(), data);
 			int reputation = -1;
 
 			if (event.entityLiving instanceof IRep)
@@ -316,7 +315,7 @@ public final class EventHooksForge
 
 			else if (event.entityLiving instanceof IFriendlyEntity)
 			{
-				IFriendlyEntity entity = (IFriendlyEntity)event.entityLiving;
+				final IFriendlyEntity entity = (IFriendlyEntity)event.entityLiving;
 
 				if (entity.getFriendPlayerUUID().equals(event.target.getPersistentID()))
 				{

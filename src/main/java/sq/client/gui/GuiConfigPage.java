@@ -14,11 +14,11 @@ public final class GuiConfigPage extends GuiConfig
 {
 	public GuiConfigPage(GuiScreen parent) 
 	{
-        this(parent, 
-        		SpiderCore.getConfig().getConfigCategories(),
-                SpiderCore.ID, false, false, GuiConfig.getAbridgedConfigPath(SpiderCore.getConfig().getConfigInstance().toString()));
-    }
-	
+		this(parent, 
+				SpiderCore.getConfig().getConfigCategories(),
+				SpiderCore.ID, false, false, GuiConfig.getAbridgedConfigPath(SpiderCore.getConfig().getConfigInstance().toString()));
+	}
+
 	public GuiConfigPage(GuiScreen parentScreen, List<IConfigElement> configElements, String modID, boolean allRequireWorldRestart, boolean allRequireMcRestart, String title) 
 	{
 		super(parentScreen, configElements, modID, allRequireWorldRestart, allRequireMcRestart, title);

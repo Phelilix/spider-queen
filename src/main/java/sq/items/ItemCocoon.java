@@ -91,21 +91,21 @@ public class ItemCocoon extends Item
 				list.add("");
 				list.add(Color.BLUE + "Abilities:");
 
-				for (String s : cocoonType.getAbilities())
+				for (final String s : cocoonType.getAbilities())
 				{
 					list.add(s);
 				}
 
 				list.add(Color.RED + "Caveats:");
 
-				for (String s : cocoonType.getCaveats())
+				for (final String s : cocoonType.getCaveats())
 				{
 					list.add(s);
 				}
-				
+
 				list.add(Color.GREEN + "Levels up:");
-				
-				for (String s : cocoonType.getLevelUpConditions())
+
+				for (final String s : cocoonType.getLevelUpConditions())
 				{
 					list.add(s);
 				}

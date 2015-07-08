@@ -29,7 +29,7 @@ public class RenderHuman extends RenderBiped
 {
 	private final ModelBiped modelArmorPlate;
 	private final ModelBiped modelArmor;
-	
+
 	public RenderHuman() 
 	{
 		super(new ModelBiped(0.0F), 0.5F);
@@ -81,9 +81,9 @@ public class RenderHuman extends RenderBiped
 		if (Minecraft.isGuiEnabled())
 		{
 			final EntityHuman entity = (EntityHuman) entityLivingBase;
-			
-			double distance = RadixMath.getDistanceToEntity(entity, Minecraft.getMinecraft().thePlayer);
-			
+
+			final double distance = RadixMath.getDistanceToEntity(entity, Minecraft.getMinecraft().thePlayer);
+
 			//Show the human's name and type if enabled and the closest player is within 6 blocks.
 			if (distance < 6.0D)
 			{
@@ -91,7 +91,7 @@ public class RenderHuman extends RenderBiped
 				{
 					renderLabel(entity, posX, posY + 0.05F, posZ, entity.getUsername());
 				}
-				
+
 				if (SpiderCore.getConfig().showHumanType)
 				{
 					renderLabel(entity, posX, posY - 0.20F, posZ, entity.getFortuneString());
@@ -164,7 +164,7 @@ public class RenderHuman extends RenderBiped
 			final EntityHuman fakePlayer = (EntityHuman) entity;
 			final FontRenderer fontRenderer = getFontRendererFromRenderManager();
 			final float labelScale = 0.0268F;
-			
+
 			GL11.glPushMatrix();
 			{
 				GL11.glTranslatef((float) posX + 0.0F, (float) posY + entity.height + 0.5F, (float) posZ);
@@ -176,22 +176,22 @@ public class RenderHuman extends RenderBiped
 				GL11.glDepthMask(false);
 				GL11.glDisable(GL11.GL_DEPTH_TEST);
 				GL11.glEnable(GL11.GL_BLEND);
-				
+
 				OpenGlHelper.glBlendFunc(770, 771, 1, 0);
 
 				GL11.glDisable(GL11.GL_TEXTURE_2D);
-				
+
 				final Tessellator tessellator = Tessellator.instance;
 				tessellator.startDrawingQuads();
 				tessellator.setColorRGBA_F(0.0F, 0.0F, 0.0F, 0.25F);
-				
+
 				final int halfStringWidth = fontRenderer.getStringWidth(text) / 2;
 				tessellator.addVertex(-halfStringWidth - 1, -1, 0.0D);
 				tessellator.addVertex(-halfStringWidth - 1, 8, 0.0D);
 				tessellator.addVertex(halfStringWidth + 1, 8, 0.0D);
 				tessellator.addVertex(halfStringWidth + 1, -1, 0.0D);
 				tessellator.draw();
-				
+
 				GL11.glEnable(GL11.GL_TEXTURE_2D);
 				fontRenderer.drawString(text, -fontRenderer.getStringWidth(text) / 2, 0, 553648127);
 

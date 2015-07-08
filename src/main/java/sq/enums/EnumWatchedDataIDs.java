@@ -22,32 +22,32 @@ public enum EnumWatchedDataIDs
 	ZOMBIE_LIKE(5),
 	HUMAN_LIKE(6),
 	SPIDER_LIKE(7);
-	
+
 	private int id;
-	
+
 	EnumWatchedDataIDs(int id)
 	{
 		this.id = id;
 	}
-	
+
 	public int getId()
 	{
 		return id;
 	}
-	
+
 	public static EnumWatchedDataIDs byId(int id)
 	{
-		for (EnumWatchedDataIDs value : values())
+		for (final EnumWatchedDataIDs value : values())
 		{
 			if (value.id == id)
 			{
 				return value;
 			}
 		}
-		
+
 		return null;
 	}
-	
+
 	public static boolean doesEntityHaveLikeStatus(Entity entity)
 	{
 		return entity instanceof EntityAnt || entity instanceof EntityCreeper || entity instanceof EntitySkeleton || entity instanceof EntityZombie ||

@@ -58,7 +58,7 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 	private EnumSpiderType spiderType = EnumSpiderType.NONE;
 	private UUID owner = new UUID(0, 0);
 	private EntityLivingBase target;
-	private Inventory inventory;
+	private final Inventory inventory;
 
 	public EntitySpiderEx(World world) 
 	{
@@ -70,8 +70,8 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 		tasks.addTask(3, new EntityAIWander(this, 0.4D));
 		tasks.addTask(4, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
 
-		this.setLevel(1);
-		this.updateEntityAttributes();
+		setLevel(1);
+		updateEntityAttributes();
 
 		inventory = new Inventory("Spider Inventory", false, 18);
 	}
@@ -80,8 +80,8 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 	{
 		this(world);
 		this.owner = owner;
-		this.spiderType = type;
-		this.updateEntityAttributes();
+		spiderType = type;
+		updateEntityAttributes();
 	}
 
 	@Override
@@ -151,13 +151,13 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 			}
 
 			//The pack spider scans the area for items and picks them up if they're within 3 blocks.
-			if (this.getSpiderType() == EnumSpiderType.PACK)
+			if (getSpiderType() == EnumSpiderType.PACK)
 			{
-				for (Entity entity : RadixLogic.getAllEntitiesOfTypeWithinDistance(EntityItem.class, this, 3))
+				for (final Entity entity : RadixLogic.getAllEntitiesOfTypeWithinDistance(EntityItem.class, this, 3))
 				{
-					EntityItem item = (EntityItem)entity;
+					final EntityItem item = (EntityItem)entity;
 					item.setDead();
-					
+
 					inventory.addItemStackToInventory(item.getEntityItem());
 				}
 			}
@@ -278,7 +278,7 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 			limbSwingAmount += (f4 - limbSwingAmount) * 0.4F;
 			limbSwing += limbSwingAmount;
 		}
-		
+
 		else
 		{
 			stepHeight = 0.5F;
@@ -341,7 +341,7 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 			owner = new UUID(buffer.readLong(), buffer.readLong());
 		}
 
-		catch (IndexOutOfBoundsException e)
+		catch (final IndexOutOfBoundsException e)
 		{
 			//Ignore.
 		}
@@ -398,13 +398,13 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 			setTarget(source.getSourceOfDamage());
 
 			//Alert other spiders that this one is being attacked.
-			List<Entity> entities = RadixLogic.getAllEntitiesWithinDistanceOfCoordinates(worldObj, posX, posY, posZ, 15);
+			final List<Entity> entities = RadixLogic.getAllEntitiesWithinDistanceOfCoordinates(worldObj, posX, posY, posZ, 15);
 
-			for (Entity entity : entities)
+			for (final Entity entity : entities)
 			{
 				if (entity instanceof EntitySpiderEx)
 				{
-					EntitySpiderEx spider = (EntitySpiderEx)entity;
+					final EntitySpiderEx spider = (EntitySpiderEx)entity;
 
 					if (spider.owner.equals(owner))
 					{
@@ -421,14 +421,14 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 	protected void attackEntity(Entity entity, float damage) 
 	{
 		//Prevent attacks during death.
-		if (this.getHealth() <= 0.0F)
+		if (getHealth() <= 0.0F)
 		{
 			return;
 		}
 
 		super.attackEntity(entity, damage);
 
-		double distance = RadixMath.getDistanceToEntity(this, entity);
+		final double distance = RadixMath.getDistanceToEntity(this, entity);
 
 		if (distance > 3.0F)
 		{
@@ -437,13 +437,11 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 
 		else
 		{
-			final EntityLivingBase living = (EntityLivingBase)entity;
-
 			//The tank spider can poison its targets.
 			if (spiderType == EnumSpiderType.TANK)
 			{
-				PotionEffect poison = new PotionEffect(Potion.poison.id, Time.SECOND * 5 * getLevel());
-				EntityLivingBase entityLiving = (EntityLivingBase)entity;
+				final PotionEffect poison = new PotionEffect(Potion.poison.id, Time.SECOND * 5 * getLevel());
+				final EntityLivingBase entityLiving = (EntityLivingBase)entity;
 
 				if (entityLiving.isPotionApplicable(poison) && !entityLiving.isPotionActive(Potion.poison))
 				{
@@ -517,9 +515,9 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 		//If another spider hit us, make sure it's not also owned by our owner.
 		if (entity instanceof EntitySpiderEx)
 		{
-			EntitySpiderEx spider = (EntitySpiderEx)entity;
+			final EntitySpiderEx spider = (EntitySpiderEx)entity;
 
-			if (spider.owner.equals(this.owner))
+			if (spider.owner.equals(owner))
 			{
 				return;
 			}
@@ -543,20 +541,21 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 		return false;
 	}
 
+	@Override
 	public void onStruckByLightning(EntityLightningBolt lightning)
 	{
 		super.onStruckByLightning(lightning);
 
 		//Boom spiders can become charged by lightning.
-		if (this.getSpiderType() == EnumSpiderType.BOOM)
+		if (getSpiderType() == EnumSpiderType.BOOM)
 		{
-			this.dataWatcher.updateObject(20, Byte.valueOf((byte)1));
+			dataWatcher.updateObject(20, Byte.valueOf((byte)1));
 		}
 	}
 
 	public boolean getPowered()
 	{
-		return this.dataWatcher.getWatchableObjectByte(20) == 1;
+		return dataWatcher.getWatchableObjectByte(20) == 1;
 	}
 
 	public EnumSpiderType getSpiderType()
@@ -602,7 +601,7 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 			dataWatcher.updateObject(18, value);
 		}
 
-		catch (Exception e)
+		catch (final Exception e)
 		{
 			dataWatcher.addObject(18, value);
 		}
@@ -668,10 +667,10 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 
 	private void updateEntityAttributes()
 	{
-		this.abilityThreshold = calculateAbilityThreshold();
+		abilityThreshold = calculateAbilityThreshold();
 
-		IAttributeInstance moveSpeed = getEntityAttribute(SharedMonsterAttributes.movementSpeed);
-		IAttributeInstance maxHealth = getEntityAttribute(SharedMonsterAttributes.maxHealth);
+		final IAttributeInstance moveSpeed = getEntityAttribute(SharedMonsterAttributes.movementSpeed);
+		final IAttributeInstance maxHealth = getEntityAttribute(SharedMonsterAttributes.maxHealth);
 
 		//Only set the base value if it's not equal to what we expect.
 		if (moveSpeed.getBaseValue() != getMovementSpeed())
@@ -753,14 +752,14 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 				//Boom spider throws a boom ball.
 				if (spiderType == EnumSpiderType.BOOM && target != null)
 				{
-					EntityBoomBall boomBall = new EntityBoomBall(this, target, 2.5F);
+					final EntityBoomBall boomBall = new EntityBoomBall(this, target, 2.5F);
 					worldObj.spawnEntityInWorld(boomBall);
 				}
 
 				//Slinger spider throws a web shot.
 				else if (spiderType == EnumSpiderType.SLINGER && target != null)
 				{
-					EntityWebShot webShot = new EntityWebShot(this, target, 2.5F);
+					final EntityWebShot webShot = new EntityWebShot(this, target, 2.5F);
 					worldObj.spawnEntityInWorld(webShot);
 
 					worldObj.playSoundAtEntity(this, "random.bow", 0.75F, 1.0F);
@@ -769,11 +768,11 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 				//Nova spider heals nearby spiders.
 				else if (spiderType == EnumSpiderType.NOVA && RadixLogic.getBooleanWithProbability(20))
 				{
-					EntitySpiderEx spider = (EntitySpiderEx) RadixLogic.getNearestEntityOfTypeWithinDistance(EntitySpiderEx.class, this, 8);
+					final EntitySpiderEx spider = (EntitySpiderEx) RadixLogic.getNearestEntityOfTypeWithinDistance(EntitySpiderEx.class, this, 8);
 
 					if (spider != null && spider.getHealth() < spider.getMaxHealth())
 					{
-						int healthIncrease = getLevel() * 5;
+						final int healthIncrease = getLevel() * 5;
 						spider.setHealth(healthIncrease);
 						Utils.spawnParticlesAroundEntityS("heart", this, 6);
 						Utils.spawnParticlesAroundEntityS("heart", spider, 6);
@@ -786,7 +785,7 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 					if (worldObj.canBlockSeeTheSky((int)posX, (int)posY, (int)posZ))
 					{
 						Utils.spawnParticlesAroundEntityS(Particle.PORTAL, this, 6);
-						target.motionY = 1.0F + (0.3F * getLevel());
+						target.motionY = 1.0F + 0.3F * getLevel();
 
 						target.motionX = rand.nextBoolean() ? rand.nextDouble() : rand.nextBoolean() ? rand.nextDouble() * -1 : 0;
 						target.motionZ = rand.nextBoolean() ? rand.nextDouble() : rand.nextBoolean() ? rand.nextDouble() * -1 : 0;
@@ -813,8 +812,8 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 		//Different abilities take different amounts of time to execute.
 		switch (spiderType)
 		{
-		case BOOM: return (Time.SECOND * 7) - getLevel();
-		case SLINGER: return (Time.SECOND * 5) - getLevel();
+		case BOOM: return Time.SECOND * 7 - getLevel();
+		case SLINGER: return Time.SECOND * 5 - getLevel();
 		case NOVA: return Time.SECOND * 3;
 		case ENDER: return Time.SECOND * 5;
 		default: return 0;
@@ -877,7 +876,7 @@ public class EntitySpiderEx extends EntityCreature implements IWebClimber, IEnti
 
 			if (getDistanceToEntity(player) > 3.5D)
 			{
-				final boolean pathSet = getNavigator().tryMoveToEntityLiving(player, 0.4D);
+				getNavigator().tryMoveToEntityLiving(player, 0.4D);
 				getNavigator().onUpdateNavigation();
 			}
 		}

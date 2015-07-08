@@ -42,7 +42,7 @@ public class ReputationHandler
 	public static void handleInteractWithImprisoned(EntityPlayer player, EntityLivingBase friendlyInstance)
 	{
 		//Get an instance of the friendly as its interface.
-		IFriendlyEntity friendly = (IFriendlyEntity)friendlyInstance;
+		final IFriendlyEntity friendly = (IFriendlyEntity)friendlyInstance;
 
 		//Tell the player what they've done.
 		player.addChatComponentMessage(new ChatComponentText(Color.GREEN + "You have freed this " + friendlyInstance.getCommandSenderName() + " from captivity."));
@@ -52,15 +52,15 @@ public class ReputationHandler
 		{
 			//Make a new instance of the creature's non-friendly class, and pass that to onReputationChange so
 			//that the appropriate group is modified.
-			EntityLivingBase repEntity = (EntityLivingBase) friendly.getNonFriendlyClass().getConstructor(World.class).newInstance(friendlyInstance.worldObj);
+			final EntityLivingBase repEntity = (EntityLivingBase) friendly.getNonFriendlyClass().getConstructor(World.class).newInstance(friendlyInstance.worldObj);
 			onReputationChange(player, repEntity, 10);
-			
+
 			//Remove the friendly and leave the happy particles in its place.
 			friendlyInstance.setDead();
 			Utils.spawnParticlesAroundEntityS(Particle.HAPPY, friendlyInstance, 16);
 		}
 
-		catch (Exception e)
+		catch (final Exception e)
 		{
 			RadixExcept.logErrorCatch(e, "Increasing friendly reputation.");
 		}
@@ -85,9 +85,9 @@ public class ReputationHandler
 		}
 
 		//Set the new reputation value and save the old one.
-		int oldReputation = likeData.getInt();
+		final int oldReputation = likeData.getInt();
 		likeData.setValue(likeData.getInt() + changeAmount);
-		int newReputation = likeData.getInt();
+		final int newReputation = likeData.getInt();
 
 		//Handle what may happen next.
 		if (changeAmount > 0)
@@ -109,10 +109,10 @@ public class ReputationHandler
 			player.addChatComponentMessage(new ChatComponentText(Color.GREEN + "They are calling for a truce."));
 			player.triggerAchievement(ModAchievements.makeFriend);
 
-			for (Entity entity : RadixLogic.getAllEntitiesOfTypeWithinDistance(living.getClass(), player, 20))
+			for (final Entity entity : RadixLogic.getAllEntitiesOfTypeWithinDistance(living.getClass(), player, 20))
 			{
 				Utils.spawnParticlesAroundEntityS("heart", entity, 16);
-				EntityLiving e = (EntityLiving)entity;
+				final EntityLiving e = (EntityLiving)entity;
 				e.setAttackTarget(null);
 				e.getNavigator().clearPathEntity();
 			}
@@ -123,18 +123,18 @@ public class ReputationHandler
 		{
 			player.addChatComponentMessage(new ChatComponentText(Color.GREEN + "They give you one of their own."));
 
-			Class friendClass = FriendlyEntityHelper.getFriendlyVariant(living);
+			final Class friendClass = FriendlyEntityHelper.getFriendlyVariant(living);
 
 			try
 			{
-				EntityCreature entity = (EntityCreature) friendClass.getConstructor(World.class, EntityPlayer.class).newInstance(player.worldObj, player);
-				IFriendlyEntity friendly = (IFriendlyEntity)entity;
+				final EntityCreature entity = (EntityCreature) friendClass.getConstructor(World.class, EntityPlayer.class).newInstance(player.worldObj, player);
+				final IFriendlyEntity friendly = (IFriendlyEntity)entity;
 
-				Vec3 target = RandomPositionGenerator.findRandomTarget(entity, 5, 1);
+				final Vec3 target = RandomPositionGenerator.findRandomTarget(entity, 5, 1);
 				entity.setPosition(player.posX + target.xCoord, player.posY + target.yCoord, player.posZ + target.zCoord);
 				player.worldObj.spawnEntityInWorld(entity);
 
-				String messageId = "message." + friendly.getSpeakId() + ".appearance";
+				final String messageId = "message." + friendly.getSpeakId() + ".appearance";
 				player.addChatComponentMessage(new ChatComponentText(
 						RadixString.upperFirstLetter(friendly.getSpeakId() + ": " + 
 								SpiderCore.getLanguageManager().getString(messageId))));
@@ -172,7 +172,7 @@ public class ReputationHandler
 				}
 			}
 
-			catch (Exception e)
+			catch (final Exception e)
 			{
 				RadixExcept.logErrorCatch(e, "Spawning friendly entity.");
 			}

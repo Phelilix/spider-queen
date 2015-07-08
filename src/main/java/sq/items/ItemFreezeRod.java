@@ -20,7 +20,7 @@ public class ItemFreezeRod extends Item
 	public ItemFreezeRod()
 	{
 		super();
-		
+
 		final String name = "freeze-rod";
 		setUnlocalizedName(name);
 		setTextureName("sq:" + name);
@@ -36,19 +36,19 @@ public class ItemFreezeRod extends Item
 	{
 		if (!world.isRemote)
 		{
-			EntityFreezeBall freezeBall = new EntityFreezeBall(world, player);
+			final EntityFreezeBall freezeBall = new EntityFreezeBall(world, player);
 			world.spawnEntityInWorld(freezeBall);
 
 			Utils.spawnParticlesAroundEntityS(Particle.SNOWBALL, player, 32);
 		}
-		
+
 		stack.setItemDamage(stack.getItemDamage() + 1);
-		
+
 		if (stack.getItemDamage() >= 32)
 		{
 			stack.stackSize = 0;
 		}
-		
+
 		world.playSoundAtEntity(player, "sq:freeze.rod", 1.0F, 1.0F);
 		return stack;
 	}
@@ -59,7 +59,7 @@ public class ItemFreezeRod extends Item
 		list.add("Freezes creatures.");
 		list.add("Extinguishes fire.");
 		list.add("Turns water to ice.");
-		
+
 		super.addInformation(stack, player, list, unknown);
 	}
 }

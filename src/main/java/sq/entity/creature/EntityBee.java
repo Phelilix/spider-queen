@@ -37,7 +37,7 @@ public class EntityBee extends AbstractFlyingMob implements IRep
 		super(world, "bee");
 		setSize(1.2F, 1.0F);
 
-		int beeType = RadixMath.getNumberInRange(0, 2);
+		final int beeType = RadixMath.getNumberInRange(0, 2);
 		dataWatcher.updateObject(12, beeType);
 	}
 
@@ -56,21 +56,22 @@ public class EntityBee extends AbstractFlyingMob implements IRep
 		}
 	}
 
+	@Override
 	protected void entityInit()
 	{
 		super.entityInit();
-		this.dataWatcher.addObject(12, EnumBeeType.GATHERER.getId());
-		this.dataWatcher.addObject(13, 0);
+		dataWatcher.addObject(12, EnumBeeType.GATHERER.getId());
+		dataWatcher.addObject(13, 0);
 	}
 
 	public void setAttacking(boolean value)
 	{
-		this.dataWatcher.updateObject(13, value == true ? 1 : 0);
+		dataWatcher.updateObject(13, value == true ? 1 : 0);
 	}
 
 	public boolean getAttacking()
 	{
-		return this.dataWatcher.getWatchableObjectInt(13) == 1 ? true : false;
+		return dataWatcher.getWatchableObjectInt(13) == 1 ? true : false;
 	}
 
 	@Override
@@ -86,7 +87,7 @@ public class EntityBee extends AbstractFlyingMob implements IRep
 		//Check whether the bee is in a log or leaves, ignore if so.
 		if (source == DamageSource.inWall)
 		{
-			Block block = worldObj.getBlock((int)posX, (int)posY, (int)posZ);
+			final Block block = worldObj.getBlock((int)posX, (int)posY, (int)posZ);
 
 			if (block == Blocks.log || block == Blocks.log2 || block == Blocks.leaves || block == Blocks.leaves2 || block == Blocks.tallgrass)
 			{
@@ -99,12 +100,12 @@ public class EntityBee extends AbstractFlyingMob implements IRep
 		//Cancel setting the target if the player hasn't hit them enough, or if reputation is too high.
 		if (source.getEntity() instanceof EntityPlayer)
 		{
-			PlayerData data = SpiderCore.getPlayerData(((EntityPlayer)source.getEntity()));
-			RepEntityExtension extension = (RepEntityExtension) this.getExtendedProperties(RepEntityExtension.ID);
+			final PlayerData data = SpiderCore.getPlayerData((EntityPlayer)source.getEntity());
+			final RepEntityExtension extension = (RepEntityExtension) getExtendedProperties(RepEntityExtension.ID);
 
 			if (data.beeLike.getInt() >= 0 && extension.getTimesHitByPlayer() <= 2)
 			{
-				this.setTarget(null);
+				setTarget(null);
 			}
 		}
 
@@ -116,7 +117,7 @@ public class EntityBee extends AbstractFlyingMob implements IRep
 	protected void attackEntity(Entity entity, float damage) 
 	{
 		//Gatherers do not attack.
-		if (this.getBeeType() == EnumBeeType.GATHERER || this instanceof EntityFriendlyBee)
+		if (getBeeType() == EnumBeeType.GATHERER || this instanceof EntityFriendlyBee)
 		{
 			return;
 		}
@@ -152,12 +153,12 @@ public class EntityBee extends AbstractFlyingMob implements IRep
 	protected Entity findPlayerToAttack() 
 	{
 		//Find players to attack, but check reputation and times hit first.
-		EntityPlayer player = worldObj.getClosestPlayerToEntity(this, 16.0D);
+		final EntityPlayer player = worldObj.getClosestPlayerToEntity(this, 16.0D);
 
 		if (player != null)
 		{
-			PlayerData data = SpiderCore.getPlayerData(player);
-			RepEntityExtension extension = (RepEntityExtension) this.getExtendedProperties(RepEntityExtension.ID);
+			final PlayerData data = SpiderCore.getPlayerData(player);
+			final RepEntityExtension extension = (RepEntityExtension) getExtendedProperties(RepEntityExtension.ID);
 
 			if (data.beeLike.getInt() >= 0 && extension.getTimesHitByPlayer() <= 2)
 			{
@@ -172,7 +173,7 @@ public class EntityBee extends AbstractFlyingMob implements IRep
 
 		else //Bees also attack wasps.
 		{
-			Entity entity = RadixLogic.getNearestEntityOfTypeWithinDistance(EntityWasp.class, this, 16);
+			final Entity entity = RadixLogic.getNearestEntityOfTypeWithinDistance(EntityWasp.class, this, 16);
 			return entity;
 		}
 	}
@@ -185,12 +186,12 @@ public class EntityBee extends AbstractFlyingMob implements IRep
 		if (entityToAttack != null)
 		{
 			//If we have a creature to attack, we need to move downwards if we're above it, and vice-versa.
-			double sqDistanceTo = Math.sqrt(Math.pow(entityToAttack.posX - posX, 2) + Math.pow(entityToAttack.posZ - posZ, 2));
+			final double sqDistanceTo = Math.sqrt(Math.pow(entityToAttack.posX - posX, 2) + Math.pow(entityToAttack.posZ - posZ, 2));
 			float moveAmount = 0.0F;
 
 			if(sqDistanceTo < 8F) 
 			{ 
-				moveAmount = ((8F - (float)sqDistanceTo) / 8F)*4F; 
+				moveAmount = (8F - (float)sqDistanceTo) / 8F*4F; 
 			}
 
 			if (entityToAttack.posY + 0.2F < posY)
@@ -220,11 +221,11 @@ public class EntityBee extends AbstractFlyingMob implements IRep
 
 			if (nearbyPlayer != null)
 			{
-				ItemStack heldItem = nearbyPlayer.getHeldItem();
+				final ItemStack heldItem = nearbyPlayer.getHeldItem();
 
 				if (heldItem != null && Block.getBlockFromItem(heldItem.getItem()) instanceof BlockFlower)
 				{
-					this.entityToAttack = nearbyPlayer;
+					entityToAttack = nearbyPlayer;
 				}
 			}
 		}
@@ -245,7 +246,7 @@ public class EntityBee extends AbstractFlyingMob implements IRep
 			entityPlayer.addChatComponentMessage(new ChatComponentText(Color.GREEN + "The Bees have accepted your offering."));
 			ReputationHandler.onReputationChange(entityPlayer, this, 1);
 			Utils.spawnParticlesAroundEntityS("heart", this, 16);
-			this.entityToAttack = null;
+			entityToAttack = null;
 		}
 
 		return super.interact(entityPlayer);
@@ -274,7 +275,7 @@ public class EntityBee extends AbstractFlyingMob implements IRep
 	@Override
 	public float getHitDamage() 
 	{
-		EnumBeeType type = getBeeType();
+		final EnumBeeType type = getBeeType();
 		return type == EnumBeeType.GATHERER ? 0.0F : type == EnumBeeType.WARRIOR ? 2.0F : 5.0F;
 	}
 
@@ -287,7 +288,7 @@ public class EntityBee extends AbstractFlyingMob implements IRep
 	@Override
 	public float getMobMaxHealth() 
 	{
-		EnumBeeType type = getBeeType();
+		final EnumBeeType type = getBeeType();
 		return type == EnumBeeType.GATHERER ? 10.0F : type == EnumBeeType.WARRIOR ? 20.0F : 30.0F;
 	}
 

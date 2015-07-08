@@ -38,7 +38,7 @@ public class EntityFriendlyZombie extends EntityZombie implements IFriendlyEntit
 	private UUID friendPlayerUUID = new UUID(0, 0);
 	public EntityLivingBase target;
 	private boolean isImprisoned;
-	
+
 	public EntityFriendlyZombie(World world)
 	{
 		super(world);
@@ -47,23 +47,23 @@ public class EntityFriendlyZombie extends EntityZombie implements IFriendlyEntit
 	public EntityFriendlyZombie(World world, EntityPlayer friendPlayer)
 	{
 		super(world);
-		this.friendPlayerUUID = friendPlayer.getPersistentID();
+		friendPlayerUUID = friendPlayer.getPersistentID();
 
 		//Clear old task entries.
-		this.tasks.taskEntries.clear();
-		this.targetTasks.taskEntries.clear();
+		tasks.taskEntries.clear();
+		targetTasks.taskEntries.clear();
 
 		//Add custom tasks.
-		this.tasks.addTask(0, new EntityAISwimming(this));
-		this.tasks.addTask(1, new EntityAIAttackOnCollide(this, EntityVillager.class, 0.55D, true));
-		this.tasks.addTask(2, new EntityAIAttackOnCollide(this, EntityHuman.class, 0.55, false));
-		this.tasks.addTask(3, new EntityAIMoveTowardsRestriction(this, 0.55D));
-		this.tasks.addTask(5, new EntityAIWander(this, 0.55D));
-		this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
-		this.tasks.addTask(7, new EntityAILookIdle(this));
-		this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true));
-		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityVillager.class, 0, false));
-		this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, EntityHuman.class, 16, false));
+		tasks.addTask(0, new EntityAISwimming(this));
+		tasks.addTask(1, new EntityAIAttackOnCollide(this, EntityVillager.class, 0.55D, true));
+		tasks.addTask(2, new EntityAIAttackOnCollide(this, EntityHuman.class, 0.55, false));
+		tasks.addTask(3, new EntityAIMoveTowardsRestriction(this, 0.55D));
+		tasks.addTask(5, new EntityAIWander(this, 0.55D));
+		tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
+		tasks.addTask(7, new EntityAILookIdle(this));
+		targetTasks.addTask(1, new EntityAIHurtByTarget(this, true));
+		targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityVillager.class, 0, false));
+		targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, EntityHuman.class, 16, false));
 	}
 
 	@Override
@@ -83,11 +83,11 @@ public class EntityFriendlyZombie extends EntityZombie implements IFriendlyEntit
 		{
 			ReputationHandler.handleInteractWithImprisoned(entity, this);
 		}
-		
+
 		if (heldItem != null && heldItem.getItem() == ModItems.brain)
 		{
 			heldItem.stackSize--;
-			
+
 			if (!entity.worldObj.isRemote)
 			{
 				dropItem(Item.getItemFromBlock(Blocks.log), 10);
@@ -101,7 +101,7 @@ public class EntityFriendlyZombie extends EntityZombie implements IFriendlyEntit
 	protected void applyEntityAttributes()
 	{
 		super.applyEntityAttributes();
-		this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.55D);
+		getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.55D);
 	}
 
 	@Override
@@ -199,7 +199,7 @@ public class EntityFriendlyZombie extends EntityZombie implements IFriendlyEntit
 	@Override
 	public void setImprisoned(boolean value) 
 	{
-		this.isImprisoned = value;
+		isImprisoned = value;
 	}
 
 	@Override
@@ -207,7 +207,7 @@ public class EntityFriendlyZombie extends EntityZombie implements IFriendlyEntit
 	{
 		return EntityZombie.class;
 	}
-	
+
 	@Override
 	public String getCommandSenderName() 
 	{

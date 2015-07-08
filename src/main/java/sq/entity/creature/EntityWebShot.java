@@ -83,7 +83,7 @@ public class EntityWebShot extends Entity implements IProjectile, IEntityAdditio
 	{
 		this(shooter.worldObj);
 		this.shooter = shooter;
-		this.type = EnumWebType.NORMAL;
+		type = EnumWebType.NORMAL;
 
 		renderDistanceWeight = 10.0D;
 
@@ -283,7 +283,7 @@ public class EntityWebShot extends Entity implements IProjectile, IEntityAdditio
 		if (collisionPosition != null)
 		{
 			//When we have a collision position, get the block before passing it to onImpact.
-			Block block = worldObj.getBlock(collisionPosition.blockX, collisionPosition.blockY, collisionPosition.blockZ);
+			final Block block = worldObj.getBlock(collisionPosition.blockX, collisionPosition.blockY, collisionPosition.blockZ);
 
 			if (block.getMaterial() == Material.plants) //Ignore all plants.
 			{
@@ -338,7 +338,7 @@ public class EntityWebShot extends Entity implements IProjectile, IEntityAdditio
 
 		rotationPitch = prevRotationPitch + (rotationPitch - prevRotationPitch) * 0.2F;
 		rotationYaw = prevRotationYaw + (rotationYaw - prevRotationYaw) * 0.2F;
-		float motionFactor = 0.95F;
+		final float motionFactor = 0.95F;
 
 		if (isInWater())
 		{
@@ -381,7 +381,7 @@ public class EntityWebShot extends Entity implements IProjectile, IEntityAdditio
 					if (RadixLogic.getBooleanWithProbability(catchChance))
 					{
 						//If we passed the catch test, spawn the new cocoon in the world at the entity's place.
-						EntityCocoon entityCocoon = new EntityCocoon(worldObj, cocoonType);
+						final EntityCocoon entityCocoon = new EntityCocoon(worldObj, cocoonType);
 						entityCocoon.setLocationAndAngles(entityHit.posX, entityHit.posY, entityHit.posZ, entityHit.rotationYaw, entityHit.rotationPitch);
 						worldObj.spawnEntityInWorld(entityCocoon);
 						entityHit.setDead();
@@ -390,7 +390,7 @@ public class EntityWebShot extends Entity implements IProjectile, IEntityAdditio
 						//that decreases reputation for the creature that was cocooned.
 						if (shooter instanceof EntityPlayer)
 						{
-							EntityPlayer player = (EntityPlayer)shooter;
+							final EntityPlayer player = (EntityPlayer)shooter;
 							MinecraftForge.EVENT_BUS.post(new LivingDeathEvent(entityHit, DamageSource.causePlayerDamage(player)));
 							player.triggerAchievement(ModAchievements.catchMob);
 						}
@@ -404,12 +404,12 @@ public class EntityWebShot extends Entity implements IProjectile, IEntityAdditio
 			{
 				//Figure out what we hit and where, and which side.
 				final Block blockHit = worldObj.getBlock(impactPoint.blockX, impactPoint.blockY, impactPoint.blockZ);
-				int impactX = impactPoint.blockX;
-				int impactY = impactPoint.blockY;
-				int impactZ = impactPoint.blockZ;
+				final int impactX = impactPoint.blockX;
+				final int impactY = impactPoint.blockY;
+				final int impactZ = impactPoint.blockZ;
 
 				//Calculate the side that the web will need to be on.
-				EnumSide sideHit = EnumSide.byId(impactPoint.sideHit);
+				final EnumSide sideHit = EnumSide.byId(impactPoint.sideHit);
 				int xMov = sideHit == EnumSide.NORTH ? -1 : sideHit == EnumSide.SOUTH ? 1 : 0;
 				int yMov = sideHit == EnumSide.BOTTOM ? -1 : sideHit == EnumSide.TOP ? 1 : 0;
 				int zMov = sideHit == EnumSide.EAST ? -1 : sideHit == EnumSide.WEST ? 1 : 0;
@@ -475,7 +475,7 @@ public class EntityWebShot extends Entity implements IProjectile, IEntityAdditio
 				}
 
 				//Set the web at the impact point.
-				Block blockToSet = worldObj.getBlock(impactX + xMov, impactY + yMov, impactZ + zMov);
+				final Block blockToSet = worldObj.getBlock(impactX + xMov, impactY + yMov, impactZ + zMov);
 
 				if (blockToSet == Blocks.air || blockToSet instanceof BlockWebFull) //Prevent overwriting terrain.
 				{

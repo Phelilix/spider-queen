@@ -248,7 +248,7 @@ public class EntityBoomBall extends Entity implements IProjectile
 
 		rotationPitch = prevRotationPitch + (rotationPitch - prevRotationPitch) * 0.2F;
 		rotationYaw = prevRotationYaw + (rotationYaw - prevRotationYaw) * 0.2F;
-		float motionFactor = 0.95F;
+		final float motionFactor = 0.95F;
 
 		if (isInWater())
 		{
@@ -266,18 +266,18 @@ public class EntityBoomBall extends Entity implements IProjectile
 	{
 		if (!worldObj.isRemote)
 		{
-			EntitySpiderEx spider = (EntitySpiderEx)shooter;
-			
+			final EntitySpiderEx spider = (EntitySpiderEx)shooter;
+
 			if (spider.getPowered())
 			{
-				worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 5.0F, false);
+				worldObj.createExplosion(this, posX, posY, posZ, 5.0F, false);
 			}
-			
+
 			else
 			{
-				worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 2.0F, false);				
+				worldObj.createExplosion(this, posX, posY, posZ, 2.0F, false);				
 			}
-			
+
 			setDead();
 		}
 	}

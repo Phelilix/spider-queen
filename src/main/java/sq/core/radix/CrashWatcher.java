@@ -19,8 +19,8 @@ public final class CrashWatcher extends ModCrashWatcher
 	{
 		try
 		{
-			String report = new Scanner(crashFile).useDelimiter("\\Z").next();
-			boolean isServer = FMLCommonHandler.instance().getEffectiveSide().isServer();
+			final String report = new Scanner(crashFile).useDelimiter("\\Z").next();
+			final boolean isServer = FMLCommonHandler.instance().getEffectiveSide().isServer();
 
 			if (report.contains("at sq."))
 			{
@@ -49,7 +49,7 @@ public final class CrashWatcher extends ModCrashWatcher
 			}
 		}
 
-		catch (Exception e)
+		catch (final Exception e)
 		{
 			SpiderCore.getLog().fatal("Spider Queen detected a crash and attempted to report it, but failed to do so! " + e.getMessage());
 		}

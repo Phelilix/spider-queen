@@ -38,34 +38,34 @@ public final class CommandSQ extends CommandBase
 		try
 		{
 			final EntityPlayer player = (EntityPlayer)commandSender;
-			String subcommand = input[0];
-			String[] arguments = (String[]) Arrays.copyOfRange(input, 1, input.length);
+			final String subcommand = input[0];
+			Arrays.copyOfRange(input, 1, input.length);
 
 			if (subcommand.equalsIgnoreCase("help"))
 			{
 				displayHelp(commandSender);
 			}
-			
+
 			else if (subcommand.equalsIgnoreCase("fsl")) //Force spider level
 			{
-				for (Entity entity : RadixLogic.getAllEntitiesOfTypeWithinDistance(EntitySpiderEx.class, player, 15))
+				for (final Entity entity : RadixLogic.getAllEntitiesOfTypeWithinDistance(EntitySpiderEx.class, player, 15))
 				{
-					EntitySpiderEx spider = (EntitySpiderEx)entity;
+					final EntitySpiderEx spider = (EntitySpiderEx)entity;
 					spider.levelUp();
 				}
 			}
-			
+
 			else if (subcommand.equalsIgnoreCase("feg")) //Force egg grow
 			{
-				for (Entity entity : RadixLogic.getAllEntitiesOfTypeWithinDistance(EntitySpiderEgg.class, player, 15))
+				for (final Entity entity : RadixLogic.getAllEntitiesOfTypeWithinDistance(EntitySpiderEgg.class, player, 15))
 				{
-					EntitySpiderEgg egg = (EntitySpiderEgg)entity;
+					final EntitySpiderEgg egg = (EntitySpiderEgg)entity;
 					ObfuscationReflectionHelper.setPrivateValue(EntitySpiderEgg.class, egg, 0, 1);
 				}
 			}
 		}
-		
-		catch (Exception e)
+
+		catch (final Exception e)
 		{
 			throw new WrongUsageException("An invalid argument was provided. Usage: " + getCommandUsage(commandSender));
 		}

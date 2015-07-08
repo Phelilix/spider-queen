@@ -27,10 +27,10 @@ public enum EnumBeeType
 	{
 		return RadixString.upperFirstLetter(name().toLowerCase());
 	}
-	
+
 	public static EnumBeeType getById(int id)
 	{
-		for (EnumBeeType type : values())
+		for (final EnumBeeType type : values())
 		{
 			if (type.id == id)
 			{

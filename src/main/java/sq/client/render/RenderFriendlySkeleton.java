@@ -9,10 +9,11 @@ import net.minecraft.util.ResourceLocation;
  */
 public class RenderFriendlySkeleton extends RenderSkeleton
 {
-	private ResourceLocation texture = new ResourceLocation("sq:textures/entities/friendly-skeleton.png");
-	
-    protected ResourceLocation getEntityTexture(Entity entity)
-    {
-        return texture;
-    }
+	private final ResourceLocation texture = new ResourceLocation("sq:textures/entities/friendly-skeleton.png");
+
+	@Override
+	protected ResourceLocation getEntityTexture(Entity entity)
+	{
+		return texture;
+	}
 }

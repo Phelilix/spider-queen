@@ -285,6 +285,7 @@ public class ModelBee extends ModelBase
 		setRotation(stingerAttack2, -2.530727F, 0F, 0F);
 	}
 
+	@Override
 	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
 	{
 		super.render(entity, f, f1, f2, f3, f4, f5);
@@ -316,7 +317,7 @@ public class ModelBee extends ModelBase
 			bucket2.render(f5);
 			return;
 		}
-		
+
 		//Switch to the attack stance (stinger out) if the bee is attacking.
 		if (type == EnumBeeType.WARRIOR && bee.getAttacking())
 		{
@@ -412,7 +413,7 @@ public class ModelBee extends ModelBase
 		handle2.rotateAngleX = leftArm.rotateAngleX;handle2.rotateAngleY = leftArm.rotateAngleY;handle2.rotateAngleZ = leftArm.rotateAngleZ;
 
 		crown.rotateAngleY = head.rotateAngleY; crown.rotateAngleX = head.rotateAngleX;
-		scepter1.rotateAngleX = rightArm.rotateAngleX-(3.14F/3F);scepter1.rotateAngleY = rightArm.rotateAngleY;scepter1.rotateAngleZ = rightArm.rotateAngleZ;
-		scepter2.rotateAngleX = rightArm.rotateAngleX-(3.14F/3F);scepter2.rotateAngleY = rightArm.rotateAngleY;scepter2.rotateAngleZ = rightArm.rotateAngleZ;
+		scepter1.rotateAngleX = rightArm.rotateAngleX-3.14F/3F;scepter1.rotateAngleY = rightArm.rotateAngleY;scepter1.rotateAngleZ = rightArm.rotateAngleZ;
+		scepter2.rotateAngleX = rightArm.rotateAngleX-3.14F/3F;scepter2.rotateAngleY = rightArm.rotateAngleY;scepter2.rotateAngleZ = rightArm.rotateAngleZ;
 	}
 }

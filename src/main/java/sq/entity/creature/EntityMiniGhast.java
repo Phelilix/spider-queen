@@ -63,7 +63,7 @@ public class EntityMiniGhast extends EntityCreature
 	{
 		return false;
 	}
-	
+
 	@Override
 	protected void updateEntityActionState()
 	{
@@ -135,7 +135,7 @@ public class EntityMiniGhast extends EntityCreature
 	{
 		return 3.0F;
 	}
-	
+
 	@Override
 	public void writeEntityToNBT(NBTTagCompound nbt)
 	{
@@ -169,7 +169,7 @@ public class EntityMiniGhast extends EntityCreature
 	public void onUpdate() 
 	{
 		super.onUpdate();
-		
+
 		//The ghast will gradually fall as it is ridden.
 		if (motionY < 0)
 		{
@@ -195,14 +195,14 @@ public class EntityMiniGhast extends EntityCreature
 				moveStrafe /= 4;
 				moveForward /= 4;
 			}
-			
+
 			//isJumping
 			if (ObfuscationReflectionHelper.getPrivateValue(EntityLivingBase.class, (EntityLivingBase) riddenByEntity, 41))
 			{
 				//If the player is jumping, increase our Y motion.
 				motionY = 0.4F;
 			}
-			
+
 			if (moveForward <= 0.0F)
 			{
 				moveForward *= 0.25F;
@@ -230,7 +230,7 @@ public class EntityMiniGhast extends EntityCreature
 			limbSwingAmount += (f4 - limbSwingAmount) * 0.4F;
 			limbSwing += limbSwingAmount;
 		}
-		
+
 		else
 		{
 			stepHeight = 0.5F;

@@ -38,7 +38,7 @@ public final class ASMEventHooks
 			world.setBlock(x, y, z, ModBlocks.jack, random.nextInt(4), 4);
 		}
 	} 
-	
+
 	/**
 	 * Make spiders always hostile to other players, even during the day.
 	 */

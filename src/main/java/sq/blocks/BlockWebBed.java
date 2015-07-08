@@ -139,17 +139,4 @@ public class BlockWebBed extends Block
 
 		world.setBlock(posX, posY, posZ, Blocks.air);
 	}
-
-	private boolean canBePlacedOn(Block block)
-	{
-		if (block == Blocks.air)
-		{
-			return false;
-		}
-
-		else
-		{
-			return block.renderAsNormalBlock() && block.getMaterial().blocksMovement();
-		}
-	}
 }

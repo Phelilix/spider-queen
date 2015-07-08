@@ -11,29 +11,29 @@ public enum EnumSide
 	WEST(3),
 	NORTH(4),
 	SOUTH(5);
-	
+
 	private int id;
-	
+
 	EnumSide(int id)
 	{
 		this.id = id;
 	}
-	
+
 	public int getId()
 	{
 		return id;
 	}
-	
+
 	public static EnumSide byId(int id)
 	{
-		for (EnumSide type : values())
+		for (final EnumSide type : values())
 		{
 			if (type.id == id)
 			{
 				return type;
 			}
 		}
-		
+
 		return null;
 	}
 }

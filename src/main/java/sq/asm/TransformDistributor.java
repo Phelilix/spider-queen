@@ -30,7 +30,7 @@ public class TransformDistributor implements IClassTransformer
 	public static final int ASM_CHANGES_TO_MAKE = 3;
 	public static int asmChangesMade;
 	public static final Logger logger = LogManager.getLogger("SQ");
-	
+
 	@Override
 	public byte[] transform(String name, String transformedName, byte[] basicClass)
 	{
@@ -44,35 +44,34 @@ public class TransformDistributor implements IClassTransformer
 		{
 			return transformSpider(basicClass);
 		}
-		
+
 		else if (transformedName.equals("net.minecraft.world.gen.feature.WorldGenPumpkin"))
 		{
 			return transformPumpkin(basicClass);
 		}
-		
+
 		return basicClass;
 	}
 
 	private byte[] transformSpider(byte[] basicClass)
 	{
-		boolean found = false;
-		ClassNode node = new ClassNode();
-		ClassReader reader = new ClassReader(basicClass);
+		final ClassNode node = new ClassNode();
+		final ClassReader reader = new ClassReader(basicClass);
 		reader.accept(node, 0);
 
-		for (MethodNode method : node.methods) //Run through each method in this class.
+		for (final MethodNode method : node.methods) //Run through each method in this class.
 		{
 			//The method in a deobf environment is findPlayerToAttack. 
 			//In a normal environment this is func_xxxxx_x, which changes across Minecraft versions.
 			if (method.name.equals("findPlayerToAttack") || method.name.equals("func_70782_k"))
 			{
 				logger.info("Patching findPlayerToAttack()...");
-				
+
 				//We completely wipe out this method and redirect it to use our own.
 				method.instructions.clear();
-				
+
 				//Build the new list of opcodes to be added to the method.
-				InsnList inject = new InsnList();
+				final InsnList inject = new InsnList();
 				inject.add(new LabelNode(new Label()));
 				inject.add(new VarInsnNode(ALOAD, 0)); //Load 'this'
 				inject.add(new MethodInsnNode(INVOKESTATIC, //Invoke the method.
@@ -81,14 +80,14 @@ public class TransformDistributor implements IClassTransformer
 						"(Lnet/minecraft/entity/monster/EntitySpider;)Lnet/minecraft/entity/Entity;"
 						, false));
 				inject.add(new InsnNode(ARETURN)); //Return whatever the method returned.
-				
+
 				method.instructions.insert(inject);
 				incrementChangesMade();
 				break;
 			}
 		}
-		
-		ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS | ClassWriter.COMPUTE_FRAMES);
+
+		final ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS | ClassWriter.COMPUTE_FRAMES);
 		node.accept(writer);
 
 		return writer.toByteArray();
@@ -96,18 +95,17 @@ public class TransformDistributor implements IClassTransformer
 
 	private byte[] transformOnEaten(byte[] basicClass)
 	{
-		boolean found = false;
-		ClassNode node = new ClassNode();
-		ClassReader reader = new ClassReader(basicClass);
+		final ClassNode node = new ClassNode();
+		final ClassReader reader = new ClassReader(basicClass);
 		reader.accept(node, 0);
 
-		for (MethodNode method : node.methods)
+		for (final MethodNode method : node.methods)
 		{
 			//Just like transformSpider, onEaten() is in deobf, func_xxxxx_x is for regular players.
 			if (method.name.equals("onEaten") || method.name.equals("func_77654_b"))
 			{
 				logger.info("Patching onEaten()...");
-				
+
 				//Since we don't want to remove and rewrite this method, we are keeping
 				//its current code in place and searching for a suitable insertion point.
 
@@ -116,7 +114,7 @@ public class TransformDistributor implements IClassTransformer
 				AbstractInsnNode target = null;
 				for (int i = 0; i < method.instructions.size(); i++)
 				{
-					AbstractInsnNode currentNode = method.instructions.get(i);
+					final AbstractInsnNode currentNode = method.instructions.get(i);
 
 					if (currentNode.getOpcode() == ARETURN)
 					{
@@ -133,7 +131,7 @@ public class TransformDistributor implements IClassTransformer
 
 				else
 				{
-					InsnList inject = new InsnList();
+					final InsnList inject = new InsnList();
 
 					//Build our code to inject.
 					inject.add(new VarInsnNode(ALOAD, 1)); //Load the item stack instance.
@@ -153,8 +151,8 @@ public class TransformDistributor implements IClassTransformer
 				break;
 			}
 		}
-		
-		ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS | ClassWriter.COMPUTE_FRAMES);
+
+		final ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS | ClassWriter.COMPUTE_FRAMES);
 		node.accept(writer);
 
 		return writer.toByteArray();
@@ -162,27 +160,25 @@ public class TransformDistributor implements IClassTransformer
 
 	private byte[] transformPumpkin(byte[] basicClass) 
 	{
-		boolean found = false;
-		ClassNode node = new ClassNode();
-		ClassReader reader = new ClassReader(basicClass);
+		final ClassNode node = new ClassNode();
+		final ClassReader reader = new ClassReader(basicClass);
 		reader.accept(node, 0);
 
-		for (MethodNode method : node.methods)
+		for (final MethodNode method : node.methods)
 		{
 			//Deobf name is generate(), obfuscated name is func_xxxxx_x.
 			if (method.name.equals("generate") || method.name.equals("func_76484_a"))
 			{
-				found = true;
 				logger.info("Patching WorldGenPumpkin.generate()...");
-				
+
 				//Same as before, we're searching for a location where we can insert
 				//our method call.
-				
+
 				//The target instruction node is just after the POP statement.
 				AbstractInsnNode target = null;
 				for (int i = 0; i < method.instructions.size(); i++)
 				{
-					AbstractInsnNode currentNode = method.instructions.get(i);
+					final AbstractInsnNode currentNode = method.instructions.get(i);
 
 					if (currentNode.getOpcode() == POP)
 					{
@@ -199,7 +195,7 @@ public class TransformDistributor implements IClassTransformer
 
 				else
 				{
-					InsnList inject = new InsnList();
+					final InsnList inject = new InsnList();
 
 					//Build our code.
 					inject.add(new VarInsnNode(ALOAD, 1)); //World
@@ -221,8 +217,8 @@ public class TransformDistributor implements IClassTransformer
 				break;
 			}
 		}
-		
-		ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS | ClassWriter.COMPUTE_FRAMES);
+
+		final ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS | ClassWriter.COMPUTE_FRAMES);
 		node.accept(writer);
 
 		return writer.toByteArray();

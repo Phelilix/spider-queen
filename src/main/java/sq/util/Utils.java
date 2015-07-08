@@ -14,9 +14,9 @@ public final class Utils
 {
 	private Utils()
 	{
-		
+
 	}
-	
+
 	/**
 	 * Uses Minecraft's packets to spawn particles.
 	 */
@@ -34,16 +34,16 @@ public final class Utils
 			final float velY = (float) (rand.nextGaussian() * 0.02D);
 			final float velZ = (float) (rand.nextGaussian() * 0.02D);
 
-			S2APacketParticles packet = new S2APacketParticles(name, parX, parY, parZ, velX, velY, velZ, 0.0F, 0);
+			final S2APacketParticles packet = new S2APacketParticles(name, parX, parY, parZ, velX, velY, velZ, 0.0F, 0);
 
 			for (int j = 0; j < entityOrigin.worldObj.playerEntities.size(); ++j)
 			{
-				EntityPlayerMP entityPlayerMP = (EntityPlayerMP)entityOrigin.worldObj.playerEntities.get(j);
-				ChunkCoordinates chunkCoordinates = entityPlayerMP.getPlayerCoordinates();
-				double deltaX = entityOrigin.posX - chunkCoordinates.posX;
-				double deltaY = entityOrigin.posY - chunkCoordinates.posY;
-				double deltaZ = entityOrigin.posZ - chunkCoordinates.posZ;
-				double distanceSq = deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ;
+				final EntityPlayerMP entityPlayerMP = (EntityPlayerMP)entityOrigin.worldObj.playerEntities.get(j);
+				final ChunkCoordinates chunkCoordinates = entityPlayerMP.getPlayerCoordinates();
+				final double deltaX = entityOrigin.posX - chunkCoordinates.posX;
+				final double deltaY = entityOrigin.posY - chunkCoordinates.posY;
+				final double deltaZ = entityOrigin.posZ - chunkCoordinates.posZ;
+				final double distanceSq = deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ;
 
 				if (distanceSq <= 256.0D)
 				{

@@ -18,7 +18,7 @@ public class RenderWeb extends Render
 {
 	private static ResourceLocation textureWebShot = new ResourceLocation("sq:textures/entities/webshot.png");
 	private static ResourceLocation textureWebShotPoison = new ResourceLocation("sq:textures/entities/webshot-poison.png");
-	
+
 	public RenderWeb()
 	{
 	}
@@ -88,7 +88,7 @@ public class RenderWeb extends Render
 	@Override
 	protected ResourceLocation getEntityTexture(Entity entity)
 	{	
-		EntityWebShot web = (EntityWebShot)entity;		
+		final EntityWebShot web = (EntityWebShot)entity;		
 		return web.getType() == EnumWebType.NORMAL ? textureWebShot : textureWebShotPoison;
 	}
 

@@ -8,13 +8,11 @@ import sq.enums.EnumWebType;
  */
 public class BlockWebGround extends BlockWebFull
 {
-	private EnumWebType webType;
-	
 	public BlockWebGround(EnumWebType type) 
 	{
 		super(type);
 	}
-	
+
 	@Override
 	public int getRenderType()
 	{

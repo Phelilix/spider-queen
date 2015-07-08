@@ -65,16 +65,16 @@ public final class EventHooksFML
 		//Update sleeping. Check each second to see if all players are asleep.
 		if (counter <= 0)
 		{
-			int totalPlayers = MinecraftServer.getServer().getCurrentPlayerCount();
+			final int totalPlayers = MinecraftServer.getServer().getCurrentPlayerCount();
 
 			if (SpiderCore.sleepingPlayers.size() >= totalPlayers && totalPlayers != 0)
 			{
 				//When all players are asleep, loop through all worlds and look for them.
-				for (String s : SpiderCore.sleepingPlayers)
+				for (final String s : SpiderCore.sleepingPlayers)
 				{
-					for (WorldServer world : MinecraftServer.getServer().worldServers)
+					for (final WorldServer world : MinecraftServer.getServer().worldServers)
 					{
-						EntityPlayerMP player = (EntityPlayerMP) world.getPlayerEntityByName(s);
+						final EntityPlayerMP player = (EntityPlayerMP) world.getPlayerEntityByName(s);
 
 						if (player != null)
 						{
@@ -109,7 +109,7 @@ public final class EventHooksFML
 				if (player.worldObj.getBlockLightValue((int) player.posX, (int) player.posY, (int) player.posZ) <= 8)
 				{
 					player.triggerAchievement(ModAchievements.goInTheDark);
-					
+
 					if (SpiderCore.getConfig().enableNightVision && player.getActivePotionEffect(Potion.nightVision) == null)
 					{
 						player.addPotionEffect(new PotionEffect(Potion.nightVision.id, 12000, 0, true));
@@ -143,7 +143,7 @@ public final class EventHooksFML
 	@SubscribeEvent
 	public void playerLoggedInEventHandler(PlayerLoggedInEvent event)
 	{
-		EntityPlayer player = event.player;
+		final EntityPlayer player = event.player;
 		PlayerData data = null;
 
 		//If this player's player data is not contained in our map.
@@ -181,13 +181,13 @@ public final class EventHooksFML
 	@SubscribeEvent
 	public void playerLoggedOutEventHandler(PlayerLoggedOutEvent event)
 	{
-		PlayerData data = SpiderCore.getPlayerData(event.player);
+		final PlayerData data = SpiderCore.getPlayerData(event.player);
 
 		if (data != null)
 		{
 			data.saveDataToFile();
 		}
-		
+
 		//TODO SpiderCore.sleepingPlayers.remove(event.player);
 	}
 
@@ -215,7 +215,7 @@ public final class EventHooksFML
 		{
 			player.triggerAchievement(ModAchievements.craftWebslinger);
 		}
-		
+
 		else if (event.crafting.getItem() == ModItems.webPoison)
 		{
 			player.triggerAchievement(ModAchievements.craftPoisonWeb);

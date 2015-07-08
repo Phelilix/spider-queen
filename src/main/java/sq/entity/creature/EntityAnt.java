@@ -17,7 +17,7 @@ import sq.enums.EnumAntType;
 public class EntityAnt extends AbstractNewMob
 {
 	private int eatTime;
-	
+
 	public EntityAnt(World world) 
 	{
 		super(world, "ant");
@@ -31,10 +31,11 @@ public class EntityAnt extends AbstractNewMob
 		dataWatcher.updateObject(12, type.getId());
 	}
 
+	@Override
 	protected void entityInit()
 	{
 		super.entityInit();
-		this.dataWatcher.addObject(12, EnumAntType.BLACK.getId());
+		dataWatcher.addObject(12, EnumAntType.BLACK.getId());
 	}
 
 	@Override
@@ -57,18 +58,22 @@ public class EntityAnt extends AbstractNewMob
 		{
 			//Every 20 ticks, check for a block to eat and destroy it.
 			eatTime++;
-			
+
 			if (eatTime > 20)
 			{
 				//Check for the block to eat.
-				for (int i = -1; i < 2; i++) for (int j = 0; j < 2; j++) for (int k = -1; k < 2; k++)
-				{
-					Block block = worldObj.getBlock((int)posX + i, (int)posY + j, (int)posZ + k);
+				for (int i = -1; i < 2; i++) {
+					for (int j = 0; j < 2; j++) {
+						for (int k = -1; k < 2; k++)
+						{
+							final Block block = worldObj.getBlock((int)posX + i, (int)posY + j, (int)posZ + k);
 
-					if (block != Blocks.bedrock && block != ModBlocks.antHill && worldObj.rand.nextBoolean())
-					{
-						worldObj.setBlock((int)posX + i, (int)posY + j, (int)posZ + k, Blocks.air);
-						break;
+							if (block != Blocks.bedrock && block != ModBlocks.antHill && worldObj.rand.nextBoolean())
+							{
+								worldObj.setBlock((int)posX + i, (int)posY + j, (int)posZ + k, Blocks.air);
+								break;
+							}
+						}
 					}
 				}
 

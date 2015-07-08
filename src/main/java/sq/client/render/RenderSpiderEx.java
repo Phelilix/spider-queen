@@ -23,7 +23,7 @@ public class RenderSpiderEx extends RenderLiving
 	private static ResourceLocation charge = new ResourceLocation("textures/entity/creeper/creeper_armor.png");
 	private static ResourceLocation eyes;
 
-	private ModelSpiderEx model = new ModelSpiderEx();
+	private final ModelSpiderEx model = new ModelSpiderEx();
 
 	public RenderSpiderEx()
 	{
@@ -52,7 +52,7 @@ public class RenderSpiderEx extends RenderLiving
 	@Override
 	protected int shouldRenderPass(EntityLivingBase entitySpider, int passNumber, float partialTickTime)
 	{
-		EntitySpiderEx spider = (EntitySpiderEx)entitySpider;
+		final EntitySpiderEx spider = (EntitySpiderEx)entitySpider;
 
 		//When the spider is a powered boom spider, we render the "charged" effect over them.
 		if (spider.getPowered())
@@ -61,7 +61,7 @@ public class RenderSpiderEx extends RenderLiving
 			{
 				GL11.glDepthMask(false);
 			}
-			
+
 			else
 			{
 				GL11.glDepthMask(true);
@@ -69,17 +69,17 @@ public class RenderSpiderEx extends RenderLiving
 
 			if (passNumber == 1)
 			{
-				float f1 = (float)spider.ticksExisted + partialTickTime;
+				final float f1 = spider.ticksExisted + partialTickTime;
 				Minecraft.getMinecraft().renderEngine.bindTexture(charge);
 				GL11.glMatrixMode(GL11.GL_TEXTURE);
 				GL11.glLoadIdentity();
-				float f2 = f1 * 0.01F;
-				float f3 = f1 * 0.01F;
+				final float f2 = f1 * 0.01F;
+				final float f3 = f1 * 0.01F;
 				GL11.glTranslatef(f2, f3, 0.0F);
-				this.setRenderPassModel(model);
+				setRenderPassModel(model);
 				GL11.glMatrixMode(GL11.GL_MODELVIEW);
 				GL11.glEnable(GL11.GL_BLEND);
-				float f4 = 0.5F;
+				final float f4 = 0.5F;
 				GL11.glColor4f(f4, f4, f4, 1.0F);
 				GL11.glDisable(GL11.GL_LIGHTING);
 				GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
@@ -96,24 +96,24 @@ public class RenderSpiderEx extends RenderLiving
 			}
 		}
 
-		char c0 = 61680;
-		int j = c0 % 65536;
-		int k = c0 / 65536;
-		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)j / 1.0F, (float)k / 1.0F);
+		final char c0 = 61680;
+		final int j = c0 % 65536;
+		final int k = c0 / 65536;
+		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, j / 1.0F, k / 1.0F);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		
+
 		//On each pass greater than 0, we render the spider eyes without lighting taking effect. 
 		//This makes spider eyes glow in the dark.
 		if (passNumber > 0)
 		{
-			this.bindTexture(eyes);
+			bindTexture(eyes);
 			GL11.glTranslatef(0.0F, 0.0F, -0.0001F); //Prevent Z clipping.
 			GL11.glEnable(GL11.GL_BLEND);
 			GL11.glDisable(GL11.GL_ALPHA_TEST);
 			GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
 			return 1;
 		}
-		
+
 		return -1;
 	}
 
@@ -168,7 +168,7 @@ public class RenderSpiderEx extends RenderLiving
 		textures = new ResourceLocation[EnumSpiderType.values().length][3];
 		eyes = new ResourceLocation("sq:textures/entities/spider-eyes.png");
 
-		for (EnumSpiderType type : EnumSpiderType.values())
+		for (final EnumSpiderType type : EnumSpiderType.values())
 		{
 			if (type != EnumSpiderType.NONE)
 			{

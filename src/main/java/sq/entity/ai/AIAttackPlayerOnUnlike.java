@@ -19,20 +19,19 @@ import sq.entity.IRep;
  */
 public class AIAttackPlayerOnUnlike extends EntityAITarget
 {
-	private final int targetChance;
 	private EntityLivingBase targetEntity;
 
 	public AIAttackPlayerOnUnlike(EntityCreature owner)
 	{
 		super(owner, true, true);
-		this.targetChance = 80;
-		this.setMutexBits(1);
+		setMutexBits(1);
 	}
 
+	@Override
 	public boolean shouldExecute()
 	{
 		//Search for players.
-		List<Entity> list = RadixLogic.getAllEntitiesOfTypeWithinDistance(EntityPlayerMP.class, taskOwner, 8);
+		final List<Entity> list = RadixLogic.getAllEntitiesOfTypeWithinDistance(EntityPlayerMP.class, taskOwner, 8);
 
 		if (list.isEmpty())
 		{
@@ -42,13 +41,13 @@ public class AIAttackPlayerOnUnlike extends EntityAITarget
 		else
 		{
 			//Get the first player in the list and set it as the target.
-			this.targetEntity = (EntityLivingBase)list.get(0);
+			targetEntity = (EntityLivingBase)list.get(0);
 
 			try
 			{
 				//Check to make sure that the targeted player is unliked. If they're liked, this cannot execute.
-				IRep executor = (IRep)this.taskOwner;
-				PlayerData data = SpiderCore.getPlayerData((EntityPlayer)targetEntity);
+				final IRep executor = (IRep)taskOwner;
+				final PlayerData data = SpiderCore.getPlayerData((EntityPlayer)targetEntity);
 
 				if (executor.getLikeData(data).getInt() > 0)
 				{
@@ -56,7 +55,7 @@ public class AIAttackPlayerOnUnlike extends EntityAITarget
 				}
 			}
 
-			catch (Exception e) //Mod compatibility for those who extend EntityPlayer on their mobs.
+			catch (final Exception e) //Mod compatibility for those who extend EntityPlayer on their mobs.
 			{
 				return false;
 			}
@@ -65,9 +64,10 @@ public class AIAttackPlayerOnUnlike extends EntityAITarget
 		}
 	}
 
+	@Override
 	public void startExecuting()
 	{
-		this.taskOwner.setAttackTarget(this.targetEntity);
+		taskOwner.setAttackTarget(targetEntity);
 		super.startExecuting();
 	}
 }

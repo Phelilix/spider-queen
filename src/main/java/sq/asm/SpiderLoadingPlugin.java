@@ -46,5 +46,5 @@ public class SpiderLoadingPlugin implements IFMLLoadingPlugin
 	{
 		return null;
 	}
-	
+
 }

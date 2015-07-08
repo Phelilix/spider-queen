@@ -16,16 +16,16 @@ public class ItemLantern extends Item
 	public ItemLantern()
 	{
 		super();
-		
+
 		final String name = "lantern";
 		setUnlocalizedName(name);
 		setTextureName("sq:" + name);
 		setCreativeTab(SpiderCore.getCreativeTab());
 		setMaxStackSize(1);
-		
+
 		GameRegistry.registerItem(this, name);
 	}
-	
+
 	@Override
 	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int posX, int posY, int posZ, int meta, float xOffset, float yOffset, float zOffset)
 	{
@@ -35,10 +35,10 @@ public class ItemLantern extends Item
 			{
 				stack.stackSize--;
 			}
-			
+
 			world.setBlock(posX, posY + 1, posZ, ModBlocks.lantern);
 		}
-		
+
 		return super.onItemUse(stack, player, world, posX, posY, posZ, meta, xOffset, yOffset, zOffset);
 	}
 }

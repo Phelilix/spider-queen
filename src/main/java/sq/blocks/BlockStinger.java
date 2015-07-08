@@ -17,13 +17,13 @@ public class BlockStinger extends Block
 	public BlockStinger() 
 	{
 		super(Material.circuits);
-		
+
 		final String name = "stinger";
 		setBlockName(name);
 		setBlockTextureName("sq:" + name);
 		setCreativeTab(SpiderCore.getCreativeTab());
 		setHardness(1.0F);
-		
+
 		GameRegistry.registerBlock(this, name);
 	}
 
@@ -40,13 +40,13 @@ public class BlockStinger extends Block
 	{
 		return false;
 	}
-	
+
 	@Override
 	public int getRenderType()
 	{
 		return 1;
 	}
-	
+
 	@Override
 	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int posX, int posY, int posZ)
 	{

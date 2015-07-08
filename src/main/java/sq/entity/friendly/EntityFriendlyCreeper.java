@@ -40,7 +40,7 @@ public class EntityFriendlyCreeper extends EntityCreeper implements IFriendlyEnt
 	private UUID friendPlayerUUID = new UUID(0, 0);;
 	private boolean hasPlayedSound;
 	private boolean isImprisoned;
-	
+
 	public EntityLivingBase target;
 
 	public EntityFriendlyCreeper(World world)
@@ -53,22 +53,22 @@ public class EntityFriendlyCreeper extends EntityCreeper implements IFriendlyEnt
 	public EntityFriendlyCreeper(World world, EntityPlayer friendPlayer)
 	{
 		this(world);
-		this.friendPlayerUUID = friendPlayer.getUniqueID();
+		friendPlayerUUID = friendPlayer.getUniqueID();
 
 		//Clear old task entries.
-		this.tasks.taskEntries.clear();
-		this.targetTasks.taskEntries.clear();
+		tasks.taskEntries.clear();
+		targetTasks.taskEntries.clear();
 
 		//Add custom tasks.
-		this.tasks.addTask(1, new EntityAISwimming(this));
-		this.tasks.addTask(2, new EntityAICreeperSwell(this));
-		this.tasks.addTask(3, new EntityAIAvoidEntity(this, EntityOcelot.class, 6.0F, 1.0D, 1.2D));
-		this.tasks.addTask(4, new EntityAIAttackOnCollide(this, 1.0D, false));
-		this.tasks.addTask(5, new EntityAIWander(this, 0.8D));
-		this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
-		this.tasks.addTask(6, new EntityAILookIdle(this));
-		this.targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true));
-		this.targetTasks.addTask(2, new EntityAIHurtByTarget(this, false));
+		tasks.addTask(1, new EntityAISwimming(this));
+		tasks.addTask(2, new EntityAICreeperSwell(this));
+		tasks.addTask(3, new EntityAIAvoidEntity(this, EntityOcelot.class, 6.0F, 1.0D, 1.2D));
+		tasks.addTask(4, new EntityAIAttackOnCollide(this, 1.0D, false));
+		tasks.addTask(5, new EntityAIWander(this, 0.8D));
+		tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
+		tasks.addTask(6, new EntityAILookIdle(this));
+		targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true));
+		targetTasks.addTask(2, new EntityAIHurtByTarget(this, false));
 	}
 
 	@Override
@@ -108,7 +108,7 @@ public class EntityFriendlyCreeper extends EntityCreeper implements IFriendlyEnt
 	protected void applyEntityAttributes()
 	{
 		super.applyEntityAttributes();
-		this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.55D);
+		getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.55D);
 	}
 
 	@Override
@@ -121,7 +121,7 @@ public class EntityFriendlyCreeper extends EntityCreeper implements IFriendlyEnt
 	@SideOnly(Side.CLIENT)
 	public float getCreeperFlashIntensity(float partialTickTime)
 	{
-		return (float)(getExplosionTicks() / 32.0F) * partialTickTime;
+		return getExplosionTicks() / 32.0F * partialTickTime;
 	}
 
 	@Override
@@ -159,7 +159,7 @@ public class EntityFriendlyCreeper extends EntityCreeper implements IFriendlyEnt
 		{
 			ReputationHandler.handleInteractWithImprisoned(entity, this);
 		}
-		
+
 		if (heldItem != null && heldItem.getItem() == ModItems.heart)
 		{
 			heldItem.stackSize--;
@@ -246,15 +246,15 @@ public class EntityFriendlyCreeper extends EntityCreeper implements IFriendlyEnt
 	@Override
 	public void setImprisoned(boolean value) 
 	{
-		this.isImprisoned = value;
+		isImprisoned = value;
 	}
-	
+
 	@Override
 	public Class getNonFriendlyClass() 
 	{
 		return EntityCreeper.class;
 	}
-	
+
 	@Override
 	public String getCommandSenderName() 
 	{

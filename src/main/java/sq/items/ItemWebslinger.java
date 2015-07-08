@@ -23,7 +23,7 @@ public class ItemWebslinger extends Item
 {
 	private IIcon iconNormal;
 	private IIcon iconThrown;
-	
+
 	public ItemWebslinger()
 	{
 		setMaxStackSize(1);
@@ -87,7 +87,7 @@ public class ItemWebslinger extends Item
 			playerExtension.webEntity.setDead();
 			playerExtension.webEntity = null;
 			playerExtension.slingerCooldown = Time.SECOND * 3;
-			
+
 			if (entityPlayer.isCollidedHorizontally)
 			{
 				entityPlayer.jump();
@@ -107,13 +107,13 @@ public class ItemWebslinger extends Item
 	@Override
 	public IIcon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining) 
 	{
-		PlayerExtension extension = PlayerExtension.get(player);
-		
+		final PlayerExtension extension = PlayerExtension.get(player);
+
 		if (extension.webEntity != null)
 		{
 			return iconThrown;
 		}
-		
+
 		else
 		{
 			return iconNormal;

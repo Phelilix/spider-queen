@@ -168,7 +168,7 @@ public class RenderSpiderQueen extends RenderPlayer
 					renderEquippedItems(entity, limbSwing);
 				}
 
-				catch (Throwable e)
+				catch (final Throwable e)
 				{
 					e.printStackTrace();
 				}
@@ -235,7 +235,7 @@ public class RenderSpiderQueen extends RenderPlayer
 		{
 			final EntityPlayer entity = (EntityPlayer) entityLivingBase;
 
-			double distance = RadixMath.getDistanceToEntity(entity, Minecraft.getMinecraft().thePlayer);
+			final double distance = RadixMath.getDistanceToEntity(entity, Minecraft.getMinecraft().thePlayer);
 
 			if (distance < 15.0D && Minecraft.getMinecraft().thePlayer != entity)
 			{
@@ -267,7 +267,7 @@ public class RenderSpiderQueen extends RenderPlayer
 				bindTexture(armTextures[0]);
 			}
 
-			catch (NullPointerException e)
+			catch (final NullPointerException e)
 			{
 				//Happens sometimes just when the player is logging in.
 			}
@@ -332,7 +332,7 @@ public class RenderSpiderQueen extends RenderPlayer
 	@Override
 	public void renderEquippedItems(AbstractClientPlayer clientPlayer, float partialTickTime)
 	{
-		RenderPlayerEvent.Specials.Pre event = new RenderPlayerEvent.Specials.Pre(clientPlayer, this, partialTickTime);
+		final RenderPlayerEvent.Specials.Pre event = new RenderPlayerEvent.Specials.Pre(clientPlayer, this, partialTickTime);
 
 		if (MinecraftForge.EVENT_BUS.post(event))
 		{
@@ -343,18 +343,18 @@ public class RenderSpiderQueen extends RenderPlayer
 		GL11.glScaled(-1, -1, -1);
 		GL11.glTranslated(-0.05D, 0.3D, -0.15D);
 		super.renderArrowsStuckInEntity(clientPlayer, partialTickTime);
-		ItemStack itemstack = clientPlayer.inventory.armorItemInSlot(3);
+		final ItemStack itemstack = clientPlayer.inventory.armorItemInSlot(3);
 
 		if (itemstack != null && event.renderHelmet)
 		{
 			GL11.glPushMatrix();
-			this.modelBipedMain.getHead().postRender(0.0625F);
+			modelBipedMain.getHead().postRender(0.0625F);
 			float f1;
 
 			if (itemstack.getItem() instanceof ItemBlock)
 			{
-				IItemRenderer customRenderer = MinecraftForgeClient.getItemRenderer(itemstack, EQUIPPED);
-				boolean is3D = (customRenderer != null && customRenderer.shouldUseRenderHelper(EQUIPPED, itemstack, BLOCK_3D));
+				final IItemRenderer customRenderer = MinecraftForgeClient.getItemRenderer(itemstack, EQUIPPED);
+				final boolean is3D = customRenderer != null && customRenderer.shouldUseRenderHelper(EQUIPPED, itemstack, BLOCK_3D);
 
 				if (is3D || RenderBlocks.renderItemIn3d(Block.getBlockFromItem(itemstack.getItem()).getRenderType()))
 				{
@@ -364,7 +364,7 @@ public class RenderSpiderQueen extends RenderPlayer
 					GL11.glScalef(f1, -f1, -f1);
 				}
 
-				this.renderManager.itemRenderer.renderItem(clientPlayer, itemstack, 0);
+				renderManager.itemRenderer.renderItem(clientPlayer, itemstack, 0);
 			}
 			else if (itemstack.getItem() == Items.skull)
 			{
@@ -374,7 +374,7 @@ public class RenderSpiderQueen extends RenderPlayer
 
 				if (itemstack.hasTagCompound())
 				{
-					NBTTagCompound nbttagcompound = itemstack.getTagCompound();
+					final NBTTagCompound nbttagcompound = itemstack.getTagCompound();
 
 					if (nbttagcompound.hasKey("SkullOwner", 10))
 					{
@@ -396,16 +396,16 @@ public class RenderSpiderQueen extends RenderPlayer
 
 		if (clientPlayer.getCommandSenderName().equals("deadmau5") && clientPlayer.func_152123_o())
 		{
-			this.bindTexture(clientPlayer.getLocationSkin());
+			bindTexture(clientPlayer.getLocationSkin());
 
 			for (int j = 0; j < 2; ++j)
 			{
-				float f10 = clientPlayer.prevRotationYaw + (clientPlayer.rotationYaw - clientPlayer.prevRotationYaw) * partialTickTime - (clientPlayer.prevRenderYawOffset + (clientPlayer.renderYawOffset - clientPlayer.prevRenderYawOffset) * partialTickTime);
-				float f2 = clientPlayer.prevRotationPitch + (clientPlayer.rotationPitch - clientPlayer.prevRotationPitch) * partialTickTime;
+				final float f10 = clientPlayer.prevRotationYaw + (clientPlayer.rotationYaw - clientPlayer.prevRotationYaw) * partialTickTime - (clientPlayer.prevRenderYawOffset + (clientPlayer.renderYawOffset - clientPlayer.prevRenderYawOffset) * partialTickTime);
+				final float f2 = clientPlayer.prevRotationPitch + (clientPlayer.rotationPitch - clientPlayer.prevRotationPitch) * partialTickTime;
 				GL11.glPushMatrix();
 				GL11.glRotatef(f10, 0.0F, 1.0F, 0.0F);
 				GL11.glRotatef(f2, 1.0F, 0.0F, 0.0F);
-				GL11.glTranslatef(0.375F * (float)(j * 2 - 1), 0.0F, 0.0F);
+				GL11.glTranslatef(0.375F * (j * 2 - 1), 0.0F, 0.0F);
 				GL11.glTranslatef(0.0F, -0.375F, 0.0F);
 				GL11.glRotatef(-f2, 1.0F, 0.0F, 0.0F);
 				GL11.glRotatef(-f10, 0.0F, 1.0F, 0.0F);
@@ -421,15 +421,15 @@ public class RenderSpiderQueen extends RenderPlayer
 
 		if (flag && !clientPlayer.isInvisible() && !clientPlayer.getHideCape())
 		{
-			this.bindTexture(clientPlayer.getLocationCape());
+			bindTexture(clientPlayer.getLocationCape());
 			GL11.glPushMatrix();
 			GL11.glTranslatef(0.0F, 0.0F, 0.125F);
-			double d3 = clientPlayer.field_71091_bM + (clientPlayer.field_71094_bP - clientPlayer.field_71091_bM) * (double)partialTickTime - (clientPlayer.prevPosX + (clientPlayer.posX - clientPlayer.prevPosX) * (double)partialTickTime);
-			double d4 = clientPlayer.field_71096_bN + (clientPlayer.field_71095_bQ - clientPlayer.field_71096_bN) * (double)partialTickTime - (clientPlayer.prevPosY + (clientPlayer.posY - clientPlayer.prevPosY) * (double)partialTickTime);
-			double d0 = clientPlayer.field_71097_bO + (clientPlayer.field_71085_bR - clientPlayer.field_71097_bO) * (double)partialTickTime - (clientPlayer.prevPosZ + (clientPlayer.posZ - clientPlayer.prevPosZ) * (double)partialTickTime);
+			final double d3 = clientPlayer.field_71091_bM + (clientPlayer.field_71094_bP - clientPlayer.field_71091_bM) * partialTickTime - (clientPlayer.prevPosX + (clientPlayer.posX - clientPlayer.prevPosX) * partialTickTime);
+			final double d4 = clientPlayer.field_71096_bN + (clientPlayer.field_71095_bQ - clientPlayer.field_71096_bN) * partialTickTime - (clientPlayer.prevPosY + (clientPlayer.posY - clientPlayer.prevPosY) * partialTickTime);
+			final double d0 = clientPlayer.field_71097_bO + (clientPlayer.field_71085_bR - clientPlayer.field_71097_bO) * partialTickTime - (clientPlayer.prevPosZ + (clientPlayer.posZ - clientPlayer.prevPosZ) * partialTickTime);
 			f5 = clientPlayer.prevRenderYawOffset + (clientPlayer.renderYawOffset - clientPlayer.prevRenderYawOffset) * partialTickTime;
-			double d1 = (double)MathHelper.sin(f5 * (float)Math.PI / 180.0F);
-			double d2 = (double)(-MathHelper.cos(f5 * (float)Math.PI / 180.0F));
+			final double d1 = MathHelper.sin(f5 * (float)Math.PI / 180.0F);
+			final double d2 = -MathHelper.cos(f5 * (float)Math.PI / 180.0F);
 			float f6 = (float)d4 * 10.0F;
 
 			if (f6 < -6.0F)
@@ -443,14 +443,14 @@ public class RenderSpiderQueen extends RenderPlayer
 			}
 
 			float f7 = (float)(d3 * d1 + d0 * d2) * 100.0F;
-			float f8 = (float)(d3 * d2 - d0 * d1) * 100.0F;
+			final float f8 = (float)(d3 * d2 - d0 * d1) * 100.0F;
 
 			if (f7 < 0.0F)
 			{
 				f7 = 0.0F;
 			}
 
-			float f9 = clientPlayer.prevCameraYaw + (clientPlayer.cameraYaw - clientPlayer.prevCameraYaw) * partialTickTime;
+			final float f9 = clientPlayer.prevCameraYaw + (clientPlayer.cameraYaw - clientPlayer.prevCameraYaw) * partialTickTime;
 			f6 += MathHelper.sin((clientPlayer.prevDistanceWalkedModified + (clientPlayer.distanceWalkedModified - clientPlayer.prevDistanceWalkedModified) * partialTickTime) * 6.0F) * 32.0F * f9;
 
 			if (clientPlayer.isSneaking())
@@ -470,7 +470,7 @@ public class RenderSpiderQueen extends RenderPlayer
 		if (itemstack1 != null && event.renderItem)
 		{
 			GL11.glPushMatrix();
-			this.modelBipedMain.getRightArm().postRender(0.0625F);
+			modelBipedMain.getRightArm().postRender(0.0625F);
 			GL11.glTranslatef(-0.0625F, 0.4375F, 0.0625F);
 
 			if (clientPlayer.fishEntity != null)
@@ -485,8 +485,8 @@ public class RenderSpiderQueen extends RenderPlayer
 				enumaction = itemstack1.getItemUseAction();
 			}
 
-			IItemRenderer customRenderer = MinecraftForgeClient.getItemRenderer(itemstack1, EQUIPPED);
-			boolean is3D = (customRenderer != null && customRenderer.shouldUseRenderHelper(EQUIPPED, itemstack1, BLOCK_3D));
+			final IItemRenderer customRenderer = MinecraftForgeClient.getItemRenderer(itemstack1, EQUIPPED);
+			final boolean is3D = customRenderer != null && customRenderer.shouldUseRenderHelper(EQUIPPED, itemstack1, BLOCK_3D);
 
 			if (is3D || itemstack1.getItem() instanceof ItemBlock && RenderBlocks.renderItemIn3d(Block.getBlockFromItem(itemstack1.getItem()).getRenderType()))
 			{
@@ -547,22 +547,22 @@ public class RenderSpiderQueen extends RenderPlayer
 			{
 				for (k = 0; k <= itemstack1.getItem().getRenderPasses(itemstack1.getItemDamage()); ++k)
 				{
-					int i = itemstack1.getItem().getColorFromItemStack(itemstack1, k);
-					f12 = (float)(i >> 16 & 255) / 255.0F;
-					f4 = (float)(i >> 8 & 255) / 255.0F;
-					f5 = (float)(i & 255) / 255.0F;
+					final int i = itemstack1.getItem().getColorFromItemStack(itemstack1, k);
+					f12 = (i >> 16 & 255) / 255.0F;
+					f4 = (i >> 8 & 255) / 255.0F;
+					f5 = (i & 255) / 255.0F;
 					GL11.glColor4f(f12, f4, f5, 1.0F);
-					this.renderManager.itemRenderer.renderItem(clientPlayer, itemstack1, k);
+					renderManager.itemRenderer.renderItem(clientPlayer, itemstack1, k);
 				}
 			}
 			else
 			{
 				k = itemstack1.getItem().getColorFromItemStack(itemstack1, 0);
-				float f11 = (float)(k >> 16 & 255) / 255.0F;
-				f12 = (float)(k >> 8 & 255) / 255.0F;
-				f4 = (float)(k & 255) / 255.0F;
+				final float f11 = (k >> 16 & 255) / 255.0F;
+				f12 = (k >> 8 & 255) / 255.0F;
+				f4 = (k & 255) / 255.0F;
 				GL11.glColor4f(f11, f12, f4, 1.0F);
-				this.renderManager.itemRenderer.renderItem(clientPlayer, itemstack1, 0);
+				renderManager.itemRenderer.renderItem(clientPlayer, itemstack1, 0);
 			}
 
 			GL11.glPopMatrix();
@@ -690,7 +690,7 @@ public class RenderSpiderQueen extends RenderPlayer
 
 				GL11.glEnable(GL11.GL_DEPTH_TEST);
 				GL11.glDepthMask(true);
-				
+
 				fontRenderer.drawString(text, -fontRenderer.getStringWidth(text) / 2, 0, -1);
 
 				GL11.glEnable(GL11.GL_LIGHTING);

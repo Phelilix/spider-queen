@@ -223,7 +223,7 @@ public class ModelSpiderQueen extends ModelBase
 		if (SpiderCore.getConfig().usePlayerSkin && entity instanceof EntityPlayer)
 		{
 			//Bind the client player's texture for these next few renders.
-			EntityClientPlayerMP mp = (EntityClientPlayerMP)entity;
+			final EntityClientPlayerMP mp = (EntityClientPlayerMP)entity;
 			Minecraft.getMinecraft().renderEngine.bindTexture(mp.getLocationSkin());
 
 			//Apply translation and scale corrections.
@@ -357,22 +357,22 @@ public class ModelSpiderQueen extends ModelBase
 		playerArmRight.rotateAngleX = armRight.rotateAngleX += MathHelper.sin(f2 * 0.067F) * 0.05F;
 		playerArmLeft.rotateAngleX = armLeft.rotateAngleX -= MathHelper.sin(f2 * 0.067F) * 0.05F;
 
-		if (this.aimedBow)
+		if (aimedBow)
 		{
 			f6 = 0.0F;
 			f7 = 0.0F;
-			this.armRight.rotateAngleZ = this.playerArmRight.rotateAngleZ = 0.0F;
-			this.armLeft.rotateAngleZ = this.playerArmLeft.rotateAngleZ = 0.0F;
-			this.armRight.rotateAngleY = this.playerArmRight.rotateAngleY = -(0.1F - f6 * 0.6F) + this.head.rotateAngleY;
-			this.armLeft.rotateAngleY = this.playerArmLeft.rotateAngleY = 0.1F - f6 * 0.6F + this.head.rotateAngleY + 0.4F;
-			this.armRight.rotateAngleX = this.playerArmRight.rotateAngleX = -((float)Math.PI / 2F) + this.head.rotateAngleX;
-			this.armLeft.rotateAngleX = this.playerArmLeft.rotateAngleX = -((float)Math.PI / 2F) + this.head.rotateAngleX;
-			this.playerArmRight.rotateAngleX = this.armRight.rotateAngleX -= f6 * 1.2F - f7 * 0.4F;
-			this.playerArmLeft.rotateAngleX = this.armLeft.rotateAngleX -= f6 * 1.2F - f7 * 0.4F;
-			this.playerArmRight.rotateAngleZ = this.armRight.rotateAngleZ += MathHelper.cos(f2 * 0.09F) * 0.05F + 0.05F;
-			this.playerArmLeft.rotateAngleZ = this.armLeft.rotateAngleZ -= MathHelper.cos(f2 * 0.09F) * 0.05F + 0.05F;
-			this.playerArmRight.rotateAngleX = this.armRight.rotateAngleX += MathHelper.sin(f2 * 0.067F) * 0.05F;
-			this.playerArmLeft.rotateAngleX = this.armLeft.rotateAngleX -= MathHelper.sin(f2 * 0.067F) * 0.05F;
+			armRight.rotateAngleZ = playerArmRight.rotateAngleZ = 0.0F;
+			armLeft.rotateAngleZ = playerArmLeft.rotateAngleZ = 0.0F;
+			armRight.rotateAngleY = playerArmRight.rotateAngleY = -(0.1F - f6 * 0.6F) + head.rotateAngleY;
+			armLeft.rotateAngleY = playerArmLeft.rotateAngleY = 0.1F - f6 * 0.6F + head.rotateAngleY + 0.4F;
+			armRight.rotateAngleX = playerArmRight.rotateAngleX = -((float)Math.PI / 2F) + head.rotateAngleX;
+			armLeft.rotateAngleX = playerArmLeft.rotateAngleX = -((float)Math.PI / 2F) + head.rotateAngleX;
+			playerArmRight.rotateAngleX = armRight.rotateAngleX -= f6 * 1.2F - f7 * 0.4F;
+			playerArmLeft.rotateAngleX = armLeft.rotateAngleX -= f6 * 1.2F - f7 * 0.4F;
+			playerArmRight.rotateAngleZ = armRight.rotateAngleZ += MathHelper.cos(f2 * 0.09F) * 0.05F + 0.05F;
+			playerArmLeft.rotateAngleZ = armLeft.rotateAngleZ -= MathHelper.cos(f2 * 0.09F) * 0.05F + 0.05F;
+			playerArmRight.rotateAngleX = armRight.rotateAngleX += MathHelper.sin(f2 * 0.067F) * 0.05F;
+			playerArmLeft.rotateAngleX = armLeft.rotateAngleX -= MathHelper.sin(f2 * 0.067F) * 0.05F;
 		}
 		leg1.rotateAngleY += f9;
 		leg2.rotateAngleY += -f9;

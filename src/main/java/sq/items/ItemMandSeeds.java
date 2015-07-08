@@ -17,16 +17,16 @@ public class ItemMandSeeds extends Item
 	public ItemMandSeeds()
 	{
 		super();
-		
+
 		final String name = "mandragora-seeds";
 		setUnlocalizedName(name);
 		setTextureName("sq:" + name);
 		setCreativeTab(SpiderCore.getCreativeTab());
 		setMaxStackSize(64);
-		
+
 		GameRegistry.registerItem(this, name);
 	}
-	
+
 	@Override
 	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int posX, int posY, int posZ, int meta, float xOffset, float yOffset, float zOffset)
 	{
@@ -36,10 +36,10 @@ public class ItemMandSeeds extends Item
 			{
 				stack.stackSize--;
 			}
-			
+
 			world.setBlock(posX, posY + 1, posZ, ModBlocks.cropMand);
 		}
-		
+
 		return super.onItemUse(stack, player, world, posX, posY, posZ, meta, xOffset, yOffset, zOffset);
 	}
 }

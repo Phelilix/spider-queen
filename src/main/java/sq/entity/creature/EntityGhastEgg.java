@@ -2,7 +2,6 @@ package sq.entity.creature;
 
 import java.util.UUID;
 
-import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
@@ -32,7 +31,7 @@ public class EntityGhastEgg extends EntitySpiderEgg
 	{
 		super(world);
 		this.owner = owner;
-		this.renderDistanceWeight = 50.0F;
+		renderDistanceWeight = 50.0F;
 		setSize(0.15F, 0.15F);
 		getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(20.0D);
 		timeUntilEggHatch = RadixMath.getNumberInRange(500, 5000);
@@ -57,9 +56,9 @@ public class EntityGhastEgg extends EntitySpiderEgg
 	{
 		try
 		{
-			final EntityPlayer player = worldObj.func_152378_a(owner);
+			worldObj.func_152378_a(owner);
 
-			final Block spawnBlock = worldObj.getBlock((int)posX,(int)posY,(int)posZ);
+			worldObj.getBlock((int)posX,(int)posY,(int)posZ);
 			Point3D spawnPoint = new Point3D(posX, posY, posZ);
 
 			//Check the spawn location.
@@ -69,13 +68,13 @@ public class EntityGhastEgg extends EntitySpiderEgg
 			else if (worldObj.getBlock(spawnPoint.iPosX, spawnPoint.iPosY, spawnPoint.iPosZ - 1) == Blocks.air) { spawnPoint = new Point3D(posX, posY, posZ - 1); }
 
 			//Spawn the ghast at the safe spawn location.
-			EntityMiniGhast ghast = new EntityMiniGhast(worldObj, owner);
+			final EntityMiniGhast ghast = new EntityMiniGhast(worldObj, owner);
 			ghast.setLocationAndAngles(spawnPoint.iPosX, spawnPoint.iPosY, spawnPoint.iPosZ, rotationYaw, rotationPitch);
 			worldObj.spawnEntityInWorld(ghast);
 			setDead();
 		}
 
-		catch (NullPointerException e)
+		catch (final NullPointerException e)
 		{
 			//Happens when player is null - not logged in.
 		}

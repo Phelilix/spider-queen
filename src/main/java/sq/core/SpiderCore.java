@@ -111,12 +111,12 @@ public final class SpiderCore
 	public static final String ID = "SQ";
 	public static final String NAME = "Spider Queen";
 	public static final String VERSION = "@VERSION@";
-	
+
 	/** The URL for skins that are permanently in the contributor list. */
 	public static final String PERM_SKINS_URL = "http://pastebin.com/raw.php?i=MNWrUxwa";
 	/** The URL for periodic skins in the contributor list. */
 	public static final String SKINS_URL = "http://pastebin.com/raw.php?i=L5S632xR";
-	
+
 	@Instance(ID)
 	private static SpiderCore instance;
 	private static ModMetadata metadata;
@@ -131,7 +131,7 @@ public final class SpiderCore
 
 	private static Logger logger;
 	public static Random rand;
-	
+
 	@SidedProxy(clientSide = "sq.core.forge.ClientProxy", serverSide = "sq.core.forge.ServerProxy")
 	public static ServerProxy proxy;
 
@@ -139,7 +139,7 @@ public final class SpiderCore
 	public static List<String> fakePlayerNames;
 	public static List<String> sleepingPlayers;
 	public static Map<Integer, Map<Point3D, BlockObj>> structureSchematics;
-	
+
 	@SideOnly(Side.CLIENT)
 	public static DataContainer playerDataContainer;
 
@@ -160,9 +160,9 @@ public final class SpiderCore
 		sleepingPlayers = new ArrayList<String>();
 		structureSchematics = new HashMap<Integer, Map<Point3D, BlockObj>>();
 		languageManager = new LanguageManager(ID);
-		
+
 		//Fill in data used to enable functions within RadixCore.
-		ModMetadataEx exData = ModMetadataEx.getFromModMetadata(metadata);
+		final ModMetadataEx exData = ModMetadataEx.getFromModMetadata(metadata);
 		exData.updateProtocolClass = config.allowUpdateChecking ? RDXUpdateProtocol.class : null;
 		exData.classContainingClientDataContainer = SpiderCore.class;
 		exData.classContainingGetPlayerDataMethod = SpiderCore.class;
@@ -184,19 +184,19 @@ public final class SpiderCore
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
 
 		//Set all food as being always edible.
-		for (Field f : Items.class.getDeclaredFields())
+		for (final Field f : Items.class.getDeclaredFields())
 		{
 			try
 			{
-				Object o = f.get(null);
+				final Object o = f.get(null);
 
 				if (o instanceof ItemFood)
 				{
-					ItemFood food = (ItemFood)o;
+					final ItemFood food = (ItemFood)o;
 					food.setAlwaysEdible();
-					
+
 					f.setAccessible(true);
-					Field modifiers = Field.class.getDeclaredField("modifiers");
+					final Field modifiers = Field.class.getDeclaredField("modifiers");
 					modifiers.setAccessible(true);
 					modifiers.setInt(f, f.getModifiers() & ~Modifier.FINAL);
 					f.set(null, food);
@@ -204,7 +204,7 @@ public final class SpiderCore
 				}
 			}
 
-			catch (Exception e)
+			catch (final Exception e)
 			{
 			}
 		}
@@ -266,7 +266,7 @@ public final class SpiderCore
 		GameRegistry.addRecipe(new ItemStack(ModItems.spiderRod), "GTG", " S ", " S ", 'G', Blocks.glass, 'T', Blocks.torch, 'S', Items.stick);
 		GameRegistry.addRecipe(new ItemStack(ModItems.recallRod), "GDG", " S ", " S ", 'G', Blocks.glass, 'D', Items.glowstone_dust, 'S', Items.stick);
 		GameRegistry.addRecipe(new ItemStack(ModItems.webslinger), "DS ", "SS ", "  S", 'D', ModBlocks.stinger, 'S', Items.string);
-		
+
 		//Add spawns.
 		EntityRegistry.addSpawn(EntityBeetle.class, 10, 1, 3, EnumCreatureType.monster, BiomeGenBase.extremeHills, BiomeGenBase.forest,
 				BiomeGenBase.jungle, BiomeGenBase.taiga, BiomeGenBase.swampland, BiomeGenBase.plains, BiomeGenBase.birchForest, BiomeGenBase.forestHills, BiomeGenBase.roofedForest);
@@ -283,30 +283,30 @@ public final class SpiderCore
 				BiomeGenBase.jungle, BiomeGenBase.taiga, BiomeGenBase.swampland, BiomeGenBase.plains, BiomeGenBase.birchForest, BiomeGenBase.forestHills, BiomeGenBase.roofedForest);
 		EntityRegistry.addSpawn(EntityYuki.class, 1, 1, 1, EnumCreatureType.monster, BiomeGenBase.coldTaiga, BiomeGenBase.coldTaigaHills, BiomeGenBase.frozenOcean, BiomeGenBase.frozenRiver,
 				BiomeGenBase.iceMountains, BiomeGenBase.icePlains);
-		
+
 		//Register world generation.
 		GameRegistry.registerWorldGenerator(new WorldGenAntHill(), 10);
 		GameRegistry.registerWorldGenerator(new WorldGenBeeHive(), 14);
 		GameRegistry.registerWorldGenerator(new WorldGenFactory(), 4096);
-		
+
 		//Set up reputations.
 		ReputationContainer.createNew(EntitySkeleton.class, EnumWatchedDataIDs.SKELETON_LIKE.getId());
 		ReputationContainer.createNew(EntityCreeper.class, EnumWatchedDataIDs.CREEPER_LIKE.getId());
 		ReputationContainer.createNew(EntityZombie.class, EnumWatchedDataIDs.ZOMBIE_LIKE.getId());
 		ReputationContainer.createNew(EntityHuman.class, EnumWatchedDataIDs.HUMAN_LIKE.getId());
 		ReputationContainer.createNew(EntityBee.class, EnumWatchedDataIDs.BEE_LIKE.getId());
-		
+
 		//Load factories.
-		long t1 = System.nanoTime();
+		final long t1 = System.nanoTime();
 		logger.info("Preloading schematics...");
 		structureSchematics.put(0, SchematicHandler.readSchematic("/assets/sq/schematics/factorySawtooth44-fixed.schematic"));
 		structureSchematics.put(1, SchematicHandler.readSchematic("/assets/sq/schematics/factoryEndergirl0-fixed.schematic"));
 		structureSchematics.put(2, SchematicHandler.readSchematic("/assets/sq/schematics/factoryAllenWL-fixed.schematic"));
 		structureSchematics.put(3, SchematicHandler.readSchematic("/assets/sq/schematics/factoryMario384-fixed.schematic"));
 		structureSchematics.put(4, SchematicHandler.readSchematic("/assets/sq/schematics/lairFangdam1.schematic"));
-		long t2 = System.nanoTime();
-		
-		long elapsedTime = TimeUnit.MILLISECONDS.convert(t2 - t1, TimeUnit.NANOSECONDS);
+		final long t2 = System.nanoTime();
+
+		final long elapsedTime = TimeUnit.MILLISECONDS.convert(t2 - t1, TimeUnit.NANOSECONDS);
 		logger.info("Schematic loading completed in " + elapsedTime + "ms.");
 	}
 
@@ -325,12 +325,12 @@ public final class SpiderCore
 		event.registerServerCommand(new CommandSQ());
 
 		//Prepare the player data directory.
-		File playerDataPath = new File(AbstractPlayerData.getPlayerDataPath(event.getServer().getEntityWorld(), SpiderCore.ID));
+		final File playerDataPath = new File(AbstractPlayerData.getPlayerDataPath(event.getServer().getEntityWorld(), SpiderCore.ID));
 		playerDataPath.mkdirs();
 
-		for (File f : playerDataPath.listFiles()) //Load up existing player data.
+		for (final File f : playerDataPath.listFiles()) //Load up existing player data.
 		{
-			String uuid = f.getName().replace(".dat", "");
+			final String uuid = f.getName().replace(".dat", "");
 			PlayerData data = new PlayerData(uuid, event.getServer().getEntityWorld());
 			data = data.readDataFromFile(null, PlayerData.class, f);
 
@@ -342,14 +342,14 @@ public final class SpiderCore
 	public void serverStopping(FMLServerStoppingEvent event)
 	{
 		//Save and clear all player data when shutting down.
-		for (AbstractPlayerData data : playerDataMap.values())
+		for (final AbstractPlayerData data : playerDataMap.values())
 		{
 			data.saveDataToFile();
 		}
 
 		SpiderCore.playerDataMap.clear();
 	}
-	
+
 	public static SpiderCore getInstance()
 	{
 		return instance;
@@ -402,12 +402,12 @@ public final class SpiderCore
 	{
 		return crashWatcher;
 	}
-	
+
 	public static LanguageManager getLanguageManager()
 	{
 		return languageManager;
 	}
-	
+
 	public List<String> downloadFakePlayerNames()
 	{
 		logger.info("Downloading contributor/volunteered player names...");
@@ -417,7 +417,7 @@ public final class SpiderCore
 		{
 			readSkinsFromURL(PERM_SKINS_URL, returnList);
 			readSkinsFromURL(SKINS_URL, returnList);
-			
+
 			logger.info("Contributor/volunteer player names downloaded successfully!");
 		}
 
@@ -437,8 +437,8 @@ public final class SpiderCore
 
 	private void readSkinsFromURL(String stringUrl, List<String> returnList) throws IOException
 	{
-		URL url = new URL(stringUrl);
-		Scanner scanner = new Scanner(url.openStream());
+		final URL url = new URL(stringUrl);
+		final Scanner scanner = new Scanner(url.openStream());
 
 		while (scanner.hasNext())
 		{

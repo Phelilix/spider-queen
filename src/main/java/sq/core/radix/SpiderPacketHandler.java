@@ -19,8 +19,8 @@ public final class SpiderPacketHandler extends AbstractPacketHandler
 	@Override
 	public void registerPackets() 
 	{
-		this.registerPacket(PacketDataContainer.class, Side.CLIENT);
-		this.registerPacket(PacketSleepC.class, Side.CLIENT);
-		this.registerPacket(PacketSleepS.class, Side.SERVER);
+		registerPacket(PacketDataContainer.class, Side.CLIENT);
+		registerPacket(PacketSleepC.class, Side.CLIENT);
+		registerPacket(PacketSleepS.class, Side.SERVER);
 	}
 }

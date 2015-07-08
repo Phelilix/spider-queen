@@ -11,24 +11,22 @@ import net.minecraftforge.common.IExtendedEntityProperties;
 public class RepEntityExtension implements IExtendedEntityProperties
 {
 	public static final String ID = "SpiderQueenRepEntityExtension";
-	private final Entity entity;
 	private int timesHitByPlayer;
-	
+
 	public RepEntityExtension(Entity entity)
 	{
-		this.entity = entity;
 	}
-	
+
 	public int getTimesHitByPlayer()
 	{
-		return this.timesHitByPlayer;
+		return timesHitByPlayer;
 	}
-	
+
 	public void setTimesHitByPlayer(int value)
 	{
-		this.timesHitByPlayer = value;
+		timesHitByPlayer = value;
 	}
-	
+
 	@Override
 	public void saveNBTData(NBTTagCompound nbt) 
 	{
@@ -45,7 +43,7 @@ public class RepEntityExtension implements IExtendedEntityProperties
 	public void init(Entity entity, World world) 
 	{
 	}
-	
+
 	public static final void register(Entity entity)
 	{
 		entity.registerExtendedProperties(ID, new RepEntityExtension(entity));

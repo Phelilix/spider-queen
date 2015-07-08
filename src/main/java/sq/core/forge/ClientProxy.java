@@ -103,7 +103,7 @@ public final class ClientProxy extends ServerProxy
 			RenderingRegistry.registerEntityRenderingHandler(EntityPlayer.class, new RenderSpiderQueen());
 		}	
 	}
-	
+
 	@Override
 	public void registerEventHandlers() 
 	{

@@ -17,16 +17,16 @@ public class ItemSpiderEgg extends Item
 	public ItemSpiderEgg()
 	{
 		super();
-		
+
 		final String name = "spider-egg";
 		setUnlocalizedName(name);
 		setTextureName("sq:" + name);
 		setCreativeTab(SpiderCore.getCreativeTab());
 		setMaxStackSize(8);
-		
+
 		GameRegistry.registerItem(this, name);
 	}
-	
+
 	@Override
 	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int posX, int posY, int posZ, int meta, float xOffset, float yOffset, float zOffset)
 	{
@@ -36,7 +36,7 @@ public class ItemSpiderEgg extends Item
 			{
 				stack.stackSize--;
 			}
-			
+
 			posX += Facing.offsetsXForSide[meta];
 			posY += Facing.offsetsYForSide[meta];
 			posZ += Facing.offsetsZForSide[meta];
@@ -47,7 +47,7 @@ public class ItemSpiderEgg extends Item
 
 			return true;
 		}
-		
+
 		return true;
 	}
 }

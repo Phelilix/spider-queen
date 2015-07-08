@@ -45,7 +45,7 @@ public class EntityJack extends AbstractFlyingMob
 
 				while (yMov > -255)
 				{
-					Block block = worldObj.getBlock((int)posX, (int)posY + yMov, (int)posZ);
+					final Block block = worldObj.getBlock((int)posX, (int)posY + yMov, (int)posZ);
 
 					if (block != Blocks.air)
 					{
@@ -61,18 +61,18 @@ public class EntityJack extends AbstractFlyingMob
 					setDead();
 				}
 			}
-			
+
 			//Decrease attack timer constantly.
 			attackTimer--;
-			
+
 			//Check for next attack.
 			if (attackTimer <= 0)
 			{
 				attackTimer = Time.SECOND * RadixMath.getNumberInRange(2, 5);
-				
-				if (this.getEntityToAttack() != null)
+
+				if (getEntityToAttack() != null)
 				{
-					EntityJackBall attackBall = new EntityJackBall(worldObj, this, (EntityLivingBase) this.getEntityToAttack(), 1.6F, 4.0F);
+					final EntityJackBall attackBall = new EntityJackBall(worldObj, this, (EntityLivingBase) getEntityToAttack(), 1.6F, 4.0F);
 					worldObj.spawnEntityInWorld(attackBall);
 				}
 			}
@@ -108,13 +108,13 @@ public class EntityJack extends AbstractFlyingMob
 	{
 		return false;
 	}
-	
+
 	@Override
 	protected void dropFewItems(boolean hitByPlayer, int lootLevel)
 	{
 		if (hitByPlayer)
 		{
-			this.dropItem(ModItems.lantern, 1);
+			dropItem(ModItems.lantern, 1);
 		}
 	}
 }

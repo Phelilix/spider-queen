@@ -13,12 +13,12 @@ import sq.entity.creature.EntityWebslinger;
 public class PlayerExtension implements IExtendedEntityProperties
 {
 	public static final String					ID	= "SQPlayerExtension";
-	
+
 	public EntityWebslinger						webEntity;
 	private final EntityPlayer					player;
 	public int slingerCooldown;
 	private int monstersKilled;
-	
+
 	public PlayerExtension(EntityPlayer player)
 	{
 		this.player = player;
@@ -50,7 +50,7 @@ public class PlayerExtension implements IExtendedEntityProperties
 	{
 		return player;
 	}
-	
+
 	public void tick()
 	{
 		if (slingerCooldown > 0)
@@ -58,7 +58,7 @@ public class PlayerExtension implements IExtendedEntityProperties
 			slingerCooldown--;
 		}
 	}
-	
+
 	public static PlayerExtension get(EntityPlayer player)
 	{
 		return (PlayerExtension) player.getExtendedProperties(ID);
@@ -68,7 +68,7 @@ public class PlayerExtension implements IExtendedEntityProperties
 	{
 		return monstersKilled;
 	}
-	
+
 	public void setMonstersKilled(int value)
 	{
 		monstersKilled = value;

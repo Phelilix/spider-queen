@@ -26,41 +26,42 @@ public abstract class AbstractNewMob extends EntityMob
 		super(world);
 		this.codeName = codeName;
 
-		this.getNavigator().setAvoidsWater(false);
-		this.tasks.addTask(1, new EntityAIWander(this, getMoveSpeed()));
-		this.tasks.addTask(2, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
-		this.tasks.addTask(3, new EntityAILookIdle(this));
+		getNavigator().setAvoidsWater(false);
+		tasks.addTask(1, new EntityAIWander(this, getMoveSpeed()));
+		tasks.addTask(2, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
+		tasks.addTask(3, new EntityAILookIdle(this));
 
-		if (!this.isPassive())
+		if (!isPassive())
 		{
-			this.tasks.addTask(4, new EntityAIAttackOnCollide(this, getMoveSpeed(), false));
+			tasks.addTask(4, new EntityAIAttackOnCollide(this, getMoveSpeed(), false));
 
 			if (this instanceof IRep)
 			{
-				this.targetTasks.addTask(1, new AIAttackPlayerOnUnlike(this));
+				targetTasks.addTask(1, new AIAttackPlayerOnUnlike(this));
 			}
 
 			else
 			{
-				this.targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true));
+				targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true));
 			}
 
-			this.targetTasks.addTask(2, new EntityAIHurtByTarget(this, false));
-			this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, EntityHuman.class, 0, true));
+			targetTasks.addTask(2, new EntityAIHurtByTarget(this, false));
+			targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, EntityHuman.class, 0, true));
 		}
-		
+
 		appendAI();
 	}
 
+	@Override
 	protected final void applyEntityAttributes()
 	{
 		super.applyEntityAttributes();
-		this.getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(40.0D);
-		this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(getMoveSpeed());
-		this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(getHitDamage());
-		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(getMobMaxHealth());
+		getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(40.0D);
+		getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(getMoveSpeed());
+		getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(getHitDamage());
+		getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(getMobMaxHealth());
 	}
-	
+
 	public abstract float getMobMaxHealth();
 
 	public abstract float getHitDamage();
@@ -68,11 +69,11 @@ public abstract class AbstractNewMob extends EntityMob
 	public abstract double getMoveSpeed();
 
 	@Override
-    public boolean isAIEnabled()
-    {
-        return true;
-    }
-	
+	public boolean isAIEnabled()
+	{
+		return true;
+	}
+
 	@Override
 	protected String getHurtSound() 
 	{
@@ -99,8 +100,8 @@ public abstract class AbstractNewMob extends EntityMob
 
 	public void appendAI()
 	{
-		
+
 	}
-	
+
 	public abstract boolean isPassive();
 }

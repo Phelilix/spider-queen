@@ -11,13 +11,13 @@ import sq.client.model.ModelWasp;
 public class RenderWasp extends RenderLiving
 {
 	private final ResourceLocation texture;
-	
-    public RenderWasp()
-    {
-        super(new ModelWasp(), 1.0F);
-        setRenderPassModel(new ModelWasp());
-        texture = new ResourceLocation("sq:textures/entities/wasp.png");
-    }
+
+	public RenderWasp()
+	{
+		super(new ModelWasp(), 1.0F);
+		setRenderPassModel(new ModelWasp());
+		texture = new ResourceLocation("sq:textures/entities/wasp.png");
+	}
 
 	@Override
 	protected ResourceLocation getEntityTexture(Entity entity)

@@ -50,8 +50,6 @@ public class RenderWebslinger extends Render
 
 		if (entityWebslinger.player != null)
 		{
-			final float deltaYaw = (entityWebslinger.player.prevRotationYaw + (entityWebslinger.player.rotationYaw - entityWebslinger.player.prevRotationYaw) * rotationPitch) * 3.141593F / 180F;
-
 			final Vec3 vec3d = Vec3.createVectorHelper(-0.5D, 0.03D, 0.8D);
 			vec3d.rotateAroundX(-(entityWebslinger.player.prevRotationPitch + (entityWebslinger.player.rotationPitch - entityWebslinger.player.prevRotationPitch) * rotationPitch) * 3.141593F / 180F);
 			vec3d.rotateAroundY(-(entityWebslinger.player.prevRotationYaw + (entityWebslinger.player.rotationYaw - entityWebslinger.player.prevRotationYaw) * rotationPitch) * 3.141593F / 180F);
@@ -76,13 +74,13 @@ public class RenderWebslinger extends Render
 			final double correctedDeltaPosX = (float) (correctedPosX - deltaPosX);
 			final double correctedDeltaPosY = (float) (correctedPosY - deltaPosY);
 			final double correctedDeltaPosZ = (float) (correctedPosZ - deltaPosZ);
-			
+
 			GL11.glDisable(GL11.GL_TEXTURE_2D);
 			GL11.glDisable(GL11.GL_LIGHTING);
-			
+
 			tessellator.startDrawing(3);
 			tessellator.setColorOpaque_I(8161437);
-			
+
 			final int verteces = 16;
 			for (int currentVertex = 0; currentVertex <= verteces; currentVertex++)
 			{

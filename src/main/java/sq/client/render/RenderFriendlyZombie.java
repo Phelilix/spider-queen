@@ -9,10 +9,11 @@ import net.minecraft.util.ResourceLocation;
  */
 public class RenderFriendlyZombie extends RenderZombie
 {
-	private ResourceLocation texture = new ResourceLocation("sq:textures/entities/friendly-zombie.png");
-	
-    protected ResourceLocation getEntityTexture(Entity entity)
-    {
-        return texture;
-    }
+	private final ResourceLocation texture = new ResourceLocation("sq:textures/entities/friendly-zombie.png");
+
+	@Override
+	protected ResourceLocation getEntityTexture(Entity entity)
+	{
+		return texture;
+	}
 }

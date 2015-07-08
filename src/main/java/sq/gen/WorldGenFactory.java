@@ -50,9 +50,9 @@ public class WorldGenFactory implements IWorldGenerator
 		{
 			if (chunkGenerator instanceof ChunkProviderGenerate)
 			{
-				int x = chunkX * 16 + random.nextInt(16);
-				int z = chunkZ * 16 + random.nextInt(16);
-				BiomeGenBase biome = world.getBiomeGenForCoords(x, z);
+				final int x = chunkX * 16 + random.nextInt(16);
+				final int z = chunkZ * 16 + random.nextInt(16);
+				final BiomeGenBase biome = world.getBiomeGenForCoords(x, z);
 
 				//Only allow spawning in plains, deserts, and savannas.
 				if (biome == BiomeGenBase.plains || biome == BiomeGenBase.desert || biome == BiomeGenBase.savanna)
@@ -71,7 +71,7 @@ public class WorldGenFactory implements IWorldGenerator
 
 	public boolean generate(World world, Random random, int x, int y, int z)
 	{
-		Block block = world.getBlock(x, y, z);
+		final Block block = world.getBlock(x, y, z);
 
 		//Make sure we're spawning on grass, and perform a random operation to see if we can spawn.
 		if (block == Blocks.grass && random.nextInt(450) == 0)
@@ -79,13 +79,13 @@ public class WorldGenFactory implements IWorldGenerator
 			y += 2; //Account for the test block and player standing location in schematic.
 			SpiderCore.getLog().info("Generating factory at " + x + ", " + y + ", " + z );
 
-			Point3D point = new Point3D(x, y, z);
+			final Point3D point = new Point3D(x, y, z);
 
-			long t1 = System.nanoTime();
+			final long t1 = System.nanoTime();
 			spawnStructureRelativeToPoint(SpiderCore.structureSchematics.get(random.nextInt(SpiderCore.structureSchematics.size())), point, world);		
-			long t2 = System.nanoTime();
+			final long t2 = System.nanoTime();
 
-			long elapsedTime = TimeUnit.MILLISECONDS.convert(t2 - t1, TimeUnit.NANOSECONDS);
+			final long elapsedTime = TimeUnit.MILLISECONDS.convert(t2 - t1, TimeUnit.NANOSECONDS);
 			SpiderCore.getLog().info("Generation completed in " + elapsedTime + "ms.");
 		}
 
@@ -95,11 +95,11 @@ public class WorldGenFactory implements IWorldGenerator
 	//Schematic within memory based implementation from RadixCore. Also populates chests with loot and dispensers with splash potions.
 	private void spawnStructureRelativeToPoint(Map<Point3D, BlockObj> schemBlocks, Point3D point, World world)
 	{
-		Map<Point3D, BlockObj> torchMap = new HashMap<Point3D, BlockObj>();
-		Map<Point3D, BlockObj> doorMap = new HashMap<Point3D, BlockObj>();
-		Map<Point3D, BlockObj> placeholderMap = new HashMap<Point3D, BlockObj>();
+		final Map<Point3D, BlockObj> torchMap = new HashMap<Point3D, BlockObj>();
+		final Map<Point3D, BlockObj> doorMap = new HashMap<Point3D, BlockObj>();
+		final Map<Point3D, BlockObj> placeholderMap = new HashMap<Point3D, BlockObj>();
 
-		for (Map.Entry<Point3D, BlockObj> entry : schemBlocks.entrySet())
+		for (final Map.Entry<Point3D, BlockObj> entry : schemBlocks.entrySet())
 		{
 			if (entry.getValue().getBlock() == Blocks.torch)
 			{
@@ -118,20 +118,20 @@ public class WorldGenFactory implements IWorldGenerator
 
 			else
 			{
-				Point3D blockPoint = entry.getKey();
+				final Point3D blockPoint = entry.getKey();
 
-				int x = blockPoint.iPosX + point.iPosX;
-				int y = blockPoint.iPosY + point.iPosY;
-				int z = blockPoint.iPosZ + point.iPosZ;
+				final int x = blockPoint.iPosX + point.iPosX;
+				final int y = blockPoint.iPosY + point.iPosY;
+				final int z = blockPoint.iPosZ + point.iPosZ;
 
-				BlockObj blockObj = entry.getValue();
+				final BlockObj blockObj = entry.getValue();
 				world.setBlock(x, y, z, blockObj.getBlock(), blockObj.getMeta(), 0);
 
 				if (blockObj.getBlock() == Blocks.chest && world.rand.nextBoolean() && world.rand.nextBoolean())
 				{
 					try
 					{
-						TileEntityChest chest = (TileEntityChest) world.getTileEntity(x, y, z);
+						final TileEntityChest chest = (TileEntityChest) world.getTileEntity(x, y, z);
 
 						if (chest != null)
 						{							
@@ -139,13 +139,13 @@ public class WorldGenFactory implements IWorldGenerator
 							{
 								if (RadixLogic.getBooleanWithProbability(10))
 								{
-									int lootId = RadixMath.getNumberInRange(0, LOOT_ARRAY.length - 1);
-									Object[] lootEntry = LOOT_ARRAY[lootId];
-									Item lootItem = (Item) ((lootEntry[0] instanceof Block) ? Item.getItemFromBlock((Block) lootEntry[0]) : lootEntry[0]);
-									int minimum = (Integer) lootEntry[1];
-									int maximum = (Integer) lootEntry[2];
+									final int lootId = RadixMath.getNumberInRange(0, LOOT_ARRAY.length - 1);
+									final Object[] lootEntry = LOOT_ARRAY[lootId];
+									final Item lootItem = (Item) (lootEntry[0] instanceof Block ? Item.getItemFromBlock((Block) lootEntry[0]) : lootEntry[0]);
+									final int minimum = (Integer) lootEntry[1];
+									final int maximum = (Integer) lootEntry[2];
 
-									int amountToSpawn = RadixMath.getNumberInRange(minimum, maximum);
+									final int amountToSpawn = RadixMath.getNumberInRange(minimum, maximum);
 
 									chest.setInventorySlotContents(i, new ItemStack(lootItem, amountToSpawn));
 								}
@@ -153,7 +153,7 @@ public class WorldGenFactory implements IWorldGenerator
 						}
 					}
 
-					catch (Exception e)
+					catch (final Exception e)
 					{
 						continue;
 					}
@@ -164,7 +164,7 @@ public class WorldGenFactory implements IWorldGenerator
 					try
 					{
 						world.setBlockMetadataWithNotify(x, y, z, blockObj.getMeta() & 7, 2); //Operation used by Minecraft to determine texture.
-						TileEntityDispenser dispenser = (TileEntityDispenser) world.getTileEntity(x, y, z);
+						final TileEntityDispenser dispenser = (TileEntityDispenser) world.getTileEntity(x, y, z);
 
 						if (dispenser != null)
 						{
@@ -175,13 +175,13 @@ public class WorldGenFactory implements IWorldGenerator
 
 							else
 							{
-								ItemStack potionStack = new ItemStack(Items.potionitem, 4, (Integer) DISPENSER_ARRAY[RadixMath.getNumberInRange(0, DISPENSER_ARRAY.length - 1)]);
+								final ItemStack potionStack = new ItemStack(Items.potionitem, 4, DISPENSER_ARRAY[RadixMath.getNumberInRange(0, DISPENSER_ARRAY.length - 1)]);
 								dispenser.setInventorySlotContents(0, potionStack);
 							}
 						}
 					}
 
-					catch (Exception e)
+					catch (final Exception e)
 					{
 						continue;
 					}
@@ -189,40 +189,40 @@ public class WorldGenFactory implements IWorldGenerator
 			}
 		}
 
-		for (Map.Entry<Point3D, BlockObj> entry : torchMap.entrySet())
+		for (final Map.Entry<Point3D, BlockObj> entry : torchMap.entrySet())
 		{
-			Point3D blockPoint = entry.getKey();
+			final Point3D blockPoint = entry.getKey();
 
-			int x = blockPoint.iPosX + point.iPosX;
-			int y = blockPoint.iPosY + point.iPosY;
-			int z = blockPoint.iPosZ + point.iPosZ;
+			final int x = blockPoint.iPosX + point.iPosX;
+			final int y = blockPoint.iPosY + point.iPosY;
+			final int z = blockPoint.iPosZ + point.iPosZ;
 
-			BlockObj blockObj = entry.getValue();
+			final BlockObj blockObj = entry.getValue();
 			world.setBlock(x, y, z, blockObj.getBlock(), blockObj.getMeta(), 0);
 		}
 
-		for (Map.Entry<Point3D, BlockObj> entry : doorMap.entrySet())
+		for (final Map.Entry<Point3D, BlockObj> entry : doorMap.entrySet())
 		{
-			Point3D blockPoint = entry.getKey();
+			final Point3D blockPoint = entry.getKey();
 
-			int x = blockPoint.iPosX + point.iPosX;
-			int y = blockPoint.iPosY + point.iPosY;
-			int z = blockPoint.iPosZ + point.iPosZ;
+			final int x = blockPoint.iPosX + point.iPosX;
+			final int y = blockPoint.iPosY + point.iPosY;
+			final int z = blockPoint.iPosZ + point.iPosZ;
 
-			BlockObj blockObj = entry.getValue();
+			final BlockObj blockObj = entry.getValue();
 			world.setBlock(x, y, z, blockObj.getBlock(), blockObj.getMeta(), 0);
 		}
 
-		for (Map.Entry<Point3D, BlockObj> entry : placeholderMap.entrySet())
+		for (final Map.Entry<Point3D, BlockObj> entry : placeholderMap.entrySet())
 		{
-			EnumPlaceholderBlock placeHolder = EnumPlaceholderBlock.getByBlock(entry.getValue().getBlock());
-			Point3D blockPoint = entry.getKey();
+			final EnumPlaceholderBlock placeHolder = EnumPlaceholderBlock.getByBlock(entry.getValue().getBlock());
+			final Point3D blockPoint = entry.getKey();
 
-			int x = blockPoint.iPosX + point.iPosX;
-			int y = blockPoint.iPosY + point.iPosY;
-			int z = blockPoint.iPosZ + point.iPosZ;
+			final int x = blockPoint.iPosX + point.iPosX;
+			final int y = blockPoint.iPosY + point.iPosY;
+			final int z = blockPoint.iPosZ + point.iPosZ;
 
-			BlockObj blockObj = entry.getValue();
+			entry.getValue();
 			world.setBlock(x, y, z, placeHolder.getYield(), 0, 2);
 
 			if (placeHolder.getDoCallback())
@@ -240,7 +240,7 @@ public class WorldGenFactory implements IWorldGenerator
 
 			while (humansToSpawn > 0)
 			{
-				EntityHuman human = new EntityHuman(world);
+				final EntityHuman human = new EntityHuman(world);
 				human.setPosition(x, y, z);
 				world.spawnEntityInWorld(human);
 
@@ -250,7 +250,7 @@ public class WorldGenFactory implements IWorldGenerator
 
 		else if (enumPlaceHolder == EnumPlaceholderBlock.NETHER_QUARTZ)
 		{
-			EntitySpiderQueen spiderQueen = new EntitySpiderQueen(world);
+			final EntitySpiderQueen spiderQueen = new EntitySpiderQueen(world);
 			spiderQueen.setPosition(x, y, z);
 			world.spawnEntityInWorld(spiderQueen);
 		}
@@ -258,7 +258,7 @@ public class WorldGenFactory implements IWorldGenerator
 		else if (enumPlaceHolder == EnumPlaceholderBlock.BEACON && RadixLogic.getBooleanWithProbability(85))
 		{
 			Class friendlyClass = null;
-			int friendlyId = RadixMath.getNumberInRange(1, 4);
+			final int friendlyId = RadixMath.getNumberInRange(1, 4);
 
 			switch (friendlyId)
 			{
@@ -270,15 +270,15 @@ public class WorldGenFactory implements IWorldGenerator
 
 			try
 			{
-				EntityLivingBase friendlyInstance = (EntityLivingBase) friendlyClass.getConstructor(World.class).newInstance(world);
-				IFriendlyEntity friendlyInterface = (IFriendlyEntity)friendlyInstance;
+				final EntityLivingBase friendlyInstance = (EntityLivingBase) friendlyClass.getConstructor(World.class).newInstance(world);
+				final IFriendlyEntity friendlyInterface = (IFriendlyEntity)friendlyInstance;
 
 				friendlyInterface.setImprisoned(true);
 				friendlyInstance.setPosition(x, y, z);
 				world.spawnEntityInWorld(friendlyInstance);
 			}
 
-			catch (Exception e)
+			catch (final Exception e)
 			{
 				RadixExcept.logErrorCatch(e, "Spawning friendly in prison.");
 			}

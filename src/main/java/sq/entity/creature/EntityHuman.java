@@ -47,12 +47,11 @@ public class EntityHuman extends EntityCreature implements IEntityAdditionalSpaw
 	private static final ItemStack torchWood;
 	private static final ItemStack cake;
 
-	private DataWatcherEx dataWatcherEx;
+	private final DataWatcherEx dataWatcherEx;
 	private final WatchedBoolean isSwinging;
 	private int swingProgressTicks;
 	private String username;
 	private EnumHumanType type;
-	private ItemStack heldItem;
 	private int fortuneLevel;
 	private ResourceLocation skinResourceLocation;
 	private ThreadDownloadImageData	imageDownloadThread;
@@ -77,17 +76,19 @@ public class EntityHuman extends EntityCreature implements IEntityAdditionalSpaw
 		}
 	}
 
+	@Override
 	protected final void applyEntityAttributes()
 	{
 		super.applyEntityAttributes();
-		this.getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(40.0D);
-		this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.75F);
-		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(20.0F);
+		getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(40.0D);
+		getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.75F);
+		getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(20.0F);
 	}
 
+	@Override
 	protected void dropFewItems(boolean flag, int i)
 	{
-		for (ItemStack stack : type.getDropsForType(this))
+		for (final ItemStack stack : type.getDropsForType(this))
 		{
 			entityDropItem(stack, 1.0F);
 		}
@@ -148,6 +149,7 @@ public class EntityHuman extends EntityCreature implements IEntityAdditionalSpaw
 		return null;
 	}
 
+	@Override
 	protected boolean canDespawn()
 	{
 		return false;
@@ -156,13 +158,13 @@ public class EntityHuman extends EntityCreature implements IEntityAdditionalSpaw
 	@Override
 	protected Entity findPlayerToAttack()
 	{
-		EntityPlayer entityPlayer = worldObj.getClosestVulnerablePlayerToEntity(this, 16D);
+		final EntityPlayer entityPlayer = worldObj.getClosestVulnerablePlayerToEntity(this, 16D);
 
 		if (entityPlayer != null && canEntityBeSeen(entityPlayer))
 		{
-			PlayerData data = SpiderCore.getPlayerData(entityPlayer);
-			RepEntityExtension extension = (RepEntityExtension) this.getExtendedProperties(RepEntityExtension.ID);
-			
+			final PlayerData data = SpiderCore.getPlayerData(entityPlayer);
+			final RepEntityExtension extension = (RepEntityExtension) getExtendedProperties(RepEntityExtension.ID);
+
 			if (data.humanLike.getInt() < 0 || extension.getTimesHitByPlayer() >= 2)
 			{
 				return entityPlayer;
@@ -176,7 +178,7 @@ public class EntityHuman extends EntityCreature implements IEntityAdditionalSpaw
 
 		else
 		{
-			for (Entity entity : RadixLogic.getAllEntitiesWithinDistanceOfCoordinates(worldObj, posX, posY, posZ, 16))
+			for (final Entity entity : RadixLogic.getAllEntitiesWithinDistanceOfCoordinates(worldObj, posX, posY, posZ, 16))
 			{
 				if (entity instanceof EntityMob || entity instanceof AbstractNewMob)
 				{
@@ -184,19 +186,19 @@ public class EntityHuman extends EntityCreature implements IEntityAdditionalSpaw
 					{
 						continue;
 					}
-					
+
 					else if (entity instanceof IFriendlyEntity)
 					{
 						continue;
 					}
-					
+
 					else
 					{
-						if (this.canEntityBeSeen(entity))
+						if (canEntityBeSeen(entity))
 						{
 							return entity;
 						}
-						
+
 						else
 						{
 							continue;
@@ -204,7 +206,7 @@ public class EntityHuman extends EntityCreature implements IEntityAdditionalSpaw
 					}
 				}
 			}
-			
+
 			return null;
 		}
 	}
@@ -215,20 +217,20 @@ public class EntityHuman extends EntityCreature implements IEntityAdditionalSpaw
 		//Cancel setting the target if the player hasn't hit them enough, or if reputation is too high.
 		if (source.getEntity() instanceof EntityPlayer)
 		{
-			PlayerData data = SpiderCore.getPlayerData(((EntityPlayer)source.getEntity()));
-			RepEntityExtension extension = (RepEntityExtension) this.getExtendedProperties(RepEntityExtension.ID);
-			
+			final PlayerData data = SpiderCore.getPlayerData((EntityPlayer)source.getEntity());
+			final RepEntityExtension extension = (RepEntityExtension) getExtendedProperties(RepEntityExtension.ID);
+
 			if (data.humanLike.getInt() >= 0 && extension.getTimesHitByPlayer() <= 2)
 			{
 				//Do nothing.
 			}
 		}
-		
+
 		if (source.getEntity() != null)
 		{
 			entityToAttack = source.getEntity();
 		}
-		
+
 		return super.attackEntityFrom(source, amount);
 	}
 
@@ -241,20 +243,20 @@ public class EntityHuman extends EntityCreature implements IEntityAdditionalSpaw
 		{
 			if (f < 10F)
 			{
-				double dX = entity.posX - posX;
-				double dZ = entity.posZ - posZ;
-				
+				final double dX = entity.posX - posX;
+				final double dZ = entity.posZ - posZ;
+
 				if(attackTime <= 0)
 				{
-					EntityArrow entityArrow = new EntityArrow(worldObj, this, 1);
-					double d2 = (entity.posY + (double)entity.getEyeHeight()) - 0.20000000298023224D - entityArrow.posY;
-					float f1 = MathHelper.sqrt_double(dX * dX + dZ * dZ) * 0.2F;
+					final EntityArrow entityArrow = new EntityArrow(worldObj, this, 1);
+					final double d2 = entity.posY + entity.getEyeHeight() - 0.20000000298023224D - entityArrow.posY;
+					final float f1 = MathHelper.sqrt_double(dX * dX + dZ * dZ) * 0.2F;
 					worldObj.playSoundAtEntity(this, "random.bow", 1.0F, 1.0F / (rand.nextFloat() * 0.4F + 0.8F));
 					worldObj.spawnEntityInWorld(entityArrow);
-					entityArrow.setThrowableHeading(dX, d2 + (double)f1, dZ, 0.6F, 12F);
+					entityArrow.setThrowableHeading(dX, d2 + f1, dZ, 0.6F, 12F);
 					attackTime = 50;
 				}
-				rotationYaw = (float)((Math.atan2(dZ, dX) * 180D) / 3.1415927410125732D) - 90F;
+				rotationYaw = (float)(Math.atan2(dZ, dX) * 180D / 3.1415927410125732D) - 90F;
 				hasAttacked = true;
 			}
 
@@ -265,24 +267,27 @@ public class EntityHuman extends EntityCreature implements IEntityAdditionalSpaw
 		{
 			attackTime = 40;
 			swingItem();
-			
+
 			entity.attackEntityFrom(DamageSource.causeMobDamage(this), 3.0F);
 		}
 	}
 
+	@Override
 	public boolean getCanSpawnHere()
 	{
-		int i = MathHelper.floor_double(posX);
-		int j = MathHelper.floor_double(boundingBox.minY);
-		int k = MathHelper.floor_double(posZ);
+		final int i = MathHelper.floor_double(posX);
+		final int j = MathHelper.floor_double(boundingBox.minY);
+		final int k = MathHelper.floor_double(posZ);
 		return (worldObj.getBlock(i, j - 1, k) == Blocks.grass || worldObj.getBlock(i, j - 1, k) == Blocks.snow_layer) && super.getCanSpawnHere();
 	}
 
+	@Override
 	protected String getLivingSound()
 	{
 		return null;
 	}
 
+	@Override
 	public ItemStack getHeldItem()
 	{
 		switch (type)
@@ -315,13 +320,13 @@ public class EntityHuman extends EntityCreature implements IEntityAdditionalSpaw
 
 	public String getFortuneString()
 	{
-		String typeName = RadixString.upperFirstLetter(type.toString().toLowerCase());
-		StringBuilder sb = new StringBuilder();
+		final String typeName = RadixString.upperFirstLetter(type.toString().toLowerCase());
+		final StringBuilder sb = new StringBuilder();
 		sb.append("(");
 
 		if (type != EnumHumanType.NOOB)
 		{
-			String fortuneString = fortuneLevel == 2 ? "Rich" : fortuneLevel == 1 ? "Experienced" : "Poor"; 
+			final String fortuneString = fortuneLevel == 2 ? "Rich" : fortuneLevel == 1 ? "Experienced" : "Poor"; 
 			sb.append(fortuneString);
 			sb.append(" ");
 			sb.append(typeName);
@@ -336,12 +341,14 @@ public class EntityHuman extends EntityCreature implements IEntityAdditionalSpaw
 		return sb.toString();
 	}
 
+	@Override
 	public void writeEntityToNBT(NBTTagCompound nbt)
 	{
 		nbt.setString("username", username);
 		nbt.setInteger("type", type.getId());
 	}
 
+	@Override
 	public void readEntityFromNBT(NBTTagCompound nbt)
 	{
 		username = nbt.getString("username");

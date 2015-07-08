@@ -1,6 +1,5 @@
 package sq.entity.friendly;
 
-import java.util.Random;
 import java.util.UUID;
 
 import net.minecraft.entity.Entity;
@@ -66,25 +65,25 @@ public final class FriendlyEntityHelper
 	{
 		if (!friendlyEntity.getInstance().worldObj.isRemote && friendlyEntity.getTimeUntilSpeak() <= 0)
 		{
-			EntityCreature friendlyCreature = friendlyEntity.getInstance();
-			EntityPlayer player = friendlyCreature.worldObj.getClosestPlayerToEntity(friendlyCreature, 8.0D);
+			final EntityCreature friendlyCreature = friendlyEntity.getInstance();
+			final EntityPlayer player = friendlyCreature.worldObj.getClosestPlayerToEntity(friendlyCreature, 8.0D);
 
 			//Make sure there's a player to talk to, and it's our friend.
 			if (player != null && player.getUniqueID().equals(friendlyEntity.getFriendPlayerUUID()))
 			{
-				String messageId = "message." + friendlyEntity.getSpeakId() + ".periodic";
+				final String messageId = "message." + friendlyEntity.getSpeakId() + ".periodic";
 				player.addChatComponentMessage(new ChatComponentText(
 						RadixString.upperFirstLetter(friendlyEntity.getSpeakId() + ": " + 
-						SpiderCore.getLanguageManager().getString(messageId))));
-				
+								SpiderCore.getLanguageManager().getString(messageId))));
+
 				friendlyEntity.setTimeUntilSpeak(Time.MINUTE * RadixMath.getNumberInRange(10, 20));
 
 				//Announce to all nearby friendlies that this one has spoken, reset all of them to prevent annoying the player.
-				for (Entity entity : RadixLogic.getAllEntitiesWithinDistanceOfCoordinates(friendlyCreature.worldObj, friendlyCreature.posX, friendlyCreature.posY, friendlyCreature.posZ, 20))
+				for (final Entity entity : RadixLogic.getAllEntitiesWithinDistanceOfCoordinates(friendlyCreature.worldObj, friendlyCreature.posX, friendlyCreature.posY, friendlyCreature.posZ, 20))
 				{
 					if (entity instanceof IFriendlyEntity)
 					{
-						IFriendlyEntity otherFriendly = (IFriendlyEntity)entity;
+						final IFriendlyEntity otherFriendly = (IFriendlyEntity)entity;
 						otherFriendly.setTimeUntilSpeak(Time.MINUTE * RadixMath.getNumberInRange(10, 20));
 					}
 				}
@@ -127,7 +126,7 @@ public final class FriendlyEntityHelper
 			final double distanceToOwner = RadixMath.getDistanceToEntity(me, friendPlayer);
 			final ItemStack currentItemStack = friendPlayer.inventory.mainInventory[friendPlayer.inventory.currentItem];
 
-			if (currentItemStack != null && distanceToOwner < 25.0D && (currentItemStack.getItem() == ModItems.spiderRod))
+			if (currentItemStack != null && distanceToOwner < 25.0D && currentItemStack.getItem() == ModItems.spiderRod)
 			{
 				moveToPlayer(friendlyEntity, friendPlayer);
 				return true;
@@ -140,11 +139,11 @@ public final class FriendlyEntityHelper
 	public static void tryMoveToStationaryRod(IFriendlyEntity friendlyEntity)
 	{
 		final EntityLiving me = friendlyEntity.getInstance();
-		Point3D nearestRod = RadixLogic.getFirstNearestBlock(me, ModBlocks.spiderRod, 10);
+		final Point3D nearestRod = RadixLogic.getFirstNearestBlock(me, ModBlocks.spiderRod, 10);
 
 		if (nearestRod != null && RadixMath.getDistanceToXYZ(nearestRod.dPosX, nearestRod.dPosY, nearestRod.dPosZ, me.posX, me.posY, me.posZ) >= 5.0D)
 		{
-			double moveSpeed = friendlyEntity.getInstance().getEntityAttribute(SharedMonsterAttributes.movementSpeed).getBaseValue();
+			final double moveSpeed = friendlyEntity.getInstance().getEntityAttribute(SharedMonsterAttributes.movementSpeed).getBaseValue();
 			me.getNavigator().tryMoveToXYZ(nearestRod.dPosX, nearestRod.dPosY, nearestRod.dPosZ, moveSpeed);
 		}
 	}
@@ -154,17 +153,15 @@ public final class FriendlyEntityHelper
 		if (!friendlyEntity.doManualAttack(entityBeingAttacked, damageAmount))
 		{
 			final EntityLiving me = friendlyEntity.getInstance();
-			final Random rand = me.worldObj.rand;
 			final PathNavigate navigator = me.getNavigator();
 
 			if (me.getHealth() > 0.0F && me.riddenByEntity == null)
 			{
-				double moveSpeed = friendlyEntity.getInstance().getEntityAttribute(SharedMonsterAttributes.movementSpeed).getBaseValue();
+				final double moveSpeed = friendlyEntity.getInstance().getEntityAttribute(SharedMonsterAttributes.movementSpeed).getBaseValue();
 				navigator.setPath(navigator.getPathToEntityLiving(entityBeingAttacked), moveSpeed);
 
 				if (RadixMath.getDistanceToEntity(me, entityBeingAttacked) < 2.0D && !(friendlyEntity instanceof EntityFriendlyCreeper))
 				{
-					final EntityLivingBase entityLiving = (EntityLivingBase) entityBeingAttacked;
 					entityBeingAttacked.attackEntityFrom(DamageSource.generic, damageAmount);
 				}
 			}
@@ -209,8 +206,8 @@ public final class FriendlyEntityHelper
 
 			if (me.getDistanceToEntity(friendPlayer) > 3.5D)
 			{
-				double moveSpeed = friendlyEntity.getInstance().getEntityAttribute(SharedMonsterAttributes.movementSpeed).getBaseValue();
-				final boolean pathSet = me.getNavigator().tryMoveToEntityLiving(friendPlayer, moveSpeed);
+				final double moveSpeed = friendlyEntity.getInstance().getEntityAttribute(SharedMonsterAttributes.movementSpeed).getBaseValue();
+				me.getNavigator().tryMoveToEntityLiving(friendPlayer, moveSpeed);
 				me.getNavigator().onUpdateNavigation();
 
 				if (me.getDistanceToEntity(friendPlayer) >= 10.0D && me.getDistanceToEntity(friendPlayer) <= 30.0D)
@@ -244,7 +241,7 @@ public final class FriendlyEntityHelper
 			return returnPlayer;
 		}
 
-		catch (NullPointerException e)
+		catch (final NullPointerException e)
 		{
 			return null;
 		}
@@ -255,8 +252,8 @@ public final class FriendlyEntityHelper
 		if (target instanceof IFriendlyEntity)
 		{
 			//Don't attack friendly entities belonging to the same player.
-			IFriendlyEntity targetFriendlyEntity = (IFriendlyEntity)target;
-			boolean ownersAreEqual = friendlyEntity.getFriendPlayerUUID().equals(targetFriendlyEntity.getFriendPlayerUUID());
+			final IFriendlyEntity targetFriendlyEntity = (IFriendlyEntity)target;
+			final boolean ownersAreEqual = friendlyEntity.getFriendPlayerUUID().equals(targetFriendlyEntity.getFriendPlayerUUID());
 			return !ownersAreEqual;
 		}
 

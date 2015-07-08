@@ -58,7 +58,7 @@ public final class ModItems
 	public static ItemCocoon cocoonChicken;
 	public static ItemCocoon cocoonVillager;
 	public static ItemCocoon cocoonHorse;
-	
+
 	public static ItemEggSpawner eggAntBlack;
 	public static ItemEggSpawner eggBee;
 	public static ItemEggSpawner eggBeetle;
@@ -73,7 +73,7 @@ public final class ModItems
 	public static ItemEggSpawner eggFriendlySkeleton;
 	public static ItemEggSpawner eggFriendlyZombie;
 	public static ItemEggSpawner eggHuman;
-	
+
 	public static ItemGhastEgg ghastEgg;
 	public static ItemSpiderEgg spiderEgg;
 	public static ItemWeb webNormal;
@@ -90,7 +90,7 @@ public final class ModItems
 	public static ItemMandSeeds mandragoraSeeds;
 	public static Item royalBlood;
 	public static ItemLantern lantern;
-	
+
 	public ModItems()
 	{
 		cocoonBlackAnt = new ItemCocoon(EnumCocoonType.BLACK_ANT);
@@ -110,7 +110,7 @@ public final class ModItems
 		cocoonChicken = new ItemCocoon(EnumCocoonType.CHICKEN);
 		cocoonVillager = new ItemCocoon(EnumCocoonType.VILLAGER);
 		cocoonHorse = new ItemCocoon(EnumCocoonType.HORSE);
-		
+
 		eggAntBlack = new ItemEggSpawner(EntityAnt.class, "egg-ant");
 		eggBee = new ItemEggSpawner(EntityBee.class, "egg-bee");
 		eggBeetle = new ItemEggSpawner(EntityBeetle.class, "egg-beetle");
@@ -125,7 +125,7 @@ public final class ModItems
 		eggFriendlySkeleton = new ItemEggSpawner(EntityFriendlySkeleton.class, "egg-f-skeleton");
 		eggFriendlyZombie = new ItemEggSpawner(EntityFriendlyZombie.class, "egg-f-zombie");
 		eggHuman = new ItemEggSpawner(EntityHuman.class, "egg-human");
-		
+
 		ghastEgg = new ItemGhastEgg();
 		spiderEgg = new ItemSpiderEgg();
 		webNormal = new ItemWeb(EnumWebType.NORMAL);

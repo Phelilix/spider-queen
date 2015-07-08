@@ -17,29 +17,29 @@ public enum EnumSpiderType
 	ENDER (6),
 	PACK (7),
 	RIDER (8);
-	
+
 	private int id;
-	
+
 	EnumSpiderType(int id)
 	{
 		this.id = id;
 	}
-	
+
 	public int getId()
 	{
 		return id;
 	}
-	
+
 	public static EnumSpiderType byId(int id)
 	{
-		for (EnumSpiderType type : values())
+		for (final EnumSpiderType type : values())
 		{
 			if (type.id == id)
 			{
 				return type;
 			}
 		}
-		
+
 		return null;
 	}
 	public String getFriendlyName()

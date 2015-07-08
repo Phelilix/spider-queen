@@ -11,7 +11,7 @@ public class ModelVines extends ModelBase
 {
 	public ModelVines()
 	{
-		int yy = 7;
+		final int yy = 7;
 		vine = new ModelRenderer(this,0, 0);
 		vine.addBox(-1, -1, -20, 2, 2, 20, 0F);
 		vine.setRotationPoint(0, 24 + yy, 18);
@@ -49,6 +49,7 @@ public class ModelVines extends ModelBase
 		vine4.mirror = false;
 	}
 
+	@Override
 	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
 	{
 		setRotationAngles(f, f1, f2, f3, f4, f5);

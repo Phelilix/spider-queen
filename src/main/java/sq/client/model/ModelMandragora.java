@@ -137,6 +137,7 @@ public class ModelMandragora extends ModelBase
 		setRotation(roots2, 0F, 0F, 0F);
 	}
 
+	@Override
 	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
 	{
 		super.render(entity, f, f1, f2, f3, f4, f5);
@@ -178,7 +179,7 @@ public class ModelMandragora extends ModelBase
 		leftArm.rotateAngleZ = 0.0F;
 		rightArm.rotateAngleY = 0.0F;
 		leftArm.rotateAngleY = 0.0F;
-		
+
 		if(onGround > -9990F)
 		{
 			float f6 = onGround;
@@ -193,13 +194,13 @@ public class ModelMandragora extends ModelBase
 			f6 *= f6;
 			f6 *= f6;
 			f6 = 1.0F - f6;
-			float f7 = MathHelper.sin(f6 * 3.141593F);
-			float f8 = MathHelper.sin(onGround * 3.141593F) * -(head.rotateAngleX - 0.7F) * 0.75F;
-			rightArm.rotateAngleX -= (double)f7 * 1.2D + (double)f8;
+			final float f7 = MathHelper.sin(f6 * 3.141593F);
+			final float f8 = MathHelper.sin(onGround * 3.141593F) * -(head.rotateAngleX - 0.7F) * 0.75F;
+			rightArm.rotateAngleX -= f7 * 1.2D + f8;
 			rightArm.rotateAngleY += torso.rotateAngleY * 2.0F;
 			rightArm.rotateAngleZ = MathHelper.sin(onGround * 3.141593F) * -0.4F;
 		}
-		
+
 		rightArm.rotateAngleZ += MathHelper.cos(f2 * 0.09F) * 0.05F + 0.05F;
 		leftArm.rotateAngleZ -= MathHelper.cos(f2 * 0.09F) * 0.05F + 0.05F;
 		rightArm.rotateAngleX += MathHelper.sin(f2 * 0.067F) * 0.05F;

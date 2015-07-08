@@ -12,7 +12,7 @@ import radixcore.util.RadixAchievement;
 public final class ModAchievements
 {
 	public static AchievementPage page;
-	
+
 	public static Achievement goInTheDark;
 	public static Achievement eatToGetString;
 	public static Achievement craftWeb;
@@ -25,7 +25,7 @@ public final class ModAchievements
 	public static Achievement craftSpiderBed;
 	public static Achievement craftWebslinger;
 	public static Achievement craftPoisonWeb;
-	
+
 	public static Achievement makeFriend;
 	public static Achievement makeEnemy;
 	public static Achievement getFriendlyBee;
@@ -33,7 +33,7 @@ public final class ModAchievements
 	public static Achievement getFriendlyMandragora;
 	public static Achievement getFriendlySkeleton;
 	public static Achievement getFriendlyZombie;
-	
+
 	public static Achievement hatchEnderSpider;
 	public static Achievement hatchBoomSpider;
 	public static Achievement hatchSlingerSpider;
@@ -41,7 +41,7 @@ public final class ModAchievements
 	public static Achievement hatchTankSpider;
 	public static Achievement hatchPackSpider;
 	public static Achievement hatchRiderSpider;
-	
+
 	public ModAchievements()
 	{
 		goInTheDark = RadixAchievement.register("goInTheDark", 1, 0, Blocks.torch, null);
@@ -52,7 +52,7 @@ public final class ModAchievements
 		craftSpiderBed = RadixAchievement.register("craftSpiderBed", 4, -1, Blocks.log, goInTheDark);
 		craftWebslinger = RadixAchievement.register("craftWebslinger", 6, -1, ModItems.webslinger, goInTheDark);
 		craftPoisonWeb = RadixAchievement.register("craftPoisonWeb", 8, -1, ModItems.webPoison, goInTheDark);
-		
+
 		//Game guide tier
 		eatToGetString = RadixAchievement.register("eatToGetString", 2, 1, Items.string, goInTheDark);
 		craftWeb = RadixAchievement.register("craftWeb", 4, 1, ModItems.webNormal, eatToGetString);
@@ -60,7 +60,7 @@ public final class ModAchievements
 		acquireEgg = RadixAchievement.register("acquireEgg", 8, 2, ModItems.spiderEgg, catchMob);
 		hatchSpider = RadixAchievement.register("hatchSpider", 10, 1, ModItems.eggSpiderQueen, acquireEgg);
 		hatchSpiderByCocoon = RadixAchievement.register("hatchSpiderByCocoon", 10, 3, Items.iron_sword, acquireEgg);
-		
+
 		//Spiders tier
 		hatchEnderSpider = RadixAchievement.register("hatchEnderSpider", 0, -1, ModItems.cocoonEnderman, goInTheDark);
 		hatchBoomSpider = RadixAchievement.register("hatchBoomSpider", -2, -1, ModItems.cocoonCreeper, goInTheDark);
@@ -69,7 +69,7 @@ public final class ModAchievements
 		hatchTankSpider = RadixAchievement.register("hatchTankSpider", 0, -3, ModItems.cocoonZombie, goInTheDark);
 		hatchPackSpider = RadixAchievement.register("hatchPackSpider", -2, -3, ModItems.cocoonVillager, goInTheDark);
 		hatchRiderSpider = RadixAchievement.register("hatchRiderSpider", -4, -3, ModItems.cocoonHorse, goInTheDark);
-		
+
 		//Reputation tier
 		makeEnemy = RadixAchievement.register("makeEnemy", 0, 1, ModItems.cocoonWarriorBee, goInTheDark);
 		makeFriend = RadixAchievement.register("makeFriend", -1, 3, Blocks.yellow_flower, makeEnemy);
@@ -78,7 +78,7 @@ public final class ModAchievements
 		getFriendlyMandragora = RadixAchievement.register("getFriendlyMandragora", -6, 2, ModItems.mandragoraSeeds, makeFriend);
 		getFriendlySkeleton = RadixAchievement.register("getFriendlySkeleton", -2, 4, Items.bone, makeFriend);
 		getFriendlyZombie = RadixAchievement.register("getFriendlyZombie", -4, 4, Blocks.log2, makeFriend);
-		
+
 		page = RadixAchievement.registerPage("Spider Queen", this.getClass());
 	}
 }

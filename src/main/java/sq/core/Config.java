@@ -19,14 +19,14 @@ public final class Config
 	public int baseItemId;
 	public int baseBlockId;
 	public int baseEntityId;
-	
+
 	public boolean allowCrashReporting;
 	public boolean allowUpdateChecking;
 
 	public boolean usePlayerSkin;
 	public boolean useSpiderQueenModel;
 	public boolean enableNightVision;
-	
+
 	public boolean enableYuki;
 	public boolean enableJack;
 	public boolean enableMandragora;
@@ -35,14 +35,14 @@ public final class Config
 	public boolean enableAnt;
 	public boolean enableHumans;
 	public boolean enableFactories;
-	
+
 	public boolean showHumanName;
 	public boolean showHumanSkin;
 	public boolean showHumanType;
-	
+
 	public int antSpawnCap;
 	public int beeSpawnCap;
-	
+
 	public Config(FMLPreInitializationEvent event)
 	{
 		config = new Configuration(event.getSuggestedConfigurationFile());
@@ -63,34 +63,34 @@ public final class Config
 		enableAnt = config.get("Init", "Enable Ants?", true, "Enables/disables ants.").getBoolean();
 		enableHumans = config.get("Init", "Enable Humans?", true, "Enables/disables humans.").getBoolean();
 		enableFactories = config.get("Init", "Enable Factories?", true, "Enables/disables NPC factories.").getBoolean();
-		
+
 		config.setCategoryComment("Graphics", "Settings that affect graphics-related portions of the mod.");
 		usePlayerSkin = config.get("Graphics", "Use player skin?", false, "True if you want your Minecraft skin to be used instead of the spider queen skin.").getBoolean();
 		useSpiderQueenModel = config.get("Graphics", "Use spider queen model?", true, "False if you want to keep the standard Minecraft player model. THIS OPTION REQUIRES A RESTART.").getBoolean();
 		enableNightVision = config.get("Graphics", "Enable night vision?", true, "False if you want the Spider Queen's default night vision to be disabled").getBoolean();
-		
+
 		showHumanName = config.get("Graphics", "Show human names?", false, "True if you want the humans in the game to have the names of real players.").getBoolean();
 		showHumanSkin = config.get("Graphics", "Show human skins?", true, "True if you want the humans in the game to have the skins of real players.").getBoolean();
 		showHumanType = config.get("Graphics", "Show human type?", true, "True if you want to see the human's type (ex. Poor Miner) when you are near them.").getBoolean();
-		
+
 		config.setCategoryComment("Performance", "Settings that can affect your game performance.");
 		antSpawnCap = config.get("Performance", "Ant spawn cap", 10, "The maximum number of ants that can spawn within a 16 block radius.").getInt();
 		beeSpawnCap = config.get("Performance", "Bee spawn cap", 5, "The maximum number of bees that can spawn within a 16 block radius.").getInt();
-		
+
 		config.setCategoryComment("Privacy", "Setting pertaining to your privacy while using Spider Queen.");
 		allowCrashReporting = config.get("Privacy", "Allow crash reporting", true, "True if Spider Queen can send crash reports to the mod authors. Crash reports may include your Minecraft username, OS version, Java version, and PC username.").getBoolean();
 		allowUpdateChecking = config.get("Privacy", "Allow update checking", true, "True if Spider Queen can check for updates. This setting requires a restart in order to take effect.").getBoolean();
-		
+
 		config.save();
 	}
-	
+
 	public void syncConfiguration()
 	{
 		config.load();
 		addConfigValues();
 		config.save();
 	}
-	
+
 	public Configuration getConfigInstance()
 	{
 		return config;
@@ -98,15 +98,15 @@ public final class Config
 
 	public List<IConfigElement> getConfigCategories()
 	{
-		List<IConfigElement> elements = new ArrayList<IConfigElement>();
+		final List<IConfigElement> elements = new ArrayList<IConfigElement>();
 
-		for (String s : config.getCategoryNames())
+		for (final String s : config.getCategoryNames())
 		{
 			//Don't include server only categories in the configuration menu's list of options.
 			if (!s.equals("server"))
 			{	
-				IConfigElement element = new ConfigElement(config.getCategory(s));
-				for (IConfigElement e : (List<IConfigElement>)element.getChildElements())
+				final IConfigElement element = new ConfigElement(config.getCategory(s));
+				for (final IConfigElement e : (List<IConfigElement>)element.getChildElements())
 				{
 					elements.add(e);
 				}

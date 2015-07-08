@@ -48,66 +48,66 @@ public enum EnumCocoonType
 	VILLAGER 	(15, 80, EnumCocoonSize.TALL, EnumSpiderType.PACK, EntityVillager.class),
 	HORSE 		(16, 35, EnumCocoonSize.NORMAL, EnumSpiderType.RIDER, EntityHorse.class),
 	RED_ANT		(17, 40, EnumCocoonSize.INSECT, EnumSpiderType.NORMAL, EntityAnt.class);
-	
+
 	final int id;
 	final int catchChance;
 	final EnumCocoonSize cocoonSize;
 	final EnumSpiderType spiderTypeYield;
 	final String deathSound;
 	final Class captureClass;
-	
+
 	EnumCocoonType(int id, int catchChance, EnumCocoonSize size, EnumSpiderType spiderType, Class captureClass)
 	{
 		this.id = id;
 		this.catchChance = catchChance;
-		this.cocoonSize = size;
-		this.spiderTypeYield = spiderType;
+		cocoonSize = size;
+		spiderTypeYield = spiderType;
 		this.captureClass = captureClass;
-		
-		this.deathSound = "mob." + name().toLowerCase() + ".death";
+
+		deathSound = "mob." + name().toLowerCase() + ".death";
 	}
-	
+
 	public int getId()
 	{
 		return id;
 	}
-	
+
 	public int getCatchChance()
 	{
 		return catchChance;
 	}
-	
+
 	public ItemCocoon getCocoonItem()
 	{
 		try
 		{
-			for (Field f : ModItems.class.getDeclaredFields())
+			for (final Field f : ModItems.class.getDeclaredFields())
 			{
 				if (f.getName().equalsIgnoreCase("cocoon" + name().toLowerCase().replace("_", "")))
 				{
-					ItemCocoon item = (ItemCocoon) f.get(null);
+					final ItemCocoon item = (ItemCocoon) f.get(null);
 					return item;
 				}
 			}
 		}
-		
-		catch (Exception e)
+
+		catch (final Exception e)
 		{
 		}
-		
+
 		return null;
 	}
-	
+
 	public EnumCocoonSize getCocoonSize()
 	{
 		return cocoonSize;
 	}
-	
+
 	public EnumSpiderType getSpiderTypeYield()
 	{
 		return spiderTypeYield;
 	}
-	
+
 	public String getNameColor()
 	{
 		switch (getSpiderTypeYield())
@@ -122,11 +122,11 @@ public enum EnumCocoonType
 		default: return Color.GRAY;
 		}
 	}
-	
+
 	public List<String> getAbilities()
 	{
-		List<String> list = new ArrayList<String>();
-		
+		final List<String> list = new ArrayList<String>();
+
 		switch (getSpiderTypeYield())
 		{
 		case ENDER: list.add("Tosses targets into the air."); break;
@@ -138,14 +138,14 @@ public enum EnumCocoonType
 		case TANK: list.add("Poisons targets."); list.add("High health."); break;
 		default: break;
 		}
-		
+
 		return list;
 	}
-	
+
 	public List<String> getCaveats()
 	{
-		List<String> list = new ArrayList<String>();
-		
+		final List<String> list = new ArrayList<String>();
+
 		switch (getSpiderTypeYield())
 		{
 		case ENDER: list.add("Does not fight."); break;
@@ -157,14 +157,14 @@ public enum EnumCocoonType
 		case TANK: list.add("Moves slowly."); break;
 		default: break;
 		}
-		
+
 		return list;
 	}
-	
+
 	public List<String> getLevelUpConditions() 
 	{
-		List<String> list = new ArrayList<String>();
-		
+		final List<String> list = new ArrayList<String>();
+
 		switch (getSpiderTypeYield())
 		{
 		case ENDER: list.add("From using ability."); break;
@@ -176,7 +176,7 @@ public enum EnumCocoonType
 		case TANK: list.add("From combat."); break;
 		default: break;
 		}
-		
+
 		return list;
 	}
 
@@ -198,32 +198,32 @@ public enum EnumCocoonType
 		default:
 			break;
 		}
-		
+
 		return deathSound;
 	}
-	
+
 	public String getName()
 	{
 		return name().toLowerCase().replace("_", "");
 	}
-	
+
 	public static EnumCocoonType getCocoonType(Entity entity)
 	{
 		if (entity instanceof EntityAnt)
 		{
-			EntityAnt ant = (EntityAnt)entity;
-			
+			final EntityAnt ant = (EntityAnt)entity;
+
 			switch (ant.getAntType())
 			{
 			case RED: return EnumCocoonType.RED_ANT;
 			case BLACK: return EnumCocoonType.BLACK_ANT;
 			}
 		}
-		
+
 		else if (entity instanceof EntityBee)
 		{
-			EntityBee bee = (EntityBee)entity;
-			
+			final EntityBee bee = (EntityBee)entity;
+
 			switch (bee.getBeeType())
 			{
 			case GATHERER: return EnumCocoonType.GATHERER_BEE;
@@ -231,10 +231,10 @@ public enum EnumCocoonType
 			case WARRIOR: return EnumCocoonType.WARRIOR_BEE;
 			}
 		}
-		
+
 		else
 		{
-			for (EnumCocoonType type : values())
+			for (final EnumCocoonType type : values())
 			{
 				if (type.captureClass.isAssignableFrom(entity.getClass()))
 				{
@@ -242,7 +242,7 @@ public enum EnumCocoonType
 				}
 			}
 		}
-		
+
 		return null;
 	}
 }

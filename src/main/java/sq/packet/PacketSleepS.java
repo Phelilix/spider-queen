@@ -15,7 +15,7 @@ public class PacketSleepS extends AbstractPacket implements IMessage, IMessageHa
 {
 	private String username;
 	private boolean addRemoveFlag;
-	
+
 	public PacketSleepS()
 	{
 	}
@@ -23,7 +23,7 @@ public class PacketSleepS extends AbstractPacket implements IMessage, IMessageHa
 	public PacketSleepS(String username, boolean flag)
 	{
 		this.username = username;
-		this.addRemoveFlag = flag;
+		addRemoveFlag = flag;
 	}
 
 	@Override
@@ -47,12 +47,12 @@ public class PacketSleepS extends AbstractPacket implements IMessage, IMessageHa
 		{
 			SpiderCore.sleepingPlayers.add(packet.username);
 		}
-		
+
 		else
 		{
 			SpiderCore.sleepingPlayers.remove(packet.username);
 		}
-		
+
 		return null;
 	}
 }

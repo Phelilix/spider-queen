@@ -29,7 +29,7 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 	private EnumCocoonType	cocoonType;
 	private int currentDamage;
 	private int	timeSinceHit;
-	
+
 	public EntityCocoon(World world)
 	{
 		super(world);
@@ -152,10 +152,10 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 					{
 						dropItem(cocoonType.getCocoonItem(), 1);	
 					}
-					
+
 					setDead();
 				}
-				
+
 			}
 		}
 
@@ -231,15 +231,13 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 				final boolean doDropEgg = RadixLogic.getBooleanWithProbability(25);
 				final int dropAmount = RadixMath.getNumberInRange(1, 2);
 
-				int maxString = 5;
-				
 				switch (cocoonType)
 				{
 				case ENDERMAN:
 				case QUEEN_BEE:
-				case HUMAN: maxString = 20;
+				case HUMAN:
 				}
-				
+
 				entityDropItem(new ItemStack(Items.string, RadixMath.getNumberInRange(2, 20), 0), 0);
 
 				if (doDropEgg)
@@ -287,7 +285,7 @@ public class EntityCocoon extends EntityCreature implements IEntityAdditionalSpa
 	{
 		if (!worldObj.isRemote)
 		{
-			this.getDataWatcher().updateObject(20, isEaten ? 1 : 0);
+			getDataWatcher().updateObject(20, isEaten ? 1 : 0);
 
 			if (isEaten)
 			{

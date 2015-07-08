@@ -45,19 +45,19 @@ public class EntityFriendlyMandragora extends EntityMandragora implements IFrien
 	public EntityFriendlyMandragora(World world, EntityPlayer friendPlayer)
 	{
 		super(world);
-		this.friendPlayerUUID = friendPlayer.getPersistentID();
+		friendPlayerUUID = friendPlayer.getPersistentID();
 
 		//Clear old task entries.
-		this.tasks.taskEntries.clear();
-		this.targetTasks.taskEntries.clear();
+		tasks.taskEntries.clear();
+		targetTasks.taskEntries.clear();
 
 		//Add custom tasks.
-		this.tasks.addTask(0, new EntityAISwimming(this));
-		this.tasks.addTask(3, new EntityAIMoveTowardsRestriction(this, 1.0D));
-		this.tasks.addTask(5, new EntityAIWander(this, 0.55D));
-		this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
-		this.tasks.addTask(7, new EntityAILookIdle(this));
-		this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true));
+		tasks.addTask(0, new EntityAISwimming(this));
+		tasks.addTask(3, new EntityAIMoveTowardsRestriction(this, 1.0D));
+		tasks.addTask(5, new EntityAIWander(this, 0.55D));
+		tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
+		tasks.addTask(7, new EntityAILookIdle(this));
+		targetTasks.addTask(1, new EntityAIHurtByTarget(this, true));
 	}
 
 	@Override
@@ -75,22 +75,22 @@ public class EntityFriendlyMandragora extends EntityMandragora implements IFrien
 				timeUntilAbility = Time.MINUTE * RadixMath.getNumberInRange(2, 5);
 
 				//Get all nearby crops and make them grow.
-				for (Point3D point : RadixLogic.getNearbyBlocks(this, BlockCrops.class, 10))
+				for (final Point3D point : RadixLogic.getNearbyBlocks(this, BlockCrops.class, 10))
 				{
 					try
 					{
-						BlockCrops crop = (BlockCrops)worldObj.getBlock(point.iPosX, point.iPosY, point.iPosZ);
-						int metadata = worldObj.getBlockMetadata(point.iPosX, point.iPosY, point.iPosZ);
+						worldObj.getBlock(point.iPosX, point.iPosY, point.iPosZ);
+						final int metadata = worldObj.getBlockMetadata(point.iPosX, point.iPosY, point.iPosZ);
 
 						if (metadata < 7)
 						{
-							int max = 7 - metadata;
+							final int max = 7 - metadata;
 							worldObj.setBlockMetadataWithNotify(point.iPosX, point.iPosY, point.iPosZ, metadata + RadixMath.getNumberInRange(1, max), 2);
 							Utils.spawnParticlesAroundEntityS(Particle.HAPPY, this, 16);
 						}
 					}
 
-					catch (ClassCastException e)
+					catch (final ClassCastException e)
 					{
 						//Seems to happen during world generation.
 						continue;
@@ -212,15 +212,15 @@ public class EntityFriendlyMandragora extends EntityMandragora implements IFrien
 	@Override
 	public void setImprisoned(boolean value) 
 	{
-		this.isImprisoned = value;
+		isImprisoned = value;
 	}
-	
+
 	@Override
 	public Class getNonFriendlyClass() 
 	{
 		return EntityMandragora.class;
 	}
-	
+
 	@Override
 	public String getCommandSenderName() 
 	{

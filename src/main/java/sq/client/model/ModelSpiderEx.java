@@ -10,8 +10,6 @@ import org.lwjgl.opengl.GL11;
 
 import sq.entity.creature.EntitySpiderEx;
 import sq.enums.EnumSpiderType;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Defines all extended spider models in-game.

@@ -116,11 +116,12 @@ public class ModelAnt extends ModelBase
 		setRotation(antenna2, 0F, 0F, 0F);
 	}
 
+	@Override
 	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
 	{
 		super.render(entity, f, f1, f2, f3, f4, f5);
 		setRotationAngles(f, f1, f2, f3, f4, f5);
-		
+
 		head.render(f5);
 		body.render(f5);
 		rearEnd1.render(f5);
@@ -159,27 +160,27 @@ public class ModelAnt extends ModelBase
 		jaws.rotateAngleX = head.rotateAngleX; 
 		jaws.rotateAngleZ = head.rotateAngleZ;
 
-		float f6 = 0.7853982F;
+		final float f6 = 0.7853982F;
 		leg1.rotateAngleZ = -f6;
 		leg2.rotateAngleZ = f6;
 		leg3.rotateAngleZ = -f6 * 0.74F;
 		leg4.rotateAngleZ = f6 * 0.74F;
 		leg5.rotateAngleZ = -f6 * 0.74F;
 		leg6.rotateAngleZ = f6 * 0.74F;
-		float f7 = -0F;
-		float f8 = 0.3926991F;
+		final float f7 = -0F;
+		final float f8 = 0.3926991F;
 		leg1.rotateAngleY = f8 * 2.0F + f7;
 		leg2.rotateAngleY = -f8 * 2.0F - f7;
 		leg3.rotateAngleY = f8 * 1.0F + f7;
 		leg4.rotateAngleY = -f8 * 1.0F - f7;
 		leg5.rotateAngleY = -f8 * 1.0F + f7;
 		leg6.rotateAngleY = f8 * 1.0F - f7;
-		float f9 = -(MathHelper.cos(f * 0.6662F * 2.0F + 0.0F) * 0.4F) * f1;
-		float f10 = -(MathHelper.cos(f * 0.6662F * 2.0F + 3.141593F) * 0.4F) * f1;
-		float f11 = -(MathHelper.cos(f * 0.6662F * 2.0F + 1.570796F) * 0.4F) * f1;
-		float f13 = Math.abs(MathHelper.sin(f * 0.6662F + 0.0F) * 0.4F) * f1;
-		float f14 = Math.abs(MathHelper.sin(f * 0.6662F + 3.141593F) * 0.4F) * f1;
-		float f15 = Math.abs(MathHelper.sin(f * 0.6662F + 1.570796F) * 0.4F) * f1;
+		final float f9 = -(MathHelper.cos(f * 0.6662F * 2.0F + 0.0F) * 0.4F) * f1;
+		final float f10 = -(MathHelper.cos(f * 0.6662F * 2.0F + 3.141593F) * 0.4F) * f1;
+		final float f11 = -(MathHelper.cos(f * 0.6662F * 2.0F + 1.570796F) * 0.4F) * f1;
+		final float f13 = Math.abs(MathHelper.sin(f * 0.6662F + 0.0F) * 0.4F) * f1;
+		final float f14 = Math.abs(MathHelper.sin(f * 0.6662F + 3.141593F) * 0.4F) * f1;
+		final float f15 = Math.abs(MathHelper.sin(f * 0.6662F + 1.570796F) * 0.4F) * f1;
 		leg1.rotateAngleY += f9;
 		leg2.rotateAngleY += -f9;
 		leg3.rotateAngleY += f10;

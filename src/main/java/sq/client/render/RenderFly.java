@@ -11,13 +11,13 @@ import sq.client.model.ModelFly;
 public class RenderFly extends RenderLiving
 {
 	private final ResourceLocation texture;
-	
-    public RenderFly()
-    {
-        super(new ModelFly(), 1.0F);
-        setRenderPassModel(new ModelFly());
-        texture = new ResourceLocation("sq:textures/entities/fly.png");
-    }
+
+	public RenderFly()
+	{
+		super(new ModelFly(), 1.0F);
+		setRenderPassModel(new ModelFly());
+		texture = new ResourceLocation("sq:textures/entities/fly.png");
+	}
 
 	@Override
 	protected ResourceLocation getEntityTexture(Entity entity)

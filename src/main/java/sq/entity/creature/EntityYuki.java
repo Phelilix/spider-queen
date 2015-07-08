@@ -67,17 +67,17 @@ public class EntityYuki extends AbstractFlyingMob
 			{
 				setDead();
 			}
-			
+
 			freezeTimer--;
 
 			if (freezeTimer <= 0)
 			{
 				freezeTimer = Time.SECOND * RadixMath.getNumberInRange(1, 3);
 
-				if (this.getEntityToAttack() != null)
+				if (getEntityToAttack() != null)
 				{
-					Entity entityToAttack = this.getEntityToAttack();
-					EntityFreezeBall ball = new EntityFreezeBall(worldObj, this, (EntityLivingBase) this.getEntityToAttack(), 2.0F, 1.0F);
+					getEntityToAttack();
+					final EntityFreezeBall ball = new EntityFreezeBall(worldObj, this, (EntityLivingBase) getEntityToAttack(), 2.0F, 1.0F);
 					worldObj.spawnEntityInWorld(ball);
 					worldObj.playSoundAtEntity(this, "sq:freeze.rod", 1.0F, 1.0F);
 				}
@@ -91,19 +91,19 @@ public class EntityYuki extends AbstractFlyingMob
 		if (worldObj.isRaining())
 		{
 			//Make sure there's no others in the area.
-			List<Entity> entities = RadixLogic.getAllEntitiesOfTypeWithinDistance(EntityYuki.class, this, 16);
-			
+			final List<Entity> entities = RadixLogic.getAllEntitiesOfTypeWithinDistance(EntityYuki.class, this, 16);
+
 			if (entities.size() > 1)
 			{
 				return false;
 			}
-			
+
 			else
 			{
 				return true;
 			}
 		}
-		
+
 		else
 		{
 			return super.getCanSpawnHere();
@@ -121,7 +121,7 @@ public class EntityYuki extends AbstractFlyingMob
 	{
 		if (RadixLogic.getBooleanWithProbability(75))
 		{
-			this.dropItem(ModItems.freezeRod, 1);
+			dropItem(ModItems.freezeRod, 1);
 		}
 	}
 }

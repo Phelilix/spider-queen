@@ -17,14 +17,14 @@ public class EntityFly extends AbstractFlyingMob
 		super(world, "bee"); //Uses bee sounds.
 		setSize(0.9F, 0.9F);
 	}
-	
+
 	@Override
 	public void onUpdate() 
 	{
 		super.onUpdate();
-		
-		this.entityToAttack = null;
-		
+
+		entityToAttack = null;
+
 		if (!SpiderCore.getConfig().enableFly)
 		{
 			setDead();
@@ -61,10 +61,11 @@ public class EntityFly extends AbstractFlyingMob
 		return 20.0F;
 	}
 
-    protected Entity findPlayerToAttack()
-    {
-    	return null;
-    }
+	@Override
+	protected Entity findPlayerToAttack()
+	{
+		return null;
+	}
 
 	@Override
 	protected boolean interact(EntityPlayer player) 
@@ -75,14 +76,14 @@ public class EntityFly extends AbstractFlyingMob
 			Utils.spawnParticlesAroundEntityS("smoke", this, 16);
 			worldObj.playSoundAtEntity(player, "random.eat", 0.85F, 1.0F);
 			worldObj.playSoundAtEntity(player, "random.burp", 0.85F, 1.0F);
-			
+
 			//Heal the player and restore food stats.
 			player.heal(3);
 			player.getFoodStats().addStats(4, 0.4f);
-			
+
 			setDead();
 		}
-		
+
 		return true;
 	}
 

@@ -17,15 +17,15 @@ import cpw.mods.fml.common.registry.GameRegistry;
  */
 public class ItemEggSpawner extends Item
 {
-	private Class spawnClass;
+	private final Class spawnClass;
 
 	public ItemEggSpawner(Class spawnClass, String itemName)
 	{
 		this.spawnClass = spawnClass;
-		this.setCreativeTab(SpiderCore.getCreativeTab());
-		this.setMaxStackSize(1);
-		this.setUnlocalizedName(itemName);
-		this.setTextureName("sq:" + itemName);
+		setCreativeTab(SpiderCore.getCreativeTab());
+		setMaxStackSize(1);
+		setUnlocalizedName(itemName);
+		setTextureName("sq:" + itemName);
 
 		GameRegistry.registerItem(this, itemName);
 	}
@@ -65,19 +65,19 @@ public class ItemEggSpawner extends Item
 		try
 		{
 			Entity entity = (Entity)spawnClass.getConstructor(World.class).newInstance(world);
-			
+
 			if (entity instanceof IFriendlyEntity)
 			{
 				entity = (Entity) spawnClass.getConstructor(World.class, EntityPlayer.class).newInstance(world, player);
-				IFriendlyEntity friendly = (IFriendlyEntity)entity;
+				final IFriendlyEntity friendly = (IFriendlyEntity)entity;
 				friendly.setFriendPlayerUUID(player.getPersistentID());
 			}
-			
+
 			entity.setPosition(posX, posY, posZ);
 			world.spawnEntityInWorld(entity);
 		}
 
-		catch (Exception e)
+		catch (final Exception e)
 		{
 			e.printStackTrace();
 		}

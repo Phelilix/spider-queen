@@ -1,9 +1,9 @@
 package sq.core.forge;
 
-import cpw.mods.fml.common.network.IGuiHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import sq.client.gui.GuiSleep;
+import cpw.mods.fml.common.network.IGuiHandler;
 
 /**
  * Spider Queen's GUI handler, registered with Forge.
@@ -11,7 +11,7 @@ import sq.client.gui.GuiSleep;
 public final class GuiHandler implements IGuiHandler
 {
 	public static final byte ID_GUI_SLEEP = 1;
-	
+
 	@Override
 	public Object getServerGuiElement(int guiId, EntityPlayer player, World world, int posX, int posY, int posZ)
 	{
@@ -25,7 +25,7 @@ public final class GuiHandler implements IGuiHandler
 		{
 			return new GuiSleep(player);
 		}
-		
+
 		return null;
 	}
 }

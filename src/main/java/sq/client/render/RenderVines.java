@@ -28,22 +28,23 @@ public class RenderVines extends Render
 		GL11.glPushMatrix();
 		GL11.glTranslatef((float)d, (float)d1, (float)d2);
 		GL11.glRotatef(f, 0.0F, 1.0F, 0.0F);
-		float f2 = (float) -f1;
-		float f3 = (float) -f1;
+		final float f2 = -f1;
+		float f3 = -f1;
 		if(f3 < 0.0F)
 		{
 			f3 = 0.0F;
 		}
 		if(f2 > 0.0F)
 		{
-			GL11.glRotatef(((MathHelper.sin(f2) * f2 * f3) / 10F), 1.0F, 0.0F, 0.0F);
+			GL11.glRotatef(MathHelper.sin(f2) * f2 * f3 / 10F, 1.0F, 0.0F, 0.0F);
 		}
 		GL11.glScalef(-1F, -1F, 1.0F);
-		this.bindTexture(TEXTURE);
-		modelVines.render((Entity)entity, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
+		bindTexture(TEXTURE);
+		modelVines.render(entity, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
 		GL11.glPopMatrix();
 	}
 
+	@Override
 	public void doRender(Entity entity, double d, double d1, double d2, float f, float f1)
 	{
 		func_157_a((EntityVines)entity, d, d1, d2, f, f1);

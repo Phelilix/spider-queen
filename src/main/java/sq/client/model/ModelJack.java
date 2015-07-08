@@ -83,10 +83,11 @@ public class ModelJack extends ModelBase
 		setRotation(lantern, -1.570796F, 0F, 0F);
 	}
 
+	@Override
 	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
 	{
 		super.render(entity, f, f1, f2, f3, f4, f5);
-		
+
 		GL11.glTranslated(0.0D, 1.0D, 0.0D);
 		setRotationAngles(f, f1, f2, f3, f4, f5);
 		head.render(f5);
@@ -109,12 +110,12 @@ public class ModelJack extends ModelBase
 
 	public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5)
 	{
-	    head.rotateAngleY = f3 / 57.29578F;
-        head.rotateAngleX = f4 / 57.29578F;
-		
-        body1.rotateAngleX = MathHelper.cos(100F * 0.6662F + 3.141593F) * 2.5F * f1 * 0.5F;
-        body2.rotateAngleX = MathHelper.cos(100F * 0.6662F + 3.141593F) * 2.5F * f1 * 0.5F;
-        body3.rotateAngleX = MathHelper.cos(100F * 0.6662F + 3.141593F) * 2.5F * f1 * 0.5F;
+		head.rotateAngleY = f3 / 57.29578F;
+		head.rotateAngleX = f4 / 57.29578F;
+
+		body1.rotateAngleX = MathHelper.cos(100F * 0.6662F + 3.141593F) * 2.5F * f1 * 0.5F;
+		body2.rotateAngleX = MathHelper.cos(100F * 0.6662F + 3.141593F) * 2.5F * f1 * 0.5F;
+		body3.rotateAngleX = MathHelper.cos(100F * 0.6662F + 3.141593F) * 2.5F * f1 * 0.5F;
 	}
 
 }

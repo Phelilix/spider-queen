@@ -13,12 +13,12 @@ public class ItemNectar extends ItemFood
 	{
 		super(3, 0.4F, false);
 		setAlwaysEdible();
-		
+
 		final String name = "nectar";
 		setUnlocalizedName(name);
 		setTextureName("sq:" + name);
 		setCreativeTab(SpiderCore.getCreativeTab());
-		
+
 		GameRegistry.registerItem(this, name);
 	}
 }

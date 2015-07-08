@@ -26,8 +26,8 @@ public class WorldGenBeeHive implements IWorldGenerator
 	{
 		if (chunkGenerator instanceof ChunkProviderGenerate)
 		{
-			int x = chunkX * 16 + random.nextInt(16);
-			int z = chunkZ * 16 + random.nextInt(16);
+			final int x = chunkX * 16 + random.nextInt(16);
+			final int z = chunkZ * 16 + random.nextInt(16);
 
 			for (int maxY = 256; maxY > 0; maxY--)
 			{
@@ -41,7 +41,7 @@ public class WorldGenBeeHive implements IWorldGenerator
 
 	public boolean generate(World world, Random random, int x, int y, int z)
 	{
-		Block block = world.getBlock(x, y, z);
+		final Block block = world.getBlock(x, y, z);
 
 		//Find a tree
 		if (block == Blocks.log)
@@ -60,12 +60,12 @@ public class WorldGenBeeHive implements IWorldGenerator
 				yMov++;
 			}
 
-			int topLogY = y + yMov;
+			final int topLogY = y + yMov;
 
 			//At this point we've found the top of the tree. Test for leaves above the top log to verify it's a tree.
 			if (world.getBlock(x, topLogY + 1, z) instanceof BlockLeaves)
 			{
-				int midLogY = topLogY - 2; //Move down towards the middle of the tree.
+				final int midLogY = topLogY - 2; //Move down towards the middle of the tree.
 				int leavesRadius = 2;
 
 				int pass = 1;

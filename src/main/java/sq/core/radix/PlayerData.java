@@ -25,12 +25,12 @@ public final class PlayerData extends AbstractPlayerData
 	public WatchedInt zombieLike;
 	public WatchedInt humanLike;
 	public WatchedInt spiderLike;
-	
+
 	public PlayerData(String playerUUID, World world)
 	{
 		super(playerUUID, SpiderCore.ID, world);
 	}
-	
+
 	public PlayerData(EntityPlayer player)
 	{
 		super(player, SpiderCore.ID);
@@ -54,7 +54,7 @@ public final class PlayerData extends AbstractPlayerData
 		humanLike = new WatchedInt(0, EnumWatchedDataIDs.HUMAN_LIKE.getId(), dataWatcher);
 		spiderLike = new WatchedInt(0, EnumWatchedDataIDs.SPIDER_LIKE.getId(), dataWatcher);
 	}
-	
+
 	@Override
 	public void initializeNewData(EntityPlayer player) 
 	{
@@ -66,7 +66,7 @@ public final class PlayerData extends AbstractPlayerData
 		SpiderCore.getLog().info("Owner: " + owner);
 		SpiderCore.getLog().info("Owner's Identity: " + ownerIdentifier);
 	}
-	
+
 	public WatchedInt getLikeValueById(int i)
 	{
 		switch (EnumWatchedDataIDs.byId(i))

@@ -3,7 +3,6 @@ package sq.entity.creature;
 import java.util.List;
 import java.util.UUID;
 
-import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -43,7 +42,7 @@ public class EntitySpiderEgg extends EntityCreature
 	{
 		super(world);
 		this.owner = owner;
-		this.renderDistanceWeight = 50.0F;
+		renderDistanceWeight = 50.0F;
 		setSize(0.15F, 0.15F);
 		getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(20.0D);
 		timeUntilEggHatch = RadixMath.getNumberInRange(500, 5000);
@@ -166,7 +165,7 @@ public class EntitySpiderEgg extends EntityCreature
 
 		for (final Entity entity : nearbyCocoons)
 		{
-			EntityCocoon cocoon = (EntityCocoon)entity;
+			final EntityCocoon cocoon = (EntityCocoon)entity;
 			final double distanceToCurrentEntity = RadixMath.getDistanceToEntity(this, cocoon);
 
 			if (!cocoon.isEaten() && distanceToCurrentEntity < lowestDistance)
@@ -205,8 +204,7 @@ public class EntitySpiderEgg extends EntityCreature
 		{
 			final EntityPlayer player = worldObj.func_152378_a(owner);
 
-			//Find a safe spawn point.
-			final Block spawnBlock = worldObj.getBlock((int)posX,(int)posY,(int)posZ);
+			worldObj.getBlock((int)posX,(int)posY,(int)posZ);
 			Point3D spawnPoint = new Point3D(posX, posY, posZ);
 
 			if (worldObj.getBlock(spawnPoint.iPosX + 1, spawnPoint.iPosY, spawnPoint.iPosZ) == Blocks.air) { spawnPoint = new Point3D(posX + 1, posY, posZ); }
@@ -231,30 +229,30 @@ public class EntitySpiderEgg extends EntityCreature
 				else
 				{
 					player.triggerAchievement(ModAchievements.hatchSpiderByCocoon);
-					
+
 					Achievement specialAchievement = null;
-					
+
 					switch (spider.getSpiderType())
 					{
 					case BOOM: specialAchievement = ModAchievements.hatchBoomSpider;
-						break;
+					break;
 					case ENDER: specialAchievement = ModAchievements.hatchEnderSpider;
-						break;
+					break;
 					case NOVA: specialAchievement = ModAchievements.hatchNovaSpider;
-						break;
+					break;
 					case PACK: specialAchievement = ModAchievements.hatchPackSpider;
-						break;
+					break;
 					case RIDER: specialAchievement = ModAchievements.hatchRiderSpider;
-						break;
+					break;
 					case SLINGER: specialAchievement = ModAchievements.hatchSlingerSpider;
-						break;
+					break;
 					case TANK: specialAchievement = ModAchievements.hatchTankSpider;
-						break;
+					break;
 					default:
 						break;
-					
+
 					}
-					
+
 					if (specialAchievement != null)
 					{
 						player.triggerAchievement(specialAchievement);
@@ -263,7 +261,7 @@ public class EntitySpiderEgg extends EntityCreature
 			}
 		}
 
-		catch (NullPointerException e)
+		catch (final NullPointerException e)
 		{
 			//Happens when player is null - not logged in.
 		}

@@ -34,7 +34,7 @@ public class EntityFriendlySkeleton extends EntitySkeleton implements IFriendlyE
 	private UUID friendPlayerUUID = new UUID(0, 0);
 	private int rangedAttackProgress;
 	private boolean isImprisoned;
-	
+
 	public EntityLivingBase target;
 
 	public EntityFriendlySkeleton(World world)
@@ -45,23 +45,23 @@ public class EntityFriendlySkeleton extends EntitySkeleton implements IFriendlyE
 	public EntityFriendlySkeleton(World world, EntityPlayer friendPlayer)
 	{
 		super(world);
-		this.friendPlayerUUID = friendPlayer.getPersistentID();
+		friendPlayerUUID = friendPlayer.getPersistentID();
 
 		//Clear old task entries.
-		this.tasks.taskEntries.clear();
-		this.targetTasks.taskEntries.clear();
+		tasks.taskEntries.clear();
+		targetTasks.taskEntries.clear();
 
 		//Add custom tasks.
-		this.tasks.addTask(1, new EntityAISwimming(this));
-		this.tasks.addTask(2, new EntityAIRestrictSun(this));
-		this.tasks.addTask(5, new EntityAIWander(this, 0.55D));
-		this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
-		this.tasks.addTask(6, new EntityAILookIdle(this));
-		this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
-		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true));
+		tasks.addTask(1, new EntityAISwimming(this));
+		tasks.addTask(2, new EntityAIRestrictSun(this));
+		tasks.addTask(5, new EntityAIWander(this, 0.55D));
+		tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
+		tasks.addTask(6, new EntityAILookIdle(this));
+		targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
+		targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true));
 
 		//Add bow.
-		this.setCurrentItemOrArmor(0, new ItemStack(Items.bow));
+		setCurrentItemOrArmor(0, new ItemStack(Items.bow));
 	}
 
 	@Override
@@ -81,7 +81,7 @@ public class EntityFriendlySkeleton extends EntitySkeleton implements IFriendlyE
 		{
 			ReputationHandler.handleInteractWithImprisoned(entity, this);
 		}
-		
+
 		if (heldItem != null && heldItem.getItem() == ModItems.skull)
 		{
 			heldItem.stackSize--;
@@ -99,7 +99,7 @@ public class EntityFriendlySkeleton extends EntitySkeleton implements IFriendlyE
 	protected void applyEntityAttributes()
 	{
 		super.applyEntityAttributes();
-		this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.55D);
+		getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.55D);
 	}
 
 	@Override
@@ -210,15 +210,15 @@ public class EntityFriendlySkeleton extends EntitySkeleton implements IFriendlyE
 	@Override
 	public void setImprisoned(boolean value) 
 	{
-		this.isImprisoned = value;
+		isImprisoned = value;
 	}
-	
+
 	@Override
 	public Class getNonFriendlyClass() 
 	{
 		return EntitySkeleton.class;
 	}
-	
+
 	@Override
 	public String getCommandSenderName() 
 	{

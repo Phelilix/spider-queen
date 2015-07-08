@@ -11,12 +11,12 @@ import sq.client.model.ModelBee;
 public class RenderFriendlyBee extends RenderLiving
 {
 	private final ResourceLocation texture = new ResourceLocation("sq:textures/entities/friendly-bee.png");
-	
-    public RenderFriendlyBee()
-    {
-        super(new ModelBee(), 1.0F);
-        setRenderPassModel(new ModelBee());
-    }
+
+	public RenderFriendlyBee()
+	{
+		super(new ModelBee(), 1.0F);
+		setRenderPassModel(new ModelBee());
+	}
 
 	@Override
 	protected ResourceLocation getEntityTexture(Entity entity)

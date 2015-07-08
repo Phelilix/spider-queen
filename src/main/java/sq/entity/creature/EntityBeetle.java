@@ -30,7 +30,7 @@ public class EntityBeetle extends AbstractNewMob
 	{
 		if (!worldObj.isRemote)
 		{
-			this.dataWatcher.updateObject(13, value == true ? 1 : 0);
+			dataWatcher.updateObject(13, value == true ? 1 : 0);
 		}
 	}
 
@@ -42,7 +42,7 @@ public class EntityBeetle extends AbstractNewMob
 
 	public boolean getIsFlying()
 	{
-		return this.dataWatcher.getWatchableObjectInt(13) == 1 ? true : false;
+		return dataWatcher.getWatchableObjectInt(13) == 1 ? true : false;
 	}
 
 	@Override
@@ -63,9 +63,9 @@ public class EntityBeetle extends AbstractNewMob
 
 		//"target" stores the attack target assigned by the AI system.
 		//We set this to prevent flipping between multiple targets, which makes the beetle do nothing at all.
-		if (this.getAttackTarget() != null && target == null)
+		if (getAttackTarget() != null && target == null)
 		{
-			target = this.getAttackTarget();
+			target = getAttackTarget();
 		}
 
 		if (target != null)
@@ -77,12 +77,12 @@ public class EntityBeetle extends AbstractNewMob
 			}
 
 			//Flying code towards the target.
-			double sqDistanceTo = Math.sqrt(Math.pow(target.posX - posX, 2) + Math.pow(target.posZ - posZ, 2));
+			final double sqDistanceTo = Math.sqrt(Math.pow(target.posX - posX, 2) + Math.pow(target.posZ - posZ, 2));
 			float moveAmount = 0.0F;
 
 			if(sqDistanceTo < 8F) 
 			{ 
-				moveAmount = ((8F - (float)sqDistanceTo) / 8F)*4F; 
+				moveAmount = (8F - (float)sqDistanceTo) / 8F*4F; 
 			}
 
 			if (target.posY < posY)
@@ -95,8 +95,8 @@ public class EntityBeetle extends AbstractNewMob
 				motionY = motionY + 0.11F * moveAmount;
 			}
 
-			double distanceTo = RadixMath.getDistanceToEntity(this, target);
-			
+			final double distanceTo = RadixMath.getDistanceToEntity(this, target);
+
 			if (distanceTo >= 4 && distanceTo <= 9)
 			{
 				motionX = motionX * 1.1F;
@@ -128,7 +128,7 @@ public class EntityBeetle extends AbstractNewMob
 
 			else
 			{
-				double yMod = Math.sqrt((motionX * motionX) + (motionZ * motionZ));
+				final double yMod = Math.sqrt(motionX * motionX + motionZ * motionZ);
 				motionY = motionY * 0.3F + yMod * 0.3F;
 			}
 
@@ -157,7 +157,7 @@ public class EntityBeetle extends AbstractNewMob
 	@Override
 	public void appendAI()
 	{
-		this.targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, EntityBee.class, 0, true));
+		targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, EntityBee.class, 0, true));
 	}
 
 	@Override

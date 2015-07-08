@@ -28,7 +28,7 @@ public class RenderCocoon extends Render
 	{
 		GL11.glPushMatrix();
 		{
-			EntityCocoon entityCocoon = (EntityCocoon)entity;
+			final EntityCocoon entityCocoon = (EntityCocoon)entity;
 			GL11.glTranslated(posX, posY, posZ);
 			GL11.glRotatef(entityCocoon.rotationYaw, 0.0F, 1.0F, 0.0F);
 			final float rotateAdjustForHit = entityCocoon.getTimeSinceHit() - rotationPitch / 2;
@@ -54,7 +54,7 @@ public class RenderCocoon extends Render
 	@Override
 	public void doRender(Entity entity, double posX, double posY, double posZ, float rotationYaw, float rotationPitch)
 	{
-		render((EntityCocoon) entity, posX, posY, posZ, rotationYaw, rotationPitch);
+		render(entity, posX, posY, posZ, rotationYaw, rotationPitch);
 	}
 
 	@Override
@@ -63,9 +63,9 @@ public class RenderCocoon extends Render
 		final EntityCocoon entityCocoon = (EntityCocoon) entity;
 		String name = entityCocoon.getCocoonType().toString().toLowerCase();
 		name = name.replace("_", "-"); //For bees
-		
+
 		String resourceLocation = "sq:textures/entities/cocoon-" + name;
-		
+
 		if (entityCocoon.isEaten())
 		{
 			resourceLocation += "-dead";

@@ -69,15 +69,16 @@ public class EntityMandragora extends AbstractNewMob
 		vineTimer = nbt.getInteger("vineTimer");
 	}
 
+	@Override
 	public boolean getCanSpawnHere()
 	{
-		int i = MathHelper.floor_double(posX);
-		int j = MathHelper.floor_double(boundingBox.minY);
-		int k = MathHelper.floor_double(posZ);
-		
+		final int i = MathHelper.floor_double(posX);
+		final int j = MathHelper.floor_double(boundingBox.minY);
+		final int k = MathHelper.floor_double(posZ);
+
 		return worldObj.getBlock(i, j - 1, k) == Blocks.grass;
 	}
-	
+
 	@Override
 	public void onUpdate()
 	{
@@ -87,32 +88,32 @@ public class EntityMandragora extends AbstractNewMob
 		{
 			setDead();
 		}
-		
+
 		if (vineTimer <= 0)
 		{
-			Entity entityToAttack = this.getAttackTarget();
+			final Entity entityToAttack = getAttackTarget();
 
 			if (entityToAttack != null)
 			{
 				vineTimer = Time.SECOND * 1;
 
-				double d = entityToAttack.posX - posX + entityToAttack.motionX * 15D;
-				double d1 = entityToAttack.posZ - posZ + entityToAttack.motionZ * 15D;
+				final double d = entityToAttack.posX - posX + entityToAttack.motionX * 15D;
+				final double d1 = entityToAttack.posZ - posZ + entityToAttack.motionZ * 15D;
 
 				if (attackTime == 0)
 				{
 					//Shoot the vines like an arrow. The vine entity will handle moving up and down periodically.
-					EntityVines vines = new EntityVines(worldObj, this);
+					final EntityVines vines = new EntityVines(worldObj, this);
 					vines.setFriendly(getIsFriendly());
 					vines.posY += 0.4D;
-					double d2 = (entityToAttack.posY) - 0.20000000298023224D - vines.posY;
-					float f1 = MathHelper.sqrt_double(d * d + d1 * d1) * 0.2F;
+					final double d2 = entityToAttack.posY - 0.20000000298023224D - vines.posY;
+					final float f1 = MathHelper.sqrt_double(d * d + d1 * d1) * 0.2F;
 					worldObj.playSoundAtEntity(this, "sq:mand.vine", 1.0F, 1.0F / (rand.nextFloat() * 0.4F + 0.8F));
 					worldObj.spawnEntityInWorld(vines);
-					vines.setArrowHeading(d, d2 + (double)f1, d1, 0.5F, 8F);
+					vines.setArrowHeading(d, d2 + f1, d1, 0.5F, 8F);
 					attackTime = 20 - rand.nextInt(5);
 				}
-				rotationYaw = (float)((Math.atan2(d1, d) * 180D) / 3.1415927410125732D) - 90F;
+				rotationYaw = (float)(Math.atan2(d1, d) * 180D / 3.1415927410125732D) - 90F;
 				hasAttacked = true;
 			}
 		}
@@ -124,11 +125,11 @@ public class EntityMandragora extends AbstractNewMob
 	protected boolean isValidLightLevel() 
 	{
 		//Make sure we can spawn in a lit area.
-		int i = MathHelper.floor_double(this.posX);
-		int j = MathHelper.floor_double(this.boundingBox.minY);
-		int k = MathHelper.floor_double(this.posZ);
+		final int i = MathHelper.floor_double(posX);
+		final int j = MathHelper.floor_double(boundingBox.minY);
+		final int k = MathHelper.floor_double(posZ);
 
-		return this.worldObj.getBlockLightValue(i, j, k) >= 7;
+		return worldObj.getBlockLightValue(i, j, k) >= 7;
 	}
 
 	@Override
@@ -137,7 +138,7 @@ public class EntityMandragora extends AbstractNewMob
 		if (hitByPlayer && RadixLogic.getBooleanWithProbability(45))
 		{
 			//Randomly drops mandragora seeds.
-			this.dropItem(ModItems.mandragoraSeeds, 1);
+			dropItem(ModItems.mandragoraSeeds, 1);
 		}
 	}
 
@@ -146,9 +147,10 @@ public class EntityMandragora extends AbstractNewMob
 		return dataWatcher.getWatchableObjectInt(12) != 0;
 	}
 
+	@Override
 	protected void entityInit()
 	{
 		super.entityInit();
-		this.dataWatcher.addObject(12, 0);
+		dataWatcher.addObject(12, 0);
 	}
 }

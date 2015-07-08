@@ -33,7 +33,7 @@ public final class ModBlocks
 	public static BlockWebGround webGround;
 	public static BlockMandCrop cropMand;
 	public static BlockLantern lantern;
-	
+
 	public ModBlocks()
 	{
 		antHill = new BlockAntHill();
@@ -51,24 +51,24 @@ public final class ModBlocks
 		cropMand = new BlockMandCrop();
 		lantern = new BlockLantern();
 	}
-	
+
 	public static Block getPoisonWebVariant(Block web)
 	{	
 		if (web instanceof BlockWebGround)
 		{
 			return poisonWebGround;
 		}
-		
+
 		else if (web instanceof BlockWebSide)
 		{
 			return poisonWebSide;
 		}
-		
+
 		else if (web instanceof BlockWebFull)
 		{
 			return poisonWebFull;
 		}
-		
+
 		return null;
 	}
 }
