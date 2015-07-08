@@ -35,6 +35,9 @@ import sq.items.ItemWeb;
 import sq.items.ItemWebslinger;
 import cpw.mods.fml.common.registry.GameRegistry;
 
+/**
+ * All items in Spider Queen.
+ */
 public final class ModItems
 {
 	public static ItemCocoon cocoonBlackAnt;

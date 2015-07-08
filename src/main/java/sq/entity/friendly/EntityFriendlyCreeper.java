@@ -30,6 +30,10 @@ import sq.core.minecraft.ModItems;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
+/**
+ * The friendly creeper is gifted to the player with a high creeper reputation. 
+ * By gifting the friendly creeper a heart, the player will receive gunpowder.
+ */
 public class EntityFriendlyCreeper extends EntityCreeper implements IFriendlyEntity
 {
 	private int timeUntilSpeak = Time.MINUTE * 5;

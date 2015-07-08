@@ -8,6 +8,9 @@ import sq.core.SpiderCore;
 import sq.core.minecraft.ModBlocks;
 import cpw.mods.fml.common.registry.GameRegistry;
 
+/**
+ * The spider rod item is used to attract friendlies to the player holding it, or to place the spider rod block into the world.
+ */
 public class ItemSpiderRod extends Item
 {
 	public ItemSpiderRod()

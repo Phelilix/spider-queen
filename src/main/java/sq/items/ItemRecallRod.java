@@ -14,6 +14,9 @@ import sq.entity.friendly.IFriendlyEntity;
 import sq.util.Utils;
 import cpw.mods.fml.common.registry.GameRegistry;
 
+/**
+ * The recall rod causes all creatures friendly to the player using it to immediately teleport to the player's location.
+ */
 public class ItemRecallRod extends Item
 {
 	public ItemRecallRod()

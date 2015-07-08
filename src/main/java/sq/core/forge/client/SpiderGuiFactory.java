@@ -7,6 +7,9 @@ import net.minecraft.client.gui.GuiScreen;
 import sq.client.gui.GuiConfigPage;
 import cpw.mods.fml.client.IModGuiFactory;
 
+/**
+ * Handles setting up the configuration GUI. It simply returns the configuration GUI class.
+ */
 public final class SpiderGuiFactory implements IModGuiFactory
 {
 	@Override

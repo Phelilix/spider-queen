@@ -4,6 +4,9 @@ import net.minecraft.item.ItemFood;
 import sq.core.SpiderCore;
 import cpw.mods.fml.common.registry.GameRegistry;
 
+/**
+ * Nectar is simply a food item that heals 3 food points and has little saturation.
+ */
 public class ItemNectar extends ItemFood
 {
 	public ItemNectar()

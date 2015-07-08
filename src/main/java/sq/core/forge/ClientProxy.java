@@ -57,6 +57,9 @@ import sq.entity.throwable.EntityFreezeBall;
 import sq.entity.throwable.EntityJackBall;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 
+/**
+ * The client-side proxy class used to handle client side registration, such as renderers.
+ */
 public final class ClientProxy extends ServerProxy
 {
 	@Override

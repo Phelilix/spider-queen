@@ -8,6 +8,9 @@ import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 
+/**
+ * Defines the sleep packet processed on the server.
+ */
 public class PacketSleepS extends AbstractPacket implements IMessage, IMessageHandler<PacketSleepS, IMessage>
 {
 	private String username;

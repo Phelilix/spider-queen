@@ -11,6 +11,9 @@ import net.minecraft.world.gen.ChunkProviderGenerate;
 import sq.core.minecraft.ModBlocks;
 import cpw.mods.fml.common.IWorldGenerator;
 
+/**
+ * Handles generating bee hives in the world.
+ */
 public class WorldGenBeeHive implements IWorldGenerator
 {
 	public WorldGenBeeHive()

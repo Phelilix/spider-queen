@@ -9,6 +9,10 @@ import sq.core.SpiderCore;
 import sq.enums.EnumWatchedDataIDs;
 import cpw.mods.fml.common.ModMetadata;
 
+/**
+ * An extension from RadixCore that contains all "player data" that needs to persist after player logout.
+ * Using AbstractPlayerData from RadixCore allows us to easily update the values client/server-side.
+ */
 public final class PlayerData extends AbstractPlayerData
 {
 	public static final long serialVersionUID = 1L;

@@ -6,6 +6,9 @@ import sq.packet.PacketSleepC;
 import sq.packet.PacketSleepS;
 import cpw.mods.fml.relauncher.Side;
 
+/**
+ * Spider Queen's packet handler from RadixCore.
+ */
 public final class SpiderPacketHandler extends AbstractPacketHandler
 {
 	public SpiderPacketHandler(String modId) 

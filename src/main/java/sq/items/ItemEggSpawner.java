@@ -12,6 +12,9 @@ import sq.core.SpiderCore;
 import sq.entity.friendly.IFriendlyEntity;
 import cpw.mods.fml.common.registry.GameRegistry;
 
+/**
+ * Defines the spawn eggs and spawns them in the world when right-clicked on a block.
+ */
 public class ItemEggSpawner extends Item
 {
 	private Class spawnClass;

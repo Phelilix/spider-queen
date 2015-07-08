@@ -101,6 +101,9 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
+/**
+ * The core of the Spider Queen mod.
+ */
 @Mod(modid = SpiderCore.ID, name = SpiderCore.NAME, version = SpiderCore.VERSION, dependencies = "required-after:RadixCore@[2.0.0,)", acceptedMinecraftVersions = "[1.7.10]",
 guiFactory = "sq.core.forge.client.SpiderGuiFactory")
 public final class SpiderCore
@@ -108,7 +111,10 @@ public final class SpiderCore
 	public static final String ID = "SQ";
 	public static final String NAME = "Spider Queen";
 	public static final String VERSION = "@VERSION@";
+	
+	/** The URL for skins that are permanently in the contributor list. */
 	public static final String PERM_SKINS_URL = "http://pastebin.com/raw.php?i=MNWrUxwa";
+	/** The URL for periodic skins in the contributor list. */
 	public static final String SKINS_URL = "http://pastebin.com/raw.php?i=L5S632xR";
 	
 	@Instance(ID)
@@ -155,6 +161,7 @@ public final class SpiderCore
 		structureSchematics = new HashMap<Integer, Map<Point3D, BlockObj>>();
 		languageManager = new LanguageManager(ID);
 		
+		//Fill in data used to enable functions within RadixCore.
 		ModMetadataEx exData = ModMetadataEx.getFromModMetadata(metadata);
 		exData.updateProtocolClass = config.allowUpdateChecking ? RDXUpdateProtocol.class : null;
 		exData.classContainingClientDataContainer = SpiderCore.class;
@@ -162,17 +169,21 @@ public final class SpiderCore
 		exData.url = "http://www.radix-shock.com/sq--download.html";
 		exData.playerDataMap = playerDataMap;
 
+		//Register with RadixCore.
 		RadixCore.registerMod(exData);
 
+		//If this is null (assigned above), there will be no update checking capabilities.
 		if (exData.updateProtocolClass == null)
 		{
 			logger.fatal("Config: Update checking is turned off. You will not be notified of any available updates for SQ.");
 		}
 
+		//Register event hooks.
 		FMLCommonHandler.instance().bus().register(new EventHooksFML());
 		MinecraftForge.EVENT_BUS.register(new EventHooksForge());
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
 
+		//Set all food as being always edible.
 		for (Field f : Items.class.getDeclaredFields())
 		{
 			try
@@ -202,6 +213,7 @@ public final class SpiderCore
 	@EventHandler
 	public void init(FMLInitializationEvent event)
 	{
+		//Set up the creative tab.
 		ModItems.cocoonEnderman = new ItemCocoon(EnumCocoonType.ENDERMAN);
 		creativeTab = new CreativeTabs("tabSQ")
 		{
@@ -213,11 +225,12 @@ public final class SpiderCore
 		};
 		ModItems.cocoonEnderman.setCreativeTab(creativeTab);
 
+		//Register classes from sq.core.minecraft.
 		items = new ModItems();
 		blocks = new ModBlocks();
 		achievements = new ModAchievements();
 
-		//Entity registry
+		//Register entities.
 		int id = config.baseEntityId;
 		EntityRegistry.registerModEntity(EntityAnt.class, EntityAnt.class.getSimpleName(), id, this, 50, 2, true); id++;
 		EntityRegistry.registerModEntity(EntityBee.class, EntityBee.class.getSimpleName(), id, this, 50, 2, true); id++;
@@ -245,10 +258,8 @@ public final class SpiderCore
 		EntityRegistry.registerModEntity(EntityMiniGhast.class, EntityMiniGhast.class.getSimpleName(), id, this, 50, 2, true); id++;
 		EntityRegistry.registerModEntity(EntityFriendlyBee.class, EntityFriendlyBee.class.getSimpleName(), id, this, 50,  2, true); id++;
 		EntityRegistry.registerModEntity(EntityFreezeBall.class, EntityFreezeBall.class.getSimpleName(), id, this, 50,  2, true); id++;
-		
-		//Tile registry
 
-		//Recipes
+		//Register recipes.
 		GameRegistry.addShapelessRecipe(new ItemStack(ModItems.webNormal), Items.string, Items.string, Items.string);
 		GameRegistry.addShapelessRecipe(new ItemStack(ModItems.webPoison), Items.string, Items.string, Items.string, ModBlocks.stinger);
 		GameRegistry.addShapelessRecipe(new ItemStack(ModItems.webPoison), ModItems.webNormal, ModBlocks.stinger);
@@ -256,9 +267,7 @@ public final class SpiderCore
 		GameRegistry.addRecipe(new ItemStack(ModItems.recallRod), "GDG", " S ", " S ", 'G', Blocks.glass, 'D', Items.glowstone_dust, 'S', Items.stick);
 		GameRegistry.addRecipe(new ItemStack(ModItems.webslinger), "DS ", "SS ", "  S", 'D', ModBlocks.stinger, 'S', Items.string);
 		
-		//Smeltings
-		
-		//Spawns
+		//Add spawns.
 		EntityRegistry.addSpawn(EntityBeetle.class, 10, 1, 3, EnumCreatureType.monster, BiomeGenBase.extremeHills, BiomeGenBase.forest,
 				BiomeGenBase.jungle, BiomeGenBase.taiga, BiomeGenBase.swampland, BiomeGenBase.plains, BiomeGenBase.birchForest, BiomeGenBase.forestHills, BiomeGenBase.roofedForest);
 		EntityRegistry.addSpawn(EntityFly.class, 12, 1, 3, EnumCreatureType.monster, BiomeGenBase.extremeHills, BiomeGenBase.forest,
@@ -275,11 +284,12 @@ public final class SpiderCore
 		EntityRegistry.addSpawn(EntityYuki.class, 1, 1, 1, EnumCreatureType.monster, BiomeGenBase.coldTaiga, BiomeGenBase.coldTaigaHills, BiomeGenBase.frozenOcean, BiomeGenBase.frozenRiver,
 				BiomeGenBase.iceMountains, BiomeGenBase.icePlains);
 		
-		//World Gen
+		//Register world generation.
 		GameRegistry.registerWorldGenerator(new WorldGenAntHill(), 10);
 		GameRegistry.registerWorldGenerator(new WorldGenBeeHive(), 14);
 		GameRegistry.registerWorldGenerator(new WorldGenFactory(), 4096);
 		
+		//Set up reputations.
 		ReputationContainer.createNew(EntitySkeleton.class, EnumWatchedDataIDs.SKELETON_LIKE.getId());
 		ReputationContainer.createNew(EntityCreeper.class, EnumWatchedDataIDs.CREEPER_LIKE.getId());
 		ReputationContainer.createNew(EntityZombie.class, EnumWatchedDataIDs.ZOMBIE_LIKE.getId());
@@ -311,12 +321,14 @@ public final class SpiderCore
 	@EventHandler
 	public void serverStarting(FMLServerStartingEvent event)
 	{
+		//Register commands.
 		event.registerServerCommand(new CommandSQ());
 
+		//Prepare the player data directory.
 		File playerDataPath = new File(AbstractPlayerData.getPlayerDataPath(event.getServer().getEntityWorld(), SpiderCore.ID));
 		playerDataPath.mkdirs();
 
-		for (File f : playerDataPath.listFiles())
+		for (File f : playerDataPath.listFiles()) //Load up existing player data.
 		{
 			String uuid = f.getName().replace(".dat", "");
 			PlayerData data = new PlayerData(uuid, event.getServer().getEntityWorld());
@@ -329,6 +341,7 @@ public final class SpiderCore
 	@EventHandler
 	public void serverStopping(FMLServerStoppingEvent event)
 	{
+		//Save and clear all player data when shutting down.
 		for (AbstractPlayerData data : playerDataMap.values())
 		{
 			data.saveDataToFile();

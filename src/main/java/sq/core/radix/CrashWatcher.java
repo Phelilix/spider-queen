@@ -9,6 +9,9 @@ import radixcore.core.ModCrashWatcher;
 import sq.core.SpiderCore;
 import cpw.mods.fml.common.FMLCommonHandler;
 
+/**
+ * An extension from RadixCore that handles detecting crashes and sending them to us for review.
+ */
 public final class CrashWatcher extends ModCrashWatcher
 {
 	@Override

@@ -16,6 +16,9 @@ import sq.entity.creature.EntitySpiderEx;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
+/**
+ * The boom ball is a projectile that explodes on impact.
+ */
 public class EntityBoomBall extends Entity implements IProjectile
 {
 	private int	ticksInAir;

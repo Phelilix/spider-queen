@@ -49,15 +49,25 @@ import sq.enums.EnumWatchedDataIDs;
 import cpw.mods.fml.common.ObfuscationReflectionHelper;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
+/**
+ * This class contains all event hooks that belong to Forge.
+ */
 public final class EventHooksForge
 {
 	@SubscribeEvent
 	public void onPlayerSleepInBed(PlayerSleepInBedEvent event)
 	{
+		//Disable sleeping in normal beds.
 		event.result = EntityPlayer.EnumStatus.NOT_POSSIBLE_HERE;
 		event.entityPlayer.addChatMessage(new ChatComponentText("Spiders can't sleep in normal beds."));
 	}
 
+	/**
+	 * When an entity is attacked by a player we check to see if this entity belongs to a reputation group. If so, the entity can be "angered"
+	 * by being struck three times. onAttackEntity will increment that value if needed.
+	 * 
+	 * We also set the player's friendly entities and spiders to target the entity that was struck.
+	 */
 	@SubscribeEvent
 	public void onAttackEntity(AttackEntityEvent event)
 	{
@@ -172,6 +182,10 @@ public final class EventHooksForge
 		}
 	}
 
+	/**
+	 * In this event, we consistently set isInWeb to false for the player. This prevents
+	 * slowdown in web from other mods, and Minecraft's cobwebs.
+	 */
 	@SubscribeEvent
 	public void onLivingUpdate(LivingUpdateEvent event)
 	{
@@ -184,6 +198,13 @@ public final class EventHooksForge
 		}
 	}
 
+	/**
+	 * Its name may not suggest it, however this runs whenever a living creature takes damage.
+	 * 
+	 * With it, we check to see if the player is supposed to take fall damage, then check to see if they recently
+	 * used the webslinger. This prevents damage in the case that the player has been hanging on the webslinger
+	 * for a long period of time, and their fall distance has kept increasing on the server.
+	 */
 	@SubscribeEvent
 	public void onLivingAttack(LivingAttackEvent event)
 	{
@@ -194,30 +215,13 @@ public final class EventHooksForge
 			boolean cancel = extension.webEntity != null || extension.slingerCooldown > 0;
 			event.setCanceled(cancel);
 		}
-
-		else if (event.entityLiving.getClass().equals(EntitySpider.class) && event.source.getSourceOfDamage() instanceof EntityPlayer)
-		{
-			EntityPlayer player = (EntityPlayer)event.source.getSourceOfDamage();
-			PlayerData data = SpiderCore.getPlayerData((EntityPlayer)event.source.getSourceOfDamage());
-			RepEntityExtension extension = (RepEntityExtension) event.entityLiving.getExtendedProperties(RepEntityExtension.ID);
-
-			//Cancel the target if...
-			boolean doCancel = data.spiderLike.getInt() >= 0 && extension.getTimesHitByPlayer() < 3;
-
-			if (doCancel)
-			{
-				EntityLivingBase living = new EntitySpider(event.entityLiving.worldObj);
-				living.setPositionAndRotation(player.posX, player.posY, player.posZ, player.rotationYaw, player.rotationPitch);
-
-				//Redirect the attack as an attack from a fake entity so that the spider doesn't hit the player back.
-				event.entityLiving.attackEntityFrom(DamageSource.causeMobDamage(living), event.ammount);
-
-				event.setCanceled(true);
-				living.setDead(); //Set the entity as dead so that the spider will not try to attack it.
-			}
-		}
 	}
 
+	/**
+	 * Whenever a creature dies, we check to see if it belongs to a reputation group. If so, there's a random chance to
+	 * negatively affect the player's reputation with that creatures' reputation group. If the creature is a creeper, zombie, or skeleton,
+	 * killing five will increase reputation with humans.
+	 */
 	@SubscribeEvent
 	public void onLivingDeath(LivingDeathEvent event)
 	{
@@ -259,6 +263,12 @@ public final class EventHooksForge
 		}
 	}
 
+	/**
+	 * When an entity is being constructed, we check to see if it is a player or it should belong to a reputation group.
+	 * Players get the PlayerExtension, and reputation entities get the RepEntityExtension.
+	 * 
+	 * We also add target tasks to creatures extending EntityMob. These tasks will instruct them to attack human entities.
+	 */
 	@SubscribeEvent
 	public void onEntityConstructing(EntityConstructing event)
 	{

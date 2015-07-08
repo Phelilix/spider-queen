@@ -9,6 +9,9 @@ import sq.core.SpiderCore;
 import sq.entity.creature.EntitySpiderEgg;
 import cpw.mods.fml.common.registry.GameRegistry;
 
+/**
+ * The spider egg allows the player to place a spider egg entity into the world.
+ */
 public class ItemSpiderEgg extends Item
 {
 	public ItemSpiderEgg()

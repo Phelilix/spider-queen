@@ -19,6 +19,10 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
+/**
+ * Defines the base cocoon item, which places an entity version of its accompanying type into the world 
+ * when the player right-clicks a block.
+ */
 public class ItemCocoon extends Item
 {
 	private EnumCocoonType cocoonType;
