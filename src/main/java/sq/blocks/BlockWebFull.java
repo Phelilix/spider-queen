@@ -84,79 +84,136 @@ public class BlockWebFull extends Block
 	}
 
 	/**
-	 * Checks the provided area for the requirements of the web bed and spawns it if needed.
+	 * Checks the provided area for the requirements of the web bed and spawns
+	 * it if needed.
 	 */
-	private void checkForBed(World world, int x, int y, int z, int itr)
-	{
-		if (webType == EnumWebType.NORMAL)
-		{
-			final Block fillerBlock = ModBlocks.webFull;
-			final Block outlineBlock = Blocks.log;
+	private void checkForBed(World world, int x, int y, int z, int itr) {
+		if (!isBeddishWeb(world.getBlock(x, y, z))) { return; }
+		if (webType != EnumWebType.NORMAL) { return; }
 
-			if (world.getBlock(x,y,z) != fillerBlock) { return; }
+		boolean xChanged = false;
+		boolean zChanged = false;
 
-			int fillerBlocksPresent = 0;
-			int outlineBlocksPresent = 0;
-
-			if (world.getBlock(x-1,y,z-1) == fillerBlock) { fillerBlocksPresent++; }
-			if (world.getBlock(x-1,y,z) == fillerBlock)   { fillerBlocksPresent++; }
-			if (world.getBlock(x-1,y,z+1) == fillerBlock) { fillerBlocksPresent++; }
-			if (world.getBlock(x,y,z-1) == fillerBlock)   { fillerBlocksPresent++; }
-			if (world.getBlock(x,y,z) == fillerBlock)     { fillerBlocksPresent++; }
-			if (world.getBlock(x,y,z+1) == fillerBlock)   { fillerBlocksPresent++; }
-			if (world.getBlock(x+1,y,z-1) == fillerBlock) { fillerBlocksPresent++; }
-			if (world.getBlock(x+1,y,z) == fillerBlock)   { fillerBlocksPresent++; }
-			if (world.getBlock(x+1,y,z+1) == fillerBlock) { fillerBlocksPresent++; }
-
-			if (world.getBlock(x-2,y,z-2) == outlineBlock) { outlineBlocksPresent++; }
-			if (world.getBlock(x-2,y,z-1) == outlineBlock) { outlineBlocksPresent++; }
-			if (world.getBlock(x-2,y,z) == outlineBlock)   { outlineBlocksPresent++; }
-			if (world.getBlock(x-2,y,z+1) == outlineBlock) { outlineBlocksPresent++; }
-			if (world.getBlock(x-2,y,z+2) == outlineBlock) { outlineBlocksPresent++; }
-			if (world.getBlock(x+2,y,z-2) == outlineBlock) { outlineBlocksPresent++; }
-			if (world.getBlock(x+2,y,z-1) == outlineBlock) { outlineBlocksPresent++; }
-			if (world.getBlock(x+2,y,z) == outlineBlock)   { outlineBlocksPresent++; }
-			if (world.getBlock(x+2,y,z+1) == outlineBlock) { outlineBlocksPresent++; }
-			if (world.getBlock(x+2,y,z+2) == outlineBlock) { outlineBlocksPresent++; }
-			if (world.getBlock(x-2,y,z-2) == outlineBlock) { outlineBlocksPresent++; }
-			if (world.getBlock(x-1,y,z-2) == outlineBlock) { outlineBlocksPresent++; }
-			if (world.getBlock(x,y,z-2) == outlineBlock)   { outlineBlocksPresent++; }
-			if (world.getBlock(x+1,y,z-2) == outlineBlock) { outlineBlocksPresent++; }
-			if (world.getBlock(x+2,y,z-2) == outlineBlock) { outlineBlocksPresent++; }
-			if (world.getBlock(x-2,y,z+2) == outlineBlock) { outlineBlocksPresent++; }
-			if (world.getBlock(x-1,y,z+2) == outlineBlock) { outlineBlocksPresent++; }
-			if (world.getBlock(x,y,z+2) == outlineBlock)   { outlineBlocksPresent++; }
-			if (world.getBlock(x+1,y,z+2) == outlineBlock) { outlineBlocksPresent++; }
-			if (world.getBlock(x+2,y,z+2) == outlineBlock) { outlineBlocksPresent++; }
-
-			if (fillerBlocksPresent == 9 & outlineBlocksPresent == 20)
-			{
-				world.setBlock(x-1,y,z-1,ModBlocks.webBed);
-				world.setBlock(x-1,y,z,ModBlocks.webBed);
-				world.setBlock(x-1,y,z+1,ModBlocks.webBed);
-				world.setBlock(x,y,z-1,ModBlocks.webBed);
-				world.setBlock(x,y,z,ModBlocks.webBed);
-				world.setBlock(x,y,z+1,ModBlocks.webBed);
-				world.setBlock(x+1,y,z-1,ModBlocks.webBed);
-				world.setBlock(x+1,y,z,ModBlocks.webBed);
-				world.setBlock(x+1,y,z+1,ModBlocks.webBed);
-			}
-
-			else
-			{
-				if (itr < 3)
-				{
-					checkForBed(world,x-1,y,z-1,itr+1);
-					checkForBed(world,x-1,y,z,itr+1);
-					checkForBed(world,x-1,y,z+1,itr+1);
-					checkForBed(world,x,y,z-1,itr+1);
-					checkForBed(world,x,y,z+1,itr+1);
-					checkForBed(world,x+1,y,z-1,itr+1);
-					checkForBed(world,x+1,y,z,itr+1);
-					checkForBed(world,x+1,y,z+1,itr+1);
-				}
+		// check if neighboring to the (speculated) center of web bed is
+		// web suitable for bedding
+		if (!isBeddishWeb(world.getBlock(x - 1, y, z))) {
+			// check if x-1 is outlineBlock or outlineBlock2 and adapt.
+			// the center of web bed could only have a higher x if true.
+			if (isLog(world.getBlock(x - 1, y, z))) {
+				x++;
+				xChanged = true;
+			} else {
+				// Stopping because it couldn't be a web bed. (not web, not
+				// log/log2. Thus unacceptable)
+				return;
 			}
 		}
+
+		// This is a repetition. Tiny differences though.
+		if (!isBeddishWeb(world.getBlock(x, y, z - 1))) {
+			if (isLog(world.getBlock(x, y, z - 1))) {
+				z++;
+				zChanged = true;
+			} else {
+				return;
+			}
+		}
+		
+		// second z axis check. The difference is the chance of the second
+		// neighbor log/log2 on the same axis.
+		if (!isBeddishWeb(world.getBlock(x, y, z + 1))) {
+			if (isLog(world.getBlock(x, y, z + 1))) {
+				if (!zChanged) {
+					z--;
+				} else {
+					//It couldn't be a web bed if zChanged was true. Cause that would mean a gap of just two web on the z axis.
+					return;
+				}
+			} else {
+				// Stopping because it couldn't be a web bed. (not web, not
+				// log/log2. Thus unacceptable)
+				return;
+			}
+		}
+
+		// repetition of previous second z axis check, but then with the x
+		// axis.
+		if (!isBeddishWeb(world.getBlock(x + 1, y, z))) {
+			if (isLog(world.getBlock(x + 1, y, z))) {
+				if (!xChanged) {
+					x--;
+				} else {
+					//It couldn't be a web bed if xChanged was true. Cause that would mean a gap of just two web on the x axis.
+					return;
+				}
+			} else {
+				// Stopping because it couldn't be a web bed. (not web, not
+				// log/log2. Thus unacceptable)
+				return;
+			}
+		}
+
+		// At this point, the target of x, y, z can only be the center of a
+		// web bed. Complete or not. If xChanged or zChanged is true, 
+		// it would be too bothersome to check which ones are web or not. We just call checkForBed again with +1 itr.
+		// On the other hand. If zChanged and xChanged is false, 
+		// we would only need to continue checking.
+		if (!zChanged && !xChanged) {
+			//Checking the corners of the web bed.
+			if (!isBeddishWeb(world.getBlock(x-1, y, z-1))) { return; }
+			if (!isBeddishWeb(world.getBlock(x-1, y, z+1))) { return; }
+			if (!isBeddishWeb(world.getBlock(x+1, y, z-1))) { return; }
+			if (!isBeddishWeb(world.getBlock(x+1, y, z+1))) { return; }
+			
+			//Checking the outline of the web bed.
+			if (!isLog(world.getBlock(x - 2, y, z - 2))) { return; }
+			if (!isLog(world.getBlock(x - 2, y, z - 1))) { return; }
+			if (!isLog(world.getBlock(x - 2, y, z    ))) { return; }
+			if (!isLog(world.getBlock(x - 2, y, z + 1))) { return; }
+			if (!isLog(world.getBlock(x - 2, y, z + 2))) { return; }
+			if (!isLog(world.getBlock(x + 2, y, z - 2))) { return; }
+			if (!isLog(world.getBlock(x + 2, y, z - 1))) { return; }
+			if (!isLog(world.getBlock(x + 2, y, z    ))) { return; }
+			if (!isLog(world.getBlock(x + 2, y, z + 1))) { return; }
+			if (!isLog(world.getBlock(x + 2, y, z + 2))) { return; }
+			if (!isLog(world.getBlock(x - 2, y, z - 2))) { return; }
+			if (!isLog(world.getBlock(x - 1, y, z - 2))) { return; }
+			if (!isLog(world.getBlock(x,     y, z - 2))) { return; }
+			if (!isLog(world.getBlock(x + 1, y, z - 2))) { return; }
+			if (!isLog(world.getBlock(x + 2, y, z - 2))) { return; }
+			if (!isLog(world.getBlock(x - 2, y, z + 2))) { return; }
+			if (!isLog(world.getBlock(x - 1, y, z + 2))) { return; }
+			if (!isLog(world.getBlock(x,     y, z + 2))) { return; }
+			if (!isLog(world.getBlock(x + 1, y, z + 2))) { return; }
+			if (!isLog(world.getBlock(x + 2, y, z + 2))) { return; }
+			
+			world.setBlock(x - 1, y, z - 1, ModBlocks.webBed);
+			world.setBlock(x - 1, y, z    , ModBlocks.webBed);
+			world.setBlock(x - 1, y, z + 1, ModBlocks.webBed);
+			world.setBlock(x,     y, z - 1, ModBlocks.webBed);
+			world.setBlock(x,     y, z    , ModBlocks.webBed);
+			world.setBlock(x,     y, z + 1, ModBlocks.webBed);
+			world.setBlock(x + 1, y, z - 1, ModBlocks.webBed);
+			world.setBlock(x + 1, y, z    , ModBlocks.webBed);
+			world.setBlock(x + 1, y, z + 1, ModBlocks.webBed);
+		} else {
+			if (itr <= 0){
+				checkForBed(world, x, y, z, itr+1);
+			}
+		}
+	}
+
+	//Checks if a block could be used in bed. :) (log and log2)
+	private boolean isLog(Block block){
+		return block == Blocks.log || block == Blocks.log2;
+	}
+	
+	//Checks if a web-block could be used in bed. 
+	//It could be a design choice to not recreate the bed
+	//when it got damaged and the player repairs it. 
+	//Well this makes it so that it does get replaced.
+	private boolean isBeddishWeb(Block block){
+		return block == ModBlocks.webBed || block == ModBlocks.webFull;
 	}
 
 	@Override
